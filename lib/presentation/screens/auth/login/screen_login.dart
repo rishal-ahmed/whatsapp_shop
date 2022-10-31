@@ -59,7 +59,7 @@ class ScreenLogin extends ConsumerWidget {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 19.sp,
-                                  color: secondaryTextColor,
+                                  color: secondaryColor,
                                 ),
                               )
                             ]),
@@ -167,7 +167,7 @@ class ScreenLogin extends ConsumerWidget {
                                 TextSpan(
                                   text: "REGISTER",
                                   style: TextStyle(
-                                    color: secondaryTextColor,
+                                    color: secondaryColor,
                                     fontSize: 13.sp,
                                     fontWeight: FontWeight.w600,
                                   ),

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
             title: 'Whatsapp Shop',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: Colors.blueGrey,
               fontFamily: GoogleFonts.rubik().fontFamily,
             ),
             home: ScreenLogin(),

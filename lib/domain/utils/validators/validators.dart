@@ -31,7 +31,7 @@ class Validators {
     return null;
   }
 
-  //========== Number Validator ==========
+  //========== Password Validator ==========
   static String? passwordValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'This field is required*';
@@ -40,6 +40,14 @@ class Validators {
       return 'Password must be at least 8 characters';
     }
     // Return null if the entered password is valid
+    return null;
+  }
+
+  //========== Confirm Validator ==========
+  static String? confirmValidator({String? value1, String? value2}) {
+    if (value1 != value2) {
+      return 'Password do not match';
+    }
     return null;
   }
 
@@ -71,11 +79,22 @@ class Validators {
     return null;
   }
 
+  //========== Email Validator ==========
+  static String? emailValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'This field is required*';
+    } else if (!emailOnly.hasMatch(value)) {
+      return 'Please enter a valid Email';
+    }
+
+    return null;
+  }
+
   //Force keyboard to input digits only
   static final List<FilteringTextInputFormatter> digitsOnly = [
     FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
   ];
 
   //Validating email pattern that user entered
-  static final RegExp emailValidator = RegExp(r'\S+@\S+\.\S+');
+  static final RegExp emailOnly = RegExp(r'\S+@\S+\.\S+');
 }

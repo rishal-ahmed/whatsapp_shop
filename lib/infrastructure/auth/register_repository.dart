@@ -6,23 +6,30 @@ import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
 import 'package:whatsapp_shop/domain/models/user_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
 
-class LoginRepository {
+class RegisterRepository {
   final Dio dio =
       Dio(BaseOptions(headers: {"Content-Type": "application/json"}));
 
-  //==================== User Login ====================
-  Future<Either<MainFailures, UserModel>> login(
-      {required String username, required String password}) async {
+  //==================== User Register ====================
+  Future<Either<MainFailures, UserModel>> register(
+      {required String name,
+      required String mobile,
+      required String email,
+      required String password}) async {
     try {
-      final FormData form =
-          FormData.fromMap({'emailormobile': username, 'password': password});
+      final FormData form = FormData.fromMap({
+        "name": name,
+        "phone": mobile,
+        "email": email,
+        "password": password,
+      });
 
       final Response response = await dio.post(
-        ApiEndpoints.login,
+        ApiEndpoints.register,
         data: form,
       );
 
-      log('response == ${response.data.toString()}', name: 'Login');
+      log('response == ${response.data.toString()}', name: 'Register');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = json.decode(response.data) as Map;

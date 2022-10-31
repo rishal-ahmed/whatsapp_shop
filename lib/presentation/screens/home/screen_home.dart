@@ -6,8 +6,8 @@ import '../../widgets/text_fields/text_field_widget.dart';
 
 class ScreenHome extends StatelessWidget {
   ScreenHome({super.key});
-  TextEditingController search = TextEditingController();
-  String dropdownvalue = 'All Shops';
+  final TextEditingController search = TextEditingController();
+  final String dropdownvalue = 'All Shops';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ScreenHome extends StatelessWidget {
                         Text(
                           'Janvi',
                           style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 13,
                               fontWeight: FontWeight.w600),
                         ),
@@ -192,7 +192,7 @@ class ScreenHome extends StatelessWidget {
           children: const [
             Icon(
               Icons.whatsapp,
-              color: secondaryTextColor,
+              color: secondaryColor,
               size: 24,
             ),
             kWidth10,

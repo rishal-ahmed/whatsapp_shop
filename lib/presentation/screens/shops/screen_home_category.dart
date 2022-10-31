@@ -115,7 +115,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -196,7 +196,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -260,7 +260,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -341,7 +341,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -405,7 +405,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -486,7 +486,7 @@ class ScreenHomeCategoryBased extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),

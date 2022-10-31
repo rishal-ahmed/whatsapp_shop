@@ -45,9 +45,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
         ScreenMain.bottomNavNotifier.value = index;
       },
       selectedFontSize: 13,
-      selectedIconTheme:
-          const IconThemeData(color: secondaryTextColor, size: 14),
-      selectedItemColor: secondaryTextColor,
+      selectedIconTheme: const IconThemeData(color: secondaryColor, size: 14),
+      selectedItemColor: secondaryColor,
     );
   }
 }

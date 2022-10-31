@@ -57,7 +57,7 @@ class ScreenShop1 extends StatelessWidget {
                           child: const Text(
                             " View all",
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -81,7 +81,7 @@ class ScreenShop1 extends StatelessWidget {
                                           0.05,
                                     ),
                                     child: const CircleAvatar(
-                                      backgroundColor: secondaryTextColor,
+                                      backgroundColor: secondaryColor,
                                       radius: 25,
                                     )),
                                 kHeight5,
@@ -145,7 +145,7 @@ class ScreenShop1 extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -242,7 +242,7 @@ class ScreenShop1 extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -306,7 +306,7 @@ class ScreenShop1 extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -403,7 +403,7 @@ class ScreenShop1 extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -467,7 +467,7 @@ class ScreenShop1 extends StatelessWidget {
                           Text(
                             'View All',
                             style: TextStyle(
-                              color: secondaryTextColor,
+                              color: secondaryColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
@@ -564,7 +564,7 @@ class ScreenShop1 extends StatelessWidget {
                                     Text(
                                       '₹590',
                                       style: TextStyle(
-                                        color: secondaryTextColor,
+                                        color: secondaryColor,
                                         fontSize: 8,
                                         fontWeight: FontWeight.w400,
                                       ),

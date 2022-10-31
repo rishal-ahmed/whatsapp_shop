@@ -38,7 +38,7 @@ class ScreenMain extends StatelessWidget {
                 children: const [
                   Icon(
                     Icons.whatsapp,
-                    color: secondaryTextColor,
+                    color: secondaryColor,
                     size: 24,
                   ),
                   kWidth10,

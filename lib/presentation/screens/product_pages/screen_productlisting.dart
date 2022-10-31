@@ -152,7 +152,7 @@ class _ScreenProductListingState extends State<ScreenProductListing> {
                             Text(
                               '₹590',
                               style: TextStyle(
-                                color: secondaryTextColor,
+                                color: secondaryColor,
                                 fontSize: 8,
                                 fontWeight: FontWeight.w400,
                               ),

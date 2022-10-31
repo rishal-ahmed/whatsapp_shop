@@ -4,8 +4,8 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 
 class ScreenProductSingleView extends StatelessWidget {
-  ScreenProductSingleView({super.key});
-  String dropdownvalue = '1';
+  const ScreenProductSingleView({super.key});
+  final String dropdownvalue = '1';
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +222,7 @@ class ScreenProductSingleView extends StatelessWidget {
                                 const Text(
                                   'In Stock.',
                                   style: TextStyle(
-                                    color: secondaryTextColor,
+                                    color: secondaryColor,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -302,7 +302,7 @@ class ScreenProductSingleView extends StatelessWidget {
                               height: 43,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: secondaryTextColor),
+                                  color: secondaryColor),
                               child: const Center(
                                 child: Text(
                                   'Add to Cart',
@@ -398,7 +398,7 @@ class ScreenProductSingleView extends StatelessWidget {
                             Text(
                               'View More',
                               style: TextStyle(
-                                color: secondaryTextColor,
+                                color: secondaryColor,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -503,7 +503,7 @@ class ScreenProductSingleView extends StatelessWidget {
                                       Text(
                                         '₹590',
                                         style: TextStyle(
-                                          color: secondaryTextColor,
+                                          color: secondaryColor,
                                           fontSize: 8,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -563,7 +563,7 @@ class ScreenProductSingleView extends StatelessWidget {
                             Text(
                               'View More',
                               style: TextStyle(
-                                color: secondaryTextColor,
+                                color: secondaryColor,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -664,7 +664,7 @@ class ScreenProductSingleView extends StatelessWidget {
                                       Text(
                                         '₹590',
                                         style: TextStyle(
-                                          color: secondaryTextColor,
+                                          color: secondaryColor,
                                           fontSize: 8,
                                           fontWeight: FontWeight.w400,
                                         ),

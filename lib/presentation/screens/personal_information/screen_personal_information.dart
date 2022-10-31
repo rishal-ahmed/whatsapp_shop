@@ -129,7 +129,7 @@ class _ScreenPersonalInformationState extends State<ScreenPersonalInformation> {
                     height: 43,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: secondaryTextColor),
+                        color: secondaryColor),
                     child: const Center(
                       child: Text(
                         'SAVE CHANGES',
