@@ -4,11 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/application/register/register_event.dart';
 import 'package:whatsapp_shop/application/register/register_notifier.dart';
 import 'package:whatsapp_shop/application/register/register_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart';
@@ -210,6 +212,15 @@ class ScreenRegister extends ConsumerWidget {
                               content: 'Registered successfully',
                               success: true,
                             );
+
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((_) async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setBool('login', true);
+                            });
+
+                            Navigator.pushNamed(context, routeMain);
                           }
 
                           return CustomMaterialBtton(

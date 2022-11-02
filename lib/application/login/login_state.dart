@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:whatsapp_shop/domain/models/user_model.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 
 part 'login_state.freezed.dart';
 

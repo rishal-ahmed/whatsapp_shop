@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
-import 'package:whatsapp_shop/domain/models/user_model.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
 
 class RegisterRepository {

@@ -4,11 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/application/login/login_event.dart';
 import 'package:whatsapp_shop/application/login/login_notifier.dart';
 import 'package:whatsapp_shop/application/login/login_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register.dart';
@@ -119,10 +121,23 @@ class ScreenLogin extends ConsumerWidget {
                               content: 'Logged in successfully',
                               success: true,
                             );
+
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((_) async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setBool('login', true);
+                            });
+
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                routeMain, ModalRoute.withName(routeRoot));
                           }
 
                           return CustomMaterialBtton(
                             onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, routeMain, (route) => true);
+
                               final FormState? formState =
                                   _formKey.currentState;
                               if (formState!.validate()) {

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_shop/core/constants/colors.dart';
-import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
+import 'package:whatsapp_shop/presentation/screens/main/widgets/main_bottom_nav.dart';
+import 'package:whatsapp_shop/presentation/screens/main/widgets/main_drawer.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
 import 'package:whatsapp_shop/presentation/screens/personal_information/screen_personal_information.dart';
-import 'package:whatsapp_shop/presentation/screens/shops/screen_shops1.dart';
-import 'package:whatsapp_shop/presentation/widgets/home_bottom_navigation_bar.dart';
-
-import '../product_pages/screen_productlisting.dart';
+import 'package:whatsapp_shop/presentation/screens/product_pages/screen_productlisting.dart';
+import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 
 const List _pages = [
-  ScreenShop1(),
+  ScreenHome(),
   ScreenProductListing(),
   ScreenNotification(),
   ScreenPersonalInformation(),
@@ -18,49 +18,19 @@ const List _pages = [
 class ScreenMain extends StatelessWidget {
   const ScreenMain({super.key});
 
-  static final ValueNotifier<int> bottomNavNotifier = ValueNotifier(0);
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: bottomNavNotifier,
-        builder: (context, int index, _) {
-          return Scaffold(
-            appBar: AppBar(
-              shadowColor: buttonTextColor,
-              backgroundColor: primaryColor,
-              leading: const Icon(
-                Icons.menu,
-                color: appbarTextColor,
-              ),
-              centerTitle: true,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.whatsapp,
-                    color: secondaryColor,
-                    size: 24,
-                  ),
-                  kWidth10,
-                  Text(
-                    'WhatsAppShop',
-                    style: TextStyle(
-                      color: appbarTextColor,
-                      fontSize: 12,
-                    ),
-                  )
-                ],
-              ),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(Icons.shopping_cart),
-                )
-              ],
-            ),
-            body: _pages[index],
-            bottomNavigationBar: const HomeBottomNavigationBar(),
-          );
-        });
+    return Scaffold(
+      drawer: const MainDrawer(),
+      appBar: const AppBarWidget(defualt: true),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final int index =
+              ref.watch(MainBottomNavigationBar.bottomNavProvider);
+          return _pages[index];
+        },
+      ),
+      bottomNavigationBar: const MainBottomNavigationBar(),
+    );
   }
 }
