@@ -1,27 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/home/home_event.dart';
 import 'package:whatsapp_shop/application/home/home_notifier.dart';
 import 'package:whatsapp_shop/application/home/home_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
+import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/shop_category/shop_category_model.dart';
+import 'package:whatsapp_shop/infrastructure/home/home_repository.dart';
 import 'package:whatsapp_shop/presentation/screens/home/widgets/shops_by_category_list_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/dropdown/dropdown_widget.dart';
-
-import '../../../core/constants/sizes.dart';
-import '../../widgets/text_fields/text_field_widget.dart';
-
-const List<String> shops = [
-  'All Shops',
-  'ABC Shops',
-  'DD House',
-  'AX Hotel',
-];
+import 'package:whatsapp_shop/presentation/widgets/text_fields/search_text_field_widget.dart.dart';
 
 final _homeProvider = StateNotifierProvider<HomeNotifier, HomeState>((ref) {
   return HomeNotifier()..emit(const HomeEvent.home());
 });
+
+final _shopCategoryIdProvider = StateProvider<String>((ref) => '0');
 
 class ScreenHome extends ConsumerWidget {
   const ScreenHome({super.key});
@@ -33,23 +31,30 @@ class ScreenHome extends ConsumerWidget {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //==================== Search Field ====================
             Container(
               color: const Color(0XFFE2E2E2),
               padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+              alignment: Alignment.center,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  //========== All Shops ~ DropDown ==========
                   Expanded(
                     flex: 3,
                     child: Consumer(
                       builder: (context, ref, _) {
                         final state = ref.watch(_homeProvider);
 
+                        List<ShopCategoryModel> shopCategories = [
+                          const ShopCategoryModel(id: 0, name: 'All Shops'),
+                        ];
+
                         if (state.isLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return DropDownWidget(
+                            items: shopCategories,
+                            value: shopCategories.first,
                           );
                         }
 
@@ -58,15 +63,18 @@ class ScreenHome extends ConsumerWidget {
                             child: Text('Something went wrong'),
                           );
                         } else {
-                          final List<ShopCategoryModel> shopCategories = [
-                            const ShopCategoryModel(id: 0, name: 'All Shops'),
-                            ...state.shopCategories!
+                          shopCategories = [
+                            ...shopCategories,
+                            ...state.shopCategories
                           ];
-
                           return DropDownWidget(
                             items: shopCategories,
-                            value: const ShopCategoryModel(
-                                id: 0, name: 'All Shops'),
+                            value: shopCategories.first,
+                            onChanged: (shopCategory) {
+                              log('shopCategoryId ==== ${shopCategory!.id}');
+                              ref.read(_shopCategoryIdProvider.notifier).state =
+                                  shopCategory.id.toString();
+                            },
                           );
                         }
                       },
@@ -75,7 +83,7 @@ class ScreenHome extends ConsumerWidget {
                   dWidth2,
                   Expanded(
                     flex: 7,
-                    child: TextFeildWidget(
+                    child: SearchTextField(
                       inputBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: searchBorderColor),
                       ),
@@ -100,44 +108,180 @@ class ScreenHome extends ConsumerWidget {
                       ),
                       hintText: 'Search Products, Category and More',
                       fontSize: 12,
+                      itemBuilder: (context, shop) {
+                        return ListTile(
+                          dense: true,
+                          title: Text(shop.name),
+                        );
+                      },
+                      onSuggestionSelected: (shop) {
+                        log('shop = ${shop.name}');
+                      },
+                      suggestionsCallback: (pattern) async {
+                        final shopCategoryId =
+                            ref.read(_shopCategoryIdProvider);
+                        final state = await HomeRepository().search(
+                          shopCategoryId: shopCategoryId,
+                          keyword: pattern,
+                        );
+
+                        return state.fold((l) => throw Exception, (r) => r);
+                      },
                     ),
                   ),
                 ],
               ),
             ),
 
-            //==================== Banner Image ====================
-            SizedBox(
-                height: 22.h,
-                width: double.infinity,
-                child: const Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://images.pexels.com/photos/265144/pexels-photo-265144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-                )),
-            kHeight1,
-            //==================== Shop Listing ====================
-            const ShopsByCategoryListWidget(category: 'Newest Shops'),
-            kHeight1,
-            SizedBox(
-              height: 22.h,
-              width: double.infinity,
-              child: const Image(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'),
-              ),
+            //==================== Advertisement Slider ====================
+            Consumer(
+              builder: (context, ref, _) {
+                return ImageSlideshow(
+                  autoPlayInterval: 3000,
+                  isLoop: true,
+                  children: [
+                    Image.network(
+                      'https://images.pexels.com/photos/265144/pexels-photo-265144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      'https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      'https://images.pexels.com/photos/265144/pexels-photo-265144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                );
+              },
             ),
-            kHeight1,
-            //==================== Shop Listing ====================
-            const ShopsByCategoryListWidget(category: 'Hotels & Restaurant'),
 
             kHeight1,
-            //==================== Shop Listing ====================
-            const ShopsByCategoryListWidget(category: 'Supermarket'),
+            //==================== Newest Shops ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final HomeState state = ref.watch(_homeProvider);
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 20.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                return ShopsByCategoryListWidget(
+                  category: 'Newest Shops',
+                  shops: state.newShops,
+                );
+              },
+            ),
             kHeight1,
-            //==================== Shop Listing ====================
-            const ShopsByCategoryListWidget(category: 'Other Shops'),
+            //==================== Advertisement Slider ====================
+            Consumer(
+              builder: (context, ref, _) {
+                return ImageSlideshow(
+                  autoPlayInterval: 3000,
+                  isLoop: true,
+                  children: [
+                    Image.network(
+                      'https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      'https://images.pexels.com/photos/265144/pexels-photo-265144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      'https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                );
+              },
+            ),
+            kHeight1,
+            // //==================== Hotels & Restaurant ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final HomeState state = ref.watch(_homeProvider);
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 20.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                return ShopsByCategoryListWidget(
+                  category: 'Hotels & Restaurant',
+                  shops: state.hotelsRestaurants,
+                );
+              },
+            ),
+
+            kHeight1,
+            //==================== Supermarket ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final HomeState state = ref.watch(_homeProvider);
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 20.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                return ShopsByCategoryListWidget(
+                  category: 'Supermarket',
+                  shops: state.superMarkets,
+                );
+              },
+            ),
+            kHeight1,
+            //==================== Other Shops ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final HomeState state = ref.watch(_homeProvider);
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 20.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                return ShopsByCategoryListWidget(
+                  category: 'Other Shops',
+                  shops: state.otherShops,
+                );
+              },
+            ),
           ],
         ),
       )),

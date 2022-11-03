@@ -4,6 +4,6 @@ part 'home_event.freezed.dart';
 
 @freezed
 class HomeEvent with _$HomeEvent {
-  //=-=-=-=-=- Login Event -=-=-=-=-=
+  //=-=-=-=-=- Home Event -=-=-=-=-=
   const factory HomeEvent.home() = _HomeEvent;
 }

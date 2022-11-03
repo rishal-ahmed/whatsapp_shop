@@ -3,14 +3,17 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/domain/models/shop/shop_model.dart';
 
 class ShopsByCategoryListWidget extends StatelessWidget {
   const ShopsByCategoryListWidget({
     Key? key,
     required this.category,
+    required this.shops,
   }) : super(key: key);
 
   final String category;
+  final List<ShopModel> shops;
 
   @override
   Widget build(BuildContext context) {
@@ -33,49 +36,60 @@ class ShopsByCategoryListWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 9.h,
-                      width: 9.h,
-                      decoration: BoxDecoration(
-                          color: const Color(0XFF199A2D),
-                          borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.all(16),
-                      child: Image.asset(
-                        kImageEre,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    dHeight05,
-                    Text(
-                      'Tiga Vision',
-                      style: TextStyle(fontSize: 12.sp),
-                    ),
-                    dHeight03,
-                    Row(
-                      children: [
-                        Text(
-                          '4.2',
-                          style: TextStyle(fontSize: 12.sp),
+                final ShopModel shop = shops[index];
+                shop.logo;
+                return SizedBox(
+                  width: 10.h,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 9.h,
+                        width: 9.h,
+                        decoration: BoxDecoration(
+                            color: const Color(0XFF199A2D),
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.all(16),
+                        child: Image.asset(
+                          kImageEre,
+                          fit: BoxFit.cover,
                         ),
-                        dWidth05,
-                        Icon(
-                          Icons.star,
-                          color: primaryColor,
-                          size: 12.sp,
-                        )
-                      ],
-                    ),
-                  ],
+                      ),
+                      dHeight05,
+                      Flexible(
+                        child: Text(
+                          shop.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 12.sp, overflow: TextOverflow.ellipsis),
+                          maxLines: 1,
+                        ),
+                      ),
+                      dHeight03,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '4.2',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          dWidth05,
+                          Icon(
+                            Icons.star,
+                            color: primaryColor,
+                            size: 12.sp,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
-                return dWidth5;
+                return dWidth3;
               },
-              itemCount: 10,
+              itemCount: shops.length,
             ),
           ),
         ],

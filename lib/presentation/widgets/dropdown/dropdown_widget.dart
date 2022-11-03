@@ -4,10 +4,12 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/domain/models/shop_category/shop_category_model.dart';
 
 class DropDownWidget extends StatelessWidget {
-  const DropDownWidget({super.key, required this.value, required this.items});
+  const DropDownWidget(
+      {super.key, required this.value, required this.items, this.onChanged});
 
   final ShopCategoryModel value;
   final List<ShopCategoryModel> items;
+  final Function(ShopCategoryModel?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class DropDownWidget extends StatelessWidget {
         size: 18.sp,
         color: const Color(0XFF4F4E4E),
       ),
-      onChanged: (newValue) {},
+      onChanged: onChanged,
       items: items
           .map<DropdownMenuItem<ShopCategoryModel>>((ShopCategoryModel value) {
         return DropdownMenuItem(

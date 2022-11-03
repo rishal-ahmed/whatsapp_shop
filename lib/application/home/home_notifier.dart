@@ -9,7 +9,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   void emit(HomeEvent event) {
     event.map(
       home: (homeEvent) async {
-        //Loading
+        // Loading
         state = HomeState.initial().copyWith(isLoading: true);
 
         // Home Api
@@ -17,9 +17,18 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
         final HomeState homeState = result.fold(
           (l) => HomeState.initial().copyWith(isError: true),
-          (r) => HomeState.initial().copyWith(shopCategories: r),
+          (r) => HomeState.initial().copyWith(
+            shopCategories: r['shop_categories'],
+            newShops: r['new_shops'],
+            hotelsRestaurants: r['hotels_restaurants'],
+            superMarkets: r['super_markets'],
+            otherShops: r['other_shops'],
+            firstAds: r['first_ads'],
+            secondAds: r['second_ads'],
+          ),
         );
 
+        // Notifiy UI
         state = homeState;
       },
     );
