@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:whatsapp_shop/core/constants/base_url.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
@@ -50,10 +51,16 @@ class ShopsByCategoryListWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: const Color(0XFF199A2D),
                             borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.all(16),
-                        child: Image.asset(
-                          kImageEre,
+                        child: Image.network(
+                          kImageAppendUrl + shop.logo!,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Image.asset(
+                              kImageEre,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                       dHeight05,

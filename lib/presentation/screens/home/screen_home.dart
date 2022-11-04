@@ -109,10 +109,26 @@ class ScreenHome extends ConsumerWidget {
                       hintText: 'Search Products, Category and More',
                       fontSize: 12,
                       itemBuilder: (context, shop) {
-                        return ListTile(
-                          dense: true,
-                          title: Text(shop.name),
+                        return Container(
+                          color: kTransparentColor,
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            shop.name,
+                            style: TextStyle(fontSize: 13.sp),
+                          ),
                         );
+                      },
+                      noItemsFoundBuilder: (context) {
+                        return Container(
+                            color: kTransparentColor,
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              'No shop found!',
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: kColorHint,
+                              ),
+                            ));
                       },
                       onSuggestionSelected: (shop) {
                         log('shop = ${shop.name}');
