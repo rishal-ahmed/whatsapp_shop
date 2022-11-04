@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
@@ -11,7 +12,9 @@ import 'package:whatsapp_shop/application/register/register_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
@@ -207,6 +210,11 @@ class ScreenRegister extends ConsumerWidget {
                             );
                           }
                           if (state.user != null) {
+                            final UserModel user = state.user!;
+
+                            final String userString =
+                                jsonEncode(state.user!.toJson());
+
                             kSnackBar(
                               context: context,
                               content: 'Registered successfully',
@@ -214,13 +222,14 @@ class ScreenRegister extends ConsumerWidget {
                             );
 
                             WidgetsBinding.instance
-                                .addPostFrameCallback((_) async {
+                                .addPostFrameCallback((timeStamp) async {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  routeMain, ModalRoute.withName(routeRoot));
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
-                              prefs.setBool('login', true);
+                              prefs.setString('user', userString);
+                              UserUtils.instance.saveUser(user: user);
                             });
-
-                            Navigator.pushNamed(context, routeMain);
                           }
 
                           return CustomMaterialBtton(

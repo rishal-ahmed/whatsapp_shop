@@ -81,7 +81,12 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   Widget get defaultTitle => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(kIconLogo),
+          SvgPicture.asset(
+            kIconLogo,
+            height: 26,
+            width: 26,
+          ),
+          // Image.asset(kIconLogo),
           dWidth2,
           Text(
             'WhatsAppShop',

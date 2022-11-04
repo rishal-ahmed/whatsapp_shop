@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
 
 const List<String> _titles = [
   'Shops',
@@ -34,6 +38,7 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel user = UserUtils.instance.userModel!;
     return SafeArea(
       child: Drawer(
         backgroundColor: const Color(0xCC585858),
@@ -47,7 +52,7 @@ class MainDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Rishal Ahmed',
+                  user.name,
                   style: TextStyle(
                     color: secondaryColor,
                     fontWeight: FontWeight.w600,
@@ -56,7 +61,7 @@ class MainDrawer extends StatelessWidget {
                 ),
                 kHeight2,
                 Text(
-                  'rishalahmed@gmail.com',
+                  user.email,
                   style: TextStyle(
                     color: kWhite,
                     fontWeight: FontWeight.w500,
@@ -84,6 +89,7 @@ class MainDrawer extends StatelessWidget {
                 final IconData icon =
                     index > 5 ? _icons[index - 1] : _icons[index];
                 return ListTile(
+                  onTap: () => onTap(context, index),
                   horizontalTitleGap: 0,
                   leading: Icon(icon, color: kWhite),
                   title: Text(
@@ -101,5 +107,18 @@ class MainDrawer extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  void onTap(BuildContext context, int index) async {
+    switch (index) {
+      case 4:
+        Navigator.pushNamedAndRemoveUntil(
+            context, routeLogin, ModalRoute.withName(routeRoot));
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove('user');
+
+        break;
+      default:
+    }
   }
 }

@@ -92,7 +92,7 @@ class ScreenHome extends ConsumerWidget {
                       suffixIcon: Container(
                         margin: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(4),
                           color: searchBorderColor,
                         ),
                         child: const Icon(

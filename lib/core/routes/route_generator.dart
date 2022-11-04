@@ -4,6 +4,7 @@ import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart'
 import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register.dart';
 import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/screen_main.dart';
+import 'package:whatsapp_shop/presentation/screens/splash/screen_splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -12,7 +13,7 @@ class RouteGenerator {
     switch (routeSettings.name) {
       //==================== Root ====================
       case routeRoot:
-        return MaterialPageRoute(builder: (_) => ScreenLogin());
+        return MaterialPageRoute(builder: (_) => const ScreenSplash());
 
       //==================== Main ====================
       case routeMain:

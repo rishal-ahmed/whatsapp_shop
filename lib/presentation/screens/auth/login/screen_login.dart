@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,9 @@ import 'package:whatsapp_shop/application/login/login_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
@@ -115,7 +117,11 @@ class ScreenLogin extends ConsumerWidget {
                             );
                           }
                           if (state.user != null) {
-                            log('user = ${state.user!.name}');
+                            final UserModel user = state.user!;
+
+                            final String userString =
+                                jsonEncode(state.user!.toJson());
+
                             kSnackBar(
                               context: context,
                               content: 'Logged in successfully',
@@ -124,19 +130,19 @@ class ScreenLogin extends ConsumerWidget {
 
                             WidgetsBinding.instance
                                 .addPostFrameCallback((_) async {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  routeMain, ModalRoute.withName(routeRoot));
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
-                              prefs.setBool('login', true);
+                              prefs.setString('user', userString);
+                              UserUtils.instance.saveUser(user: user);
                             });
-
-                            Navigator.pushNamedAndRemoveUntil(context,
-                                routeMain, ModalRoute.withName(routeRoot));
                           }
 
                           return CustomMaterialBtton(
                             onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, routeMain, (route) => true);
+                              // Navigator.pushNamedAndRemoveUntil(
+                              //     context, routeMain, (route) => true);
 
                               final FormState? formState =
                                   _formKey.currentState;
