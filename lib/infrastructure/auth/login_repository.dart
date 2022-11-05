@@ -31,7 +31,10 @@ class LoginRepository {
           final UserModel userModel = UserModel.fromJson(result['user']);
           return Right(userModel);
         } else {
-          return const Left(MainFailures.clientFailure());
+          final String error = result['msg'] == 'Invalid User Details!'
+              ? 'Incorrect username or password'
+              : result['msg'];
+          return Left(MainFailures.clientFailure(error: error));
         }
       } else {
         return const Left(MainFailures.serverFailure());

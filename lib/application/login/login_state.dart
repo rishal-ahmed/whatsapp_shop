@@ -8,9 +8,11 @@ class LoginState with _$LoginState {
   factory LoginState({
     required bool isLoading,
     required bool isError,
+    required String errorMessage,
     UserModel? user,
   }) = _LoginState;
   const LoginState._();
 
-  factory LoginState.initial() => LoginState(isLoading: false, isError: false);
+  factory LoginState.initial() =>
+      LoginState(isLoading: false, isError: false, errorMessage: '');
 }

@@ -17,8 +17,25 @@ class LoginNotifier extends StateNotifier<LoginState> {
             .login(username: event.username, password: event.password);
 
         final LoginState loginState = result.fold(
-          (l) => LoginState.initial().copyWith(isError: true),
-          (r) => LoginState.initial().copyWith(user: r),
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) {
+            return failure.when(
+              clientFailure: (error) {
+                return LoginState.initial().copyWith(
+                  isError: true,
+                  errorMessage: error,
+                );
+              },
+              serverFailure: (error) {
+                return LoginState.initial().copyWith(
+                  isError: true,
+                  errorMessage: error,
+                );
+              },
+            );
+          },
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => LoginState.initial().copyWith(user: success),
         );
 
         state = loginState;

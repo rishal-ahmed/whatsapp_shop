@@ -21,8 +21,19 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
         );
 
         final RegisterState registerState = result.fold(
-          (l) => RegisterState.initial().copyWith(isError: true),
-          (r) => RegisterState.initial().copyWith(user: r),
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => failure.when(
+            clientFailure: (error) {
+              return RegisterState.initial()
+                  .copyWith(isError: true, errorMessage: error);
+            },
+            serverFailure: (error) {
+              return RegisterState.initial()
+                  .copyWith(isError: true, errorMessage: error);
+            },
+          ),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => RegisterState.initial().copyWith(user: success),
         );
 
         state = registerState;

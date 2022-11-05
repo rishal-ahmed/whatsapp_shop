@@ -24,6 +24,8 @@ final _loginProvider =
   return LoginNotifier();
 });
 
+final _obscureProvider = StateProvider.autoDispose<bool>((ref) => true);
+
 class ScreenLogin extends ConsumerWidget {
   ScreenLogin({super.key});
 
@@ -93,7 +95,6 @@ class ScreenLogin extends ConsumerWidget {
                       dHeight1n5,
                       TextFeildWidget(
                         contentPadding: const EdgeInsets.all(16),
-                        suffixIcon: Icon(Icons.visibility, size: 19.sp),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
@@ -101,6 +102,19 @@ class ScreenLogin extends ConsumerWidget {
                         fillColor: kColorAuthField,
                         controller: passwordController,
                         hintText: 'Enter Password',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            ref.read(_obscureProvider.notifier).state =
+                                !ref.read(_obscureProvider);
+                          },
+                          icon: Icon(
+                            ref.read(_obscureProvider)
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 19.sp,
+                          ),
+                        ),
+                        obscureText: ref.watch(_obscureProvider),
                         validator: (value) => Validators.nullValidator(value),
                       ),
                       dHeight3,
@@ -111,8 +125,7 @@ class ScreenLogin extends ConsumerWidget {
                           if (state.isError) {
                             kSnackBar(
                               context: context,
-                              content:
-                                  'Something went wrong, please try again later',
+                              content: state.errorMessage,
                               error: true,
                             );
                           }

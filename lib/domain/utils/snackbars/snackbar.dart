@@ -61,7 +61,7 @@ void kSnackBar({
                   softWrap: false,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 14.sp),
+                  style: TextStyle(fontSize: 14.5.sp),
                 ),
               ),
             ],

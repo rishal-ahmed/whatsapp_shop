@@ -7,6 +7,7 @@ class RegisterState with _$RegisterState {
   factory RegisterState({
     required bool isLoading,
     required bool isError,
+    required String errorMessage,
     UserModel? user,
   }) = _RegisterState;
   const RegisterState._();
@@ -14,5 +15,6 @@ class RegisterState with _$RegisterState {
   factory RegisterState.initial() => RegisterState(
         isLoading: false,
         isError: false,
+        errorMessage: '',
       );
 }

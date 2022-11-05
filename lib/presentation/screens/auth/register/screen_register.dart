@@ -27,6 +27,7 @@ final _registerProvider =
 
 final _agreeProvider = StateProvider.autoDispose<bool>((ref) => false);
 final _obscureProvider = StateProvider.autoDispose<bool>((ref) => true);
+final _obscureProvider2 = StateProvider.autoDispose<bool>((ref) => true);
 final _validateProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class ScreenRegister extends ConsumerWidget {
@@ -161,7 +162,19 @@ class ScreenRegister extends ConsumerWidget {
                             borderSide:
                                 const BorderSide(color: kColorAuthField)),
                         fillColor: kColorAuthField,
-                        obscureText: true,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            ref.read(_obscureProvider2.notifier).state =
+                                !ref.read(_obscureProvider2);
+                          },
+                          icon: Icon(
+                            ref.read(_obscureProvider2)
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 19.sp,
+                          ),
+                        ),
+                        obscureText: ref.watch(_obscureProvider2),
                         validator: (value) => Validators.confirmValidator(
                             value1: value, value2: passwordController.text),
                       ),
@@ -204,8 +217,7 @@ class ScreenRegister extends ConsumerWidget {
                           if (state.isError) {
                             kSnackBar(
                               context: context,
-                              content:
-                                  'Something went wrong, please try again later',
+                              content: state.errorMessage,
                               error: true,
                             );
                           }
