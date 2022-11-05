@@ -5,7 +5,7 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 class MainBottomNavigationBar extends StatelessWidget {
   const MainBottomNavigationBar({super.key});
 
-  static final bottomNavProvider = StateProvider<int>((ref) => 0);
+  static final bottomNavProvider = StateProvider.autoDispose<int>((ref) => 0);
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
-import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
-import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
-import 'package:whatsapp_shop/presentation/widgets/dialogs/alert_dialog_custom.dart';
 
 const List<String> _titles = [
   'Shops',
@@ -114,43 +110,7 @@ class MainDrawer extends StatelessWidget {
   void onTap(BuildContext context, int index) async {
     switch (index) {
       case 4:
-        showDialog(
-          context: context,
-          builder: (context) {
-            return KAlertDialog(
-              title: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: primaryTextColor,
-                ),
-              ),
-              content: Text(
-                'Are you sure you want to logout?',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  color: primaryTextColor,
-                ),
-              ),
-              submitText: 'Logout',
-              submitAction: () async {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, routeLogin, ModalRoute.withName(routeRoot));
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                prefs.remove('user');
-
-                kSnackBar(
-                  context: context,
-                  content: 'Logged out successfully',
-                  success: true,
-                );
-              },
-            );
-          },
-        );
-
+        await UserUtils.instance.logoutUser(context);
         break;
       default:
     }

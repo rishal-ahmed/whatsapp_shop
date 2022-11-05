@@ -63,7 +63,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       )
                     ],
                   ),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
+                  onPressed: () => {},
                 ),
               )
             ],

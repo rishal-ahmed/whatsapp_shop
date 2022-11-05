@@ -44,6 +44,8 @@ final SizedBox dWidth10 = SizedBox(width: 10.w);
 final SizedBox dWidth15 = SizedBox(width: 15.w);
 final SizedBox dWidth20 = SizedBox(width: 20.w);
 
+final SizedBox dHeight01 = SizedBox(height: 0.1.h);
+final SizedBox dHeight02 = SizedBox(height: 0.2.h);
 final SizedBox dHeight03 = SizedBox(height: 0.3.h);
 final SizedBox dHeight05 = SizedBox(height: 0.5.h);
 final SizedBox dHeight1 = SizedBox(height: 1.h);
