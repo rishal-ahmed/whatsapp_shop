@@ -85,9 +85,8 @@ class ScreenLogin extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         controller: usernameController,
                         hintText: 'Enter Email / Mobile Number',
                         validator: (value) => Validators.nullValidator(value),
@@ -97,9 +96,8 @@ class ScreenLogin extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         controller: passwordController,
                         hintText: 'Enter Password',
                         suffixIcon: IconButton(

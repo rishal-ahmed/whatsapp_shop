@@ -86,7 +86,7 @@ class TextFeildWidget extends StatelessWidget {
         enabledBorder: inputBorder,
         errorBorder: inputBorder != null
             ? inputBorder!
-                .copyWith(borderSide: const BorderSide(color: kColorAuthField))
+                .copyWith(borderSide: const BorderSide(color: kColorFieldBg))
             : null,
         labelStyle: const TextStyle(color: klabelColorGrey),
         fillColor: fillColor ?? kWhite,

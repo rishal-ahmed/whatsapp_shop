@@ -9,7 +9,7 @@ const Color primaryTextColor = Color(0XFF333333);
 const Color secondaryTextColor = Color(0XFF01A783);
 
 //==================== Authentication Color ====================
-const Color kColorAuthField = Color(0xFFEBEBEB);
+const Color kColorFieldBg = Color(0xFFEBEBEB);
 
 //
 const Color textColor = Color(0xFF1F2C34);

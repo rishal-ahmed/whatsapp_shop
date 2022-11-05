@@ -93,9 +93,8 @@ class ScreenRegister extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         validator: (value) => Validators.nullValidator(value),
                       ),
                       dHeight1n5,
@@ -107,9 +106,8 @@ class ScreenRegister extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         validator: (value) => Validators.phoneValidator(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
@@ -121,9 +119,8 @@ class ScreenRegister extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         validator: (value) => Validators.emailValidator(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
@@ -134,9 +131,8 @@ class ScreenRegister extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         suffixIcon: IconButton(
                           onPressed: () {
                             ref.read(_obscureProvider.notifier).state =
@@ -159,9 +155,8 @@ class ScreenRegister extends ConsumerWidget {
                         contentPadding: const EdgeInsets.all(16),
                         inputBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: kColorAuthField)),
-                        fillColor: kColorAuthField,
+                            borderSide: const BorderSide(color: kColorFieldBg)),
+                        fillColor: kColorFieldBg,
                         suffixIcon: IconButton(
                           onPressed: () {
                             ref.read(_obscureProvider2.notifier).state =

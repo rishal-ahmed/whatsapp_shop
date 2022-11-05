@@ -103,8 +103,8 @@ class SearchTextField extends StatelessWidget {
           focusedBorder: inputBorder,
           enabledBorder: inputBorder,
           errorBorder: inputBorder != null
-              ? inputBorder!.copyWith(
-                  borderSide: const BorderSide(color: kColorAuthField))
+              ? inputBorder!
+                  .copyWith(borderSide: const BorderSide(color: kColorFieldBg))
               : null,
           labelStyle: const TextStyle(color: klabelColorGrey),
           fillColor: fillColor ?? kWhite,
