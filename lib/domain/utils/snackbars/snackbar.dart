@@ -76,7 +76,7 @@ void kSnackBar({
                     : update == true
                         ? kSnackBarUpdateColor
                         : color,
-        duration: Duration(seconds: duration ?? 2),
+        duration: Duration(seconds: duration ?? 3),
         behavior: floating ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
         action: action,
       ),

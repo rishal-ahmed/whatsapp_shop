@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'search_home_event.freezed.dart';
+part 'search_product_event.freezed.dart';
 
 @freezed
-class SearchHomeEvent with _$SearchHomeEvent {
+class SearchProductEvent with _$SearchProductEvent {
   //=-=-=-=-=- Search Event -=-=-=-=-=
-  const factory SearchHomeEvent.search({
+  const factory SearchProductEvent.search({
     required String shopCategoryId,
     required String keyword,
-  }) = _SearchHomeEvent;
+  }) = _SearchProductEvent;
 }
