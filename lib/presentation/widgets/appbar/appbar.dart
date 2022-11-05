@@ -86,7 +86,6 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
             height: 26,
             width: 26,
           ),
-          // Image.asset(kIconLogo),
           dWidth2,
           Text(
             'WhatsAppShop',

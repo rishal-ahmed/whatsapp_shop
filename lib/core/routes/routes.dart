@@ -6,12 +6,22 @@ const String routeRoot = '/';
 //=-=-=-=-=- Splash -=-=-=-=-=
 const String routeSplash = '/splash';
 
+//=-=-=-=-=- Authentication -=-=-=-=-=
+const String routeLogin = '/login';
+const String routeRegister = '/register';
+
 //=-=-=-=-=- Main -=-=-=-=-=
 const String routeMain = '/main';
 
 //=-=-=-=-=- Home -=-=-=-=-=
 const String routeHome = '/home';
 
-//=-=-=-=-=- Authentication -=-=-=-=-=
-const String routeLogin = '/login';
-const String routeRegister = '/register';
+//=-=-=-=-=- Search -=-=-=-=-=
+const String routeSearch = '/search';
+
+//=-=-=-=-=- Notifications -=-=-=-=-=
+const String routeNotifications = '/notifications';
+
+//=-=-=-=-=- Profile -=-=-=-=-=
+const String routeProfile = '/profile';
+const String routeEditProfile = '/edit_profile';

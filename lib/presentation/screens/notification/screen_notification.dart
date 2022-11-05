@@ -34,7 +34,7 @@ class ScreenNotification extends StatelessWidget {
                   ),
                   dHeight05,
                   Text(
-                    'Special offers in diwali sales stores near you',
+                    'Special offers in Diwali sales at stores near you',
                     style: TextStyle(
                       color: const Color(0XFF757575),
                       fontSize: 13.sp,

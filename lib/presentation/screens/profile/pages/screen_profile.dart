@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 
@@ -99,7 +100,7 @@ class ScreenProfile extends StatelessWidget {
                       title: Text(
                         title,
                         style: TextStyle(
-                          color: kBlack,
+                          color: primaryTextColor,
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
                         ),
@@ -117,6 +118,9 @@ class ScreenProfile extends StatelessWidget {
 
   void onTap(BuildContext context, int index) async {
     switch (index) {
+      case 2:
+        Navigator.pushNamed(context, routeEditProfile);
+        break;
       case 9:
         await UserUtils.instance.logoutUser(context);
         break;
