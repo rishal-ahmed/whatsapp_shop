@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/widgets/main_bottom_nav.dart';
 import 'package:whatsapp_shop/presentation/screens/main/widgets/main_drawer.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
+import 'package:whatsapp_shop/presentation/screens/shops/screen_shop.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 
 const List _pages = [
-  ScreenHome(),
+  ScreenShop(),
   ScreenSearch(),
   ScreenNotification(),
   ScreenProfile(),

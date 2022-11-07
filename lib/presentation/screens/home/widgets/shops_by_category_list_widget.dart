@@ -38,7 +38,6 @@ class ShopsByCategoryListWidget extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 final ShopModel shop = shops[index];
-                shop.logo;
                 return SizedBox(
                   width: 10.h,
                   child: Column(
@@ -51,17 +50,26 @@ class ShopsByCategoryListWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: const Color(0XFF199A2D),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Image.network(
-                          kImageAppendUrl + shop.logo!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Image.asset(
-                              kImageEre,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                        child: shop.logo != null
+                            ? Image.network(
+                                kImageAppendUrl + shop.logo!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Image.asset(
+                                    kImageEre,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Image.asset(
+                                  kImageEre,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                       ),
                       dHeight05,
                       Flexible(
