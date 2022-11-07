@@ -6,4 +6,5 @@ class ApiEndpoints {
   static const String home = '${baseUrl}home';
   static const String searchHome = '${baseUrl}searchhome';
   static const String productCategories = '${baseUrl}shops/categories';
+  static const String products = '${baseUrl}products';
 }

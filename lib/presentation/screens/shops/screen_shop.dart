@@ -5,6 +5,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_event.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_notifier.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_state.dart';
+import 'package:whatsapp_shop/application/products/products_event.dart';
+import 'package:whatsapp_shop/application/products/products_notifier.dart';
+import 'package:whatsapp_shop/application/products/products_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_category_list_widget.dart';
@@ -16,6 +19,12 @@ final _productCategoriesProvider = StateNotifierProvider.family<
     ProductCategoryEvent>((ref, event) {
   return ProductCategoryNotifier()
     ..emit(ProductCategoryEvent.categories(shopId: event.shopId));
+});
+
+final _productsProvider = StateNotifierProvider.family<ProductsNotifier,
+    ProductsState, ProductsEvent>((ref, event) {
+  return ProductsNotifier()
+    ..emit(ProductsEvent.products(shopId: event.shopId, filter: event.filter));
 });
 
 class ScreenShop extends StatelessWidget {
@@ -73,6 +82,10 @@ class ScreenShop extends StatelessWidget {
                   );
                 }
 
+                if (state.productCategories.isEmpty) {
+                  return kNone;
+                }
+
                 return ShopProductCategoryList(
                   title: 'Top Categories',
                   productCategories: state.productCategories,
@@ -81,7 +94,33 @@ class ScreenShop extends StatelessWidget {
             ),
             kHeight1,
 
-            const ShopProductList(title: 'Featured Products', products: []),
+            //==================== Featured Products Field ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final state = ref.watch(_productsProvider(
+                    ProductsEvent.products(
+                        shopId: shopId, filter: 'featured')));
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 18.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                if (state.products.isEmpty) {
+                  return kNone;
+                }
+                return ShopProductList(
+                    title: 'Featured Products', products: state.products);
+              },
+            ),
             kHeight1,
 
             //==================== Advertisement Slider ====================
@@ -109,7 +148,33 @@ class ScreenShop extends StatelessWidget {
             ),
             kHeight1,
 
-            const ShopProductList(title: 'Trending Products', products: []),
+            //==================== Trending Products Field ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final state = ref.watch(_productsProvider(
+                    ProductsEvent.products(
+                        shopId: shopId, filter: 'trending')));
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 18.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                if (state.products.isEmpty) {
+                  return kNone;
+                }
+                return ShopProductList(
+                    title: 'Trending Products', products: state.products);
+              },
+            ),
             kHeight1,
 
             //==================== Advertisement Slider ====================
@@ -137,7 +202,32 @@ class ScreenShop extends StatelessWidget {
             ),
             kHeight1,
 
-            const ShopProductList(title: 'Featured Products', products: []),
+            //==================== Newest Products Field ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final state = ref.watch(_productsProvider(
+                    ProductsEvent.products(shopId: shopId, filter: 'newest')));
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 18.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                if (state.products.isEmpty) {
+                  return kNone;
+                }
+                return ShopProductList(
+                    title: 'Newest Products', products: state.products);
+              },
+            ),
             kHeight1,
           ],
         ),
