@@ -25,3 +25,6 @@ const String routeNotifications = '/notifications';
 //=-=-=-=-=- Profile -=-=-=-=-=
 const String routeProfile = '/profile';
 const String routeEditProfile = '/edit_profile';
+
+//=-=-=-=-=- Shop -=-=-=-=-=
+const String routeShop = '/shop';

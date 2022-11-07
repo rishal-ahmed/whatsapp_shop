@@ -231,7 +231,7 @@ class ScreenRegister extends ConsumerWidget {
                             WidgetsBinding.instance
                                 .addPostFrameCallback((timeStamp) async {
                               Navigator.pushNamedAndRemoveUntil(context,
-                                  routeMain, ModalRoute.withName(routeRoot));
+                                  routeHome, ModalRoute.withName(routeRoot));
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('user', userString);

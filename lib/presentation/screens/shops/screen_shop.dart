@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:whatsapp_shop/application/product_category/product_category_event.dart';
+import 'package:whatsapp_shop/application/product_category/product_category_notifier.dart';
+import 'package:whatsapp_shop/application/product_category/product_category_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
-import 'package:whatsapp_shop/domain/models/product_category/product_category_model.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_category_list_widget.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_list_widget.dart';
 
+final _productCategoriesProvider = StateNotifierProvider.family<
+    ProductCategoryNotifier,
+    ProductCategoryState,
+    ProductCategoryEvent>((ref, event) {
+  return ProductCategoryNotifier()
+    ..emit(ProductCategoryEvent.categories(shopId: event.shopId));
+});
+
 class ScreenShop extends StatelessWidget {
-  const ScreenShop({super.key});
+  const ScreenShop({super.key, required this.shopId});
+
+  final int shopId;
 
   @override
   Widget build(BuildContext context) {
@@ -41,38 +54,30 @@ class ScreenShop extends StatelessWidget {
               },
             ),
 
-            const ShopProductCategoryList(
-              title: 'Top Categories',
-              productCategories: [
-                ProductCategoryModel(
-                    id: 1,
-                    shopId: 1,
-                    name: 'Mobiles',
-                    displayOrder: 1,
-                    image: ''),
-                ProductCategoryModel(
-                    id: 1,
-                    shopId: 1,
-                    name: 'Laptops',
-                    displayOrder: 1,
-                    image: ''),
-                ProductCategoryModel(
-                    id: 1, shopId: 1, name: 'TV', displayOrder: 1, image: ''),
-                ProductCategoryModel(
-                    id: 1,
-                    shopId: 1,
-                    name: 'Refrigerator',
-                    displayOrder: 1,
-                    image: ''),
-                ProductCategoryModel(
-                    id: 1, shopId: 1, name: 'AC', displayOrder: 1, image: ''),
-                ProductCategoryModel(
-                    id: 1,
-                    shopId: 1,
-                    name: 'Watch',
-                    displayOrder: 1,
-                    image: ''),
-              ],
+            //==================== Product Categories Field ====================
+            Consumer(
+              builder: (context, ref, _) {
+                final state = ref.watch(_productCategoriesProvider(
+                    ProductCategoryEvent.categories(shopId: shopId)));
+
+                if (state.isLoading) {
+                  return SizedBox(
+                    height: 18.h,
+                    width: double.infinity,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.isError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+
+                return ShopProductCategoryList(
+                  title: 'Top Categories',
+                  productCategories: state.productCategories,
+                );
+              },
             ),
             kHeight1,
 

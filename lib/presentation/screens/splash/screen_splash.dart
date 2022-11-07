@@ -43,7 +43,7 @@ class ScreenSplash extends StatelessWidget {
     if (user != null) {
       UserUtils.instance.saveUserFromString(userString: user);
       Navigator.pushNamedAndRemoveUntil(
-          context, routeMain, ModalRoute.withName(routeRoot));
+          context, routeHome, ModalRoute.withName(routeRoot));
     } else {
       Navigator.pushNamedAndRemoveUntil(
           context, routeLogin, ModalRoute.withName(routeRoot));

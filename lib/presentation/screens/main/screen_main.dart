@@ -8,15 +8,17 @@ import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/screen_shop.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 
-const List _pages = [
-  ScreenShop(),
-  ScreenSearch(),
-  ScreenNotification(),
-  ScreenProfile(),
-];
+// const List _pages = [
+//   ScreenShop(),
+//   ScreenSearch(),
+//   ScreenNotification(),
+//   ScreenProfile(),
+// ];
 
 class ScreenMain extends StatelessWidget {
-  const ScreenMain({super.key});
+  const ScreenMain({super.key, required this.shopId});
+
+  final int shopId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,12 @@ class ScreenMain extends StatelessWidget {
         builder: (context, ref, child) {
           final int index =
               ref.watch(MainBottomNavigationBar.bottomNavProvider);
-          return _pages[index];
+          return [
+            ScreenShop(shopId: shopId),
+            const ScreenSearch(),
+            const ScreenNotification(),
+            const ScreenProfile(),
+          ][index];
         },
       ),
       bottomNavigationBar: const MainBottomNavigationBar(),

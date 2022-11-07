@@ -47,32 +47,37 @@ class ShopProductCategoryList extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 final ProductCategoryModel category = productCategories[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage:
-                          NetworkImage(kImageAppendUrl + category.image),
-                      onBackgroundImageError: (e, s) =>
-                          const AssetImage(kImageEre),
-                    ),
-                    dHeight05,
-                    Flexible(
-                      child: Text(
-                        category.name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          overflow: TextOverflow.ellipsis,
-                          color: primaryTextColor,
-                        ),
-                        maxLines: 1,
+                return SizedBox(
+                  width: 15.w,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage:
+                                NetworkImage(kImageAppendUrl + category.image),
+                            onBackgroundImageError: (e, s) =>
+                                const AssetImage(kImageEre),
+                          ),
+                          dHeight05,
+                          Text(
+                            '${category.name}\n',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              overflow: TextOverflow.ellipsis,
+                              color: primaryTextColor,
+                            ),
+                            maxLines: 2,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

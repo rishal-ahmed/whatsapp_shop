@@ -8,11 +8,12 @@ import 'package:whatsapp_shop/presentation/screens/notification/screen_notificat
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_edit_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
+import 'package:whatsapp_shop/presentation/screens/shops/screen_shop.dart';
 import 'package:whatsapp_shop/presentation/screens/splash/screen_splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
-    // final Object? args = routeSettings.arguments;
+    final Object? args = routeSettings.arguments;
 
     switch (routeSettings.name) {
       //==================== Root ====================
@@ -27,8 +28,10 @@ class RouteGenerator {
 
       //==================== Main ====================
       case routeMain:
-        return MaterialPageRoute(builder: (_) => const ScreenMain());
-
+        if (args is int) {
+          return MaterialPageRoute(builder: (_) => ScreenMain(shopId: args));
+        }
+        return _errorRoute();
       //==================== Home ====================
       case routeHome:
         return MaterialPageRoute(builder: (_) => const ScreenHome());
@@ -46,6 +49,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ScreenProfile());
       case routeEditProfile:
         return MaterialPageRoute(builder: (_) => const ScreenEditProfile());
+
+      //==================== Shop ====================
+      case routeShop:
+        if (args is int) {
+          return MaterialPageRoute(builder: (_) => ScreenShop(shopId: args));
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();

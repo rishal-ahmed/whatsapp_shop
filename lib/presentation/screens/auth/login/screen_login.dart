@@ -142,7 +142,7 @@ class ScreenLogin extends ConsumerWidget {
                             WidgetsBinding.instance
                                 .addPostFrameCallback((_) async {
                               Navigator.pushNamedAndRemoveUntil(context,
-                                  routeMain, ModalRoute.withName(routeRoot));
+                                  routeHome, ModalRoute.withName(routeRoot));
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setString('user', userString);
@@ -152,9 +152,6 @@ class ScreenLogin extends ConsumerWidget {
 
                           return CustomMaterialBtton(
                             onPressed: () {
-                              // Navigator.pushNamedAndRemoveUntil(
-                              //     context, routeMain, (route) => true);
-
                               final FormState? formState =
                                   _formKey.currentState;
                               if (formState!.validate()) {

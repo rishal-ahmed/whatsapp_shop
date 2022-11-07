@@ -3,14 +3,13 @@ import 'package:whatsapp_shop/application/search_product/search_product_event.da
 import 'package:whatsapp_shop/application/search_product/search_product_state.dart';
 import 'package:whatsapp_shop/infrastructure/home/home_repository.dart';
 
-class SearchHomeNotifier extends StateNotifier<Future<SearchProductState>> {
-  SearchHomeNotifier() : super(Future.value(SearchProductState.initial()));
+class SearchHomeNotifier extends StateNotifier<SearchProductState> {
+  SearchHomeNotifier() : super(SearchProductState.initial());
 
   void emit(SearchProductEvent event) {
     event.map(search: (searchEvent) async {
       // Loading
-      state =
-          Future.value(SearchProductState.initial().copyWith(isLoading: true));
+      state = SearchProductState.initial().copyWith(isLoading: true);
 
       // Search Product Api
       final result = await HomeRepository().search(
@@ -23,7 +22,7 @@ class SearchHomeNotifier extends StateNotifier<Future<SearchProductState>> {
       );
 
       // Notify UI
-      state = Future.value(searchProductState);
+      state = searchProductState;
     });
   }
 }
