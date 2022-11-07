@@ -7,6 +7,7 @@ part 'advertisement_model.g.dart';
 class AdvertisementModel with _$AdvertisementModel {
   const factory AdvertisementModel({
     @JsonKey(name: 'id') required int id,
+    @JsonKey(name: 'sellerid') int? sellerId,
     @JsonKey(name: 'type') required String type,
     @JsonKey(name: 'image') required String image,
     @JsonKey(name: 'title') required String title,

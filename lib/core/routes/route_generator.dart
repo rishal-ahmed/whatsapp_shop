@@ -38,7 +38,10 @@ class RouteGenerator {
 
       //==================== Search ====================
       case routeSearch:
-        return MaterialPageRoute(builder: (_) => const ScreenSearch());
+        if (args is int) {
+          return MaterialPageRoute(builder: (_) => ScreenSearch(shopId: args));
+        }
+        return _errorRoute();
 
       //==================== Notifications ====================
       case routeNotifications:

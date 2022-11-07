@@ -31,7 +31,7 @@ class ScreenMain extends StatelessWidget {
               ref.watch(MainBottomNavigationBar.bottomNavProvider);
           return [
             ScreenShop(shopId: shopId),
-            const ScreenSearch(),
+            ScreenSearch(shopId: shopId),
             const ScreenNotification(),
             const ScreenProfile(),
           ][index];

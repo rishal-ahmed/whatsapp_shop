@@ -5,6 +5,8 @@ class ApiEndpoints {
   static const String register = '${baseUrl}customer/register';
   static const String home = '${baseUrl}home';
   static const String searchHome = '${baseUrl}searchhome';
+  static const String shopHome = '${baseUrl}shophome';
   static const String productCategories = '${baseUrl}shops/categories';
   static const String products = '${baseUrl}products';
+  static const String searchProducts = '${baseUrl}searchshophome';
 }

@@ -5,9 +5,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_event.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_notifier.dart';
 import 'package:whatsapp_shop/application/product_category/product_category_state.dart';
-import 'package:whatsapp_shop/application/products/products_event.dart';
-import 'package:whatsapp_shop/application/products/products_notifier.dart';
-import 'package:whatsapp_shop/application/products/products_state.dart';
+import 'package:whatsapp_shop/application/shop_home/shop_home_event.dart';
+import 'package:whatsapp_shop/application/shop_home/shop_home_notifier.dart';
+import 'package:whatsapp_shop/application/shop_home/shop_home_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_category_list_widget.dart';
@@ -21,11 +21,16 @@ final _productCategoriesProvider = StateNotifierProvider.family<
     ..emit(ProductCategoryEvent.categories(shopId: event.shopId));
 });
 
-final _productsProvider = StateNotifierProvider.family<ProductsNotifier,
-    ProductsState, ProductsEvent>((ref, event) {
-  return ProductsNotifier()
-    ..emit(ProductsEvent.products(shopId: event.shopId, filter: event.filter));
+final _shopHomeProvider = StateNotifierProvider.family<ShopHomeNotifier,
+    ShopHomeState, ShopHomeEvent>((ref, event) {
+  return ShopHomeNotifier()..emit(ShopHomeEvent.shopHome(shopId: event.shopId));
 });
+
+// final _productsProvider = StateNotifierProvider.family<ProductsNotifier,
+//     ProductsState, ProductsEvent>((ref, event) {
+//   return ProductsNotifier()
+//     ..emit(ProductsEvent.products(shopId: event.shopId, filter: event.filter));
+// });
 
 class ScreenShop extends StatelessWidget {
   const ScreenShop({super.key, required this.shopId});
@@ -97,9 +102,8 @@ class ScreenShop extends StatelessWidget {
             //==================== Featured Products Field ====================
             Consumer(
               builder: (context, ref, _) {
-                final state = ref.watch(_productsProvider(
-                    ProductsEvent.products(
-                        shopId: shopId, filter: 'featured')));
+                final state = ref.watch(
+                    _shopHomeProvider(ShopHomeEvent.shopHome(shopId: shopId)));
 
                 if (state.isLoading) {
                   return SizedBox(
@@ -114,11 +118,12 @@ class ScreenShop extends StatelessWidget {
                   );
                 }
 
-                if (state.products.isEmpty) {
+                if (state.featuredProducts.isEmpty) {
                   return kNone;
                 }
                 return ShopProductList(
-                    title: 'Featured Products', products: state.products);
+                    title: 'Featured Products',
+                    products: state.featuredProducts);
               },
             ),
             kHeight1,
@@ -151,9 +156,8 @@ class ScreenShop extends StatelessWidget {
             //==================== Trending Products Field ====================
             Consumer(
               builder: (context, ref, _) {
-                final state = ref.watch(_productsProvider(
-                    ProductsEvent.products(
-                        shopId: shopId, filter: 'trending')));
+                final state = ref.watch(
+                    _shopHomeProvider(ShopHomeEvent.shopHome(shopId: shopId)));
 
                 if (state.isLoading) {
                   return SizedBox(
@@ -168,11 +172,12 @@ class ScreenShop extends StatelessWidget {
                   );
                 }
 
-                if (state.products.isEmpty) {
+                if (state.trendingProducts.isEmpty) {
                   return kNone;
                 }
                 return ShopProductList(
-                    title: 'Trending Products', products: state.products);
+                    title: 'Trending Products',
+                    products: state.trendingProducts);
               },
             ),
             kHeight1,
@@ -205,8 +210,8 @@ class ScreenShop extends StatelessWidget {
             //==================== Newest Products Field ====================
             Consumer(
               builder: (context, ref, _) {
-                final state = ref.watch(_productsProvider(
-                    ProductsEvent.products(shopId: shopId, filter: 'newest')));
+                final state = ref.watch(
+                    _shopHomeProvider(ShopHomeEvent.shopHome(shopId: shopId)));
 
                 if (state.isLoading) {
                   return SizedBox(
@@ -221,11 +226,11 @@ class ScreenShop extends StatelessWidget {
                   );
                 }
 
-                if (state.products.isEmpty) {
+                if (state.popularProducts.isEmpty) {
                   return kNone;
                 }
                 return ShopProductList(
-                    title: 'Newest Products', products: state.products);
+                    title: 'Popular Products', products: state.popularProducts);
               },
             ),
             kHeight1,

@@ -110,7 +110,7 @@ class ScreenHome extends ConsumerWidget {
                         minWidth: 30,
                         maxWidth: 30,
                       ),
-                      hintText: 'Search Products, Category and More',
+                      hintText: 'Search Shops by Category',
                       fontSize: 12,
                       itemBuilder: (context, shop) {
                         return Container(
