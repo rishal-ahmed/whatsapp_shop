@@ -24,7 +24,6 @@ class ProductCategoryNotifier extends StateNotifier<ProductCategoryState> {
           //=-=-=-=- Success -=-=-=-=-=
           (r) {
             return ProductCategoryState.initial().copyWith(
-              isError: true,
               productCategories: r,
             );
           },
