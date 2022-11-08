@@ -23,8 +23,8 @@ class ScreenMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarWidget(defualt: true, isDrawer: true),
       drawer: const MainDrawer(),
-      appBar: const AppBarWidget(defualt: true),
       body: Consumer(
         builder: (context, ref, child) {
           final int index =

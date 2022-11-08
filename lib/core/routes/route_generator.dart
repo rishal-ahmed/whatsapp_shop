@@ -5,6 +5,7 @@ import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register
 import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/screen_main.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
+import 'package:whatsapp_shop/presentation/screens/product/screen_product.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_edit_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
@@ -57,6 +58,14 @@ class RouteGenerator {
       case routeShop:
         if (args is int) {
           return MaterialPageRoute(builder: (_) => ScreenShop(shopId: args));
+        }
+        return _errorRoute();
+
+      //==================== Product ====================
+      case routeProduct:
+        if (args is int) {
+          return MaterialPageRoute(
+              builder: (_) => ScreenProduct(productId: args));
         }
         return _errorRoute();
 

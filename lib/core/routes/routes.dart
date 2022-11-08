@@ -28,3 +28,4 @@ const String routeEditProfile = '/edit_profile';
 
 //=-=-=-=-=- Shop -=-=-=-=-=
 const String routeShop = '/shop';
+const String routeProduct = '/product';

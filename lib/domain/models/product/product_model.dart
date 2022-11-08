@@ -15,10 +15,14 @@ class ProductModel with _$ProductModel {
     @JsonKey(name: 'categoryname') required String categoryName,
     @JsonKey(name: 'status') required String status,
     @JsonKey(name: 'image') required String image,
+    @JsonKey(name: 'image2') String? image2,
+    @JsonKey(name: 'image3') String? image3,
+    @JsonKey(name: 'image4') String? image4,
     @JsonKey(name: 'featured') required String featured,
     @JsonKey(name: 'popular') required String popular,
     @JsonKey(name: 'trending') required String trending,
-    @JsonKey(name: 'unit') required UnitModel unit,
+    @JsonKey(name: 'unit') @Default(null) UnitModel? unit,
+    @JsonKey(name: 'units') @Default([]) List<UnitModel> units,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

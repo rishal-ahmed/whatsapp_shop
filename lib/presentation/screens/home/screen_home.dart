@@ -12,6 +12,7 @@ import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/shop_category/shop_category_model.dart';
 import 'package:whatsapp_shop/infrastructure/home/home_repository.dart';
 import 'package:whatsapp_shop/presentation/screens/home/widgets/shops_by_category_list_widget.dart';
+import 'package:whatsapp_shop/presentation/screens/main/widgets/main_drawer.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/dropdown/dropdown_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/search_text_field_widget.dart.dart';
@@ -29,7 +30,8 @@ class ScreenHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      appBar: const AppBarWidget(defualt: true),
+      appBar: const AppBarWidget(defualt: true, isDrawer: true),
+      drawer: const MainDrawer(),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(

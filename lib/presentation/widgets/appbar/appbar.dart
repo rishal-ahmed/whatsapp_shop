@@ -15,6 +15,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
     this.backgroundColor = primaryColor,
     this.bottom,
     this.defualt = false,
+    this.isDrawer = false,
   }) : super(key: key);
   final Widget? title;
   final Widget? leading;
@@ -23,19 +24,32 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final Color? backgroundColor;
   final PreferredSizeWidget? bottom;
   final bool defualt;
+  final bool isDrawer;
   @override
   Widget build(BuildContext context) {
     return defualt
         ? AppBar(
             backgroundColor: backgroundColor,
             elevation: elevation,
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: SvgPicture.asset(kIconDrawer,
-                    color: const Color(0XFF8D9BA3)),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              ),
-            ),
+            leading: isDrawer
+                ? Builder(
+                    builder: (context) => IconButton(
+                      icon: SvgPicture.asset(kIconDrawer,
+                          color: const Color(0XFF8D9BA3)),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
+                  )
+                : IconButton(
+                    alignment: Alignment.center,
+                    onPressed: () => Navigator.pop(context),
+                    splashColor: kTransparentColor,
+                    highlightColor: kTransparentColor,
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 18,
+                      color: Color(0XFF8D9BA3),
+                    ),
+                  ),
             title: defaultTitle,
             centerTitle: true,
             bottom: bottom,

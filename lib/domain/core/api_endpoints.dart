@@ -9,4 +9,5 @@ class ApiEndpoints {
   static const String productCategories = '${baseUrl}shops/categories';
   static const String products = '${baseUrl}products';
   static const String searchProducts = '${baseUrl}searchshophome';
+  static const String product = '${baseUrl}product/';
 }

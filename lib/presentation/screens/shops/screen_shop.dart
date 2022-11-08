@@ -26,12 +26,6 @@ final _shopHomeProvider = StateNotifierProvider.family<ShopHomeNotifier,
   return ShopHomeNotifier()..emit(ShopHomeEvent.shopHome(shopId: event.shopId));
 });
 
-// final _productsProvider = StateNotifierProvider.family<ProductsNotifier,
-//     ProductsState, ProductsEvent>((ref, event) {
-//   return ProductsNotifier()
-//     ..emit(ProductsEvent.products(shopId: event.shopId, filter: event.filter));
-// });
-
 class ScreenShop extends StatelessWidget {
   const ScreenShop({super.key, required this.shopId});
 
