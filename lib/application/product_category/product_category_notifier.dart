@@ -17,8 +17,17 @@ class ProductCategoryNotifier extends StateNotifier<ProductCategoryState> {
             .productCategories(shopId: categoryEvent.shopId);
 
         final ProductCategoryState productCategoryState = result.fold(
-          (l) => ProductCategoryState.initial().copyWith(isError: true),
-          (r) => ProductCategoryState.initial().copyWith(productCategories: r),
+          //=-=-=-=- Error -=-=-=-=-=
+          (l) => ProductCategoryState.initial().copyWith(
+            isError: true,
+          ),
+          //=-=-=-=- Success -=-=-=-=-=
+          (r) {
+            return ProductCategoryState.initial().copyWith(
+              isError: true,
+              productCategories: r,
+            );
+          },
         );
 
         // Notify UI

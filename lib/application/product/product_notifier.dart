@@ -26,13 +26,11 @@ class ProductNotifier extends StateNotifier<ProductState> {
           //=-=-=-=- Success -=-=-=-=-=
           (success) {
             return initialState.copyWith(
-              // isLoading: true,
-              isError: true,
-              // product: success['product'],
-              // units: success['units'],
-              // category: success['category'],
-              // seller: success['seller'],
-              // similarProducts: success['similar_products'],
+              product: success['product'],
+              units: success['units'],
+              category: success['category'],
+              seller: success['seller'],
+              similarProducts: success['similar_products'],
             );
           },
         );
