@@ -17,8 +17,6 @@ class ShopRepository {
   Future<Either<MainFailures, Map<String, dynamic>>> shopHome(
       {required int shopId}) async {
     try {
-      log('========================================= Shop Home Repository =========================================');
-
       final FormData form = FormData.fromMap({"shopid": shopId});
 
       final Response response = await dio.post(
@@ -100,87 +98,6 @@ class ShopRepository {
               (result['shopcategories'] as List)
                   .map((shop) => ProductCategoryModel.fromJson(shop))
                   .toList();
-
-          return Right(shops);
-        } else {
-          return const Left(MainFailures.clientFailure());
-        }
-      } else {
-        return const Left(MainFailures.serverFailure());
-      }
-    } catch (e) {
-      log('Exception : $e');
-      return const Left(MainFailures.clientFailure());
-    }
-  }
-
-  //==================== Products ====================
-  Future<Either<MainFailures, List<ProductModel>>> products({
-    required int shopId,
-    required String filter,
-  }) async {
-    try {
-      final FormData form = FormData.fromMap({
-        "shopid": shopId,
-        "filter": filter,
-      });
-
-      final Response response = await dio.post(
-        ApiEndpoints.products,
-        data: form,
-      );
-
-      log('response == ${response.data.toString()}', name: 'Products');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map result = json.decode(response.data) as Map;
-
-        if (result['sts'] == '01') {
-          final List<ProductModel> shops = (result['products'] as List)
-              .map((shop) => ProductModel.fromJson(shop))
-              .toList();
-
-          return Right(shops);
-        } else {
-          return const Left(MainFailures.clientFailure());
-        }
-      } else {
-        return const Left(MainFailures.serverFailure());
-      }
-    } catch (e) {
-      log('Exception : $e');
-      return const Left(MainFailures.clientFailure());
-    }
-  }
-
-  //==================== Search Products ====================
-  Future<Either<MainFailures, List<ProductModel>>> searchProducts({
-    required int shopId,
-    int categoryId = 0,
-    required String keyword,
-  }) async {
-    try {
-      final FormData form = FormData.fromMap(
-        {"shopid": shopId, "categoryid": categoryId, "keyword": keyword},
-      );
-
-      final Response response = await dio.post(
-        ApiEndpoints.searchProducts,
-        data: form,
-      );
-
-      log('response == ${response.data.toString()}', name: 'Search Products');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map result = json.decode(response.data) as Map;
-
-        if (result['sts'] == '01') {
-          List<ProductModel> shops = [];
-          if (result['shops'] is List) {
-            shops = (result['shops'] as List)
-                .map((shop) => ProductModel.fromJson(shop))
-                .toList();
-          }
 
           return Right(shops);
         } else {

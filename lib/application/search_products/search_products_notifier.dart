@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_shop/application/search_products/search_products_event.dart';
 import 'package:whatsapp_shop/application/search_products/search_products_state.dart';
-import 'package:whatsapp_shop/infrastructure/shop/shop_repository.dart';
+import 'package:whatsapp_shop/infrastructure/product/product_repository.dart';
 
 class SearchProductNotifier extends StateNotifier<SearchProductsState> {
   SearchProductNotifier() : super(SearchProductsState.initial());
@@ -12,7 +12,7 @@ class SearchProductNotifier extends StateNotifier<SearchProductsState> {
       state = SearchProductsState.initial().copyWith(isLoading: true);
 
       // Search Product Api
-      final result = await ShopRepository().searchProducts(
+      final result = await ProductRepository().searchProducts(
         shopId: searchEvent.shopId,
         categoryId: event.categoryId,
         keyword: searchEvent.keyword,

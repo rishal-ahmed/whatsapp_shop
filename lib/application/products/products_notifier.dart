@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_shop/application/products/products_event.dart';
 import 'package:whatsapp_shop/application/products/products_state.dart';
-import 'package:whatsapp_shop/infrastructure/shop/shop_repository.dart';
+import 'package:whatsapp_shop/infrastructure/product/product_repository.dart';
 
 class ProductsNotifier extends StateNotifier<ProductsState> {
   ProductsNotifier() : super(ProductsState.initial());
@@ -15,7 +15,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         state = initialState.copyWith(isLoading: true);
 
         // Products Api
-        final result = await ShopRepository().products(
+        final result = await ProductRepository().products(
             shopId: productsEvent.shopId, filter: productsEvent.filter);
 
         final ProductsState productsState = result.fold(

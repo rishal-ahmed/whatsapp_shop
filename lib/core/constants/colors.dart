@@ -8,6 +8,11 @@ const Color kBackgroundColor = Color(0XFFE5E5E5);
 const Color primaryTextColor = Color(0XFF333333);
 const Color secondaryTextColor = Color(0XFF01A783);
 
+//==================== Shimmer Color ====================
+
+const Color kColorShimmerHighlight = Color(0xFFF5F5F5);
+const Color kColorShimmerBase = Color(0xFFE0E0E0);
+
 //==================== Authentication Color ====================
 const Color kColorFieldBg = Color(0xFFEBEBEB);
 
@@ -50,8 +55,9 @@ const Color kRed900 = Color(0xFFB71C1C);
 
 const Color kTeal400 = Color(0xFF26A69A);
 const Color kBlueGrey400 = Color(0xFF78909C);
-const Color kGrey300 = Color(0xFFE0E0E0);
+const Color kGrey100 = Color(0xFFF5F5F5);
 const Color kGrey200 = Color(0xFFEEEEEE);
+const Color kGrey300 = Color(0xFFE0E0E0);
 
 //=================== Const Colors for Widgets ====================
 const klabelColorGrey = Color(0xFF616161);

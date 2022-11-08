@@ -10,3 +10,4 @@ const String kIconCart = '${klImageAppendGlobalUri}cart.svg';
 //========== Constant Images ==========
 const String kImageEre = '${klImageAppendGlobalUri}ere.png';
 const String kImageSplash = '${klImageAppendGlobalUri}splash.png';
+const String kImageError = '${klImageAppendGlobalUri}error.svg';
