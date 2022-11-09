@@ -4,6 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   const AppBarWidget({
@@ -16,8 +17,11 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
     this.bottom,
     this.defualt = false,
     this.isDrawer = false,
+    this.centerTitle = true,
+    this.cartTap = true,
   }) : super(key: key);
-  final Widget? title;
+  final String? title;
+  final bool centerTitle;
   final Widget? leading;
   final List<Widget>? actions;
   final double? elevation;
@@ -25,6 +29,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final bool defualt;
   final bool isDrawer;
+  final bool cartTap;
   @override
   Widget build(BuildContext context) {
     return defualt
@@ -50,8 +55,13 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       color: Color(0XFF8D9BA3),
                     ),
                   ),
-            title: defaultTitle,
-            centerTitle: true,
+            title: title != null
+                ? Text(
+                    title!,
+                    style: TextStyle(fontSize: 16.sp),
+                  )
+                : defaultTitle,
+            centerTitle: centerTitle,
             bottom: bottom,
             actions: [
               Center(
@@ -77,7 +87,11 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       )
                     ],
                   ),
-                  onPressed: () => {},
+                  onPressed: !cartTap
+                      ? null
+                      : () {
+                          Navigator.pushNamed(context, routeCart);
+                        },
                 ),
               )
             ],
@@ -86,7 +100,9 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
             backgroundColor: backgroundColor,
             elevation: elevation,
             leading: leading,
-            title: title,
+            title: title != null
+                ? Text(title!, style: TextStyle(fontSize: 16.sp))
+                : null,
             bottom: bottom,
             actions: actions,
           );

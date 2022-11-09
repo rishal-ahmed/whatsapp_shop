@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register.dart';
+import 'package:whatsapp_shop/presentation/screens/cart/screen_cart.dart';
 import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/screen_main.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
@@ -68,6 +69,10 @@ class RouteGenerator {
               builder: (_) => ScreenProduct(productId: args));
         }
         return _errorRoute();
+
+      //==================== Cart ====================
+      case routeCart:
+        return MaterialPageRoute(builder: (_) => const ScreenCart());
 
       default:
         return _errorRoute();

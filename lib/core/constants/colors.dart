@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 //==================== Main Color ====================
 const Color primaryColor = Color(0xFF1C272F);
 const Color secondaryColor = Color(0xFF059879);
-const Color kColorHint = Color(0xFFA3A3A3);
-const Color kBackgroundColor = Color(0XFFE5E5E5);
 const Color primaryTextColor = Color(0XFF333333);
 const Color secondaryTextColor = Color(0XFF01A783);
+const Color kColorHint = Color(0xFFA3A3A3);
+const Color kBackgroundColor = Color(0XFFE5E5E5);
+const Color kColorBorder = Color(0xFFEBEBEB);
+const Color kColorBorder2 = Color(0XFFD8D8D8);
 
 //==================== Shimmer Color ====================
-
 const Color kColorShimmerHighlight = Color(0xFFF5F5F5);
 const Color kColorShimmerBase = Color(0xFFE0E0E0);
 
@@ -44,6 +45,7 @@ const Color kTeal = Colors.teal;
 
 //=================== Constant Shaded Colors ====================
 const Color kColorDim = Color(0xFF777777);
+const Color kColorDim2 = Color(0XFF888888);
 
 const Color kGreen300 = Color(0xFF81C784);
 const Color kGreen400 = Color(0xFF66BB6A);

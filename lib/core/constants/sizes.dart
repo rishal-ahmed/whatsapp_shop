@@ -21,6 +21,7 @@ const SizedBox kWidth10 = SizedBox(width: 10);
 const SizedBox kWidth15 = SizedBox(width: 15);
 const SizedBox kWidth20 = SizedBox(width: 20);
 
+const SizedBox kHeight05 = SizedBox(height: 0.5);
 const SizedBox kHeight1 = SizedBox(height: 1);
 const SizedBox kHeight2 = SizedBox(height: 2);
 const SizedBox kHeight3 = SizedBox(height: 3);
