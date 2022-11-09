@@ -10,7 +10,7 @@ class CartNotifier extends StateNotifier<CartState> {
 
   void emit(CartEvent event) {
     event.map(
-      //=-=-=-=-=- Add Cart Event -=-=-=-=-=
+      //=-=-=-=-=-=-=-=-=-=- Add Cart Event -=-=-=-=-=-=-=-=-=-=
       addCart: (addCartEvent) async {
         // Loading
         state = initialState.copyWith(isLoading: true);
@@ -33,6 +33,28 @@ class CartNotifier extends StateNotifier<CartState> {
         // Notify UI
         state = cartState;
       },
+
+      //=-=-=-=-=-=-=-=-=-=- Carts Event -=-=-=-=-=-=-=-=-=-=
+      carts: (cartsEvent) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Carts Api
+        final result = await CartRepository().carts(userId: cartsEvent.userId);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(carts: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
+
+      //=-=-=-=-=-=-=-=-=-=- Cart Count Event -=-=-=-=-=-=-=-=-=-=
+      cartCount: (cartCountEvent) {},
     );
   }
 }

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
+import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
 import 'package:whatsapp_shop/domain/models/product/product_model.dart';
 import 'package:whatsapp_shop/domain/models/unit/unit_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
@@ -13,36 +14,36 @@ class CartRepository {
       Dio(BaseOptions(headers: {"Content-Type": "application/json"}));
 
   //==================== Carts ====================
-  Future<Either<MainFailures, List<ProductModel>>> carts({
+  Future<Either<MainFailures, List<CartModel>>> carts({
     required int userId,
   }) async {
     try {
       final FormData form = FormData.fromMap({"userid": userId});
 
       final Response response = await dio.post(
-        ApiEndpoints.products,
+        ApiEndpoints.carts,
         data: form,
       );
 
-      log('response == ${response.data.toString()}', name: 'Products');
+      log('response == ${response.data.toString()}', name: 'Carts');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = json.decode(response.data) as Map;
 
         if (result['sts'] == '01') {
-          final List<ProductModel> shops = (result['products'] as List)
-              .map((shop) => ProductModel.fromJson(shop))
+          final List<CartModel> carts = (result['cart'] as List)
+              .map((cart) => CartModel.fromJson(cart))
               .toList();
 
-          return Right(shops);
+          return Right(carts);
         } else {
           return const Left(MainFailures.clientFailure());
         }
       } else {
         return const Left(MainFailures.serverFailure());
       }
-    } catch (e) {
-      log('Exception : $e');
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
       return const Left(MainFailures.clientFailure());
     }
   }

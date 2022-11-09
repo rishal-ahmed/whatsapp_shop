@@ -9,7 +9,11 @@ class SomethingWentWrongWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      color: kWhite,
+      width: double.infinity,
+      height: double.infinity,
+      alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
