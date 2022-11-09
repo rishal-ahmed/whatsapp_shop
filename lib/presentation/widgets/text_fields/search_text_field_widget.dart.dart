@@ -113,7 +113,8 @@ class SearchTextField extends StatelessWidget {
           suffixIcon: suffixIcon,
           suffixIconConstraints: suffixIconConstraints,
           hintText: isHint ? labelText : hintText,
-          hintStyle: hintStyle ?? TextStyle(fontSize: 14.sp, color: kColorHint),
+          hintStyle: hintStyle ??
+              TextStyle(fontSize: fontSize ?? 14.sp, color: kColorHint),
           isDense: isDense,
           errorStyle: errorStyle ? const TextStyle(fontSize: 0.01) : null,
           constraints: constraints,

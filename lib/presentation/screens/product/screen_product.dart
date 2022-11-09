@@ -27,7 +27,7 @@ class ScreenProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state =
+    final ProductState state =
         ref.watch(_productProvider(ProductEvent.product(productId: productId)));
     return Scaffold(
       appBar: const AppBarWidget(defualt: true),
@@ -158,11 +158,14 @@ class ScreenProduct extends ConsumerWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'MRP : ',
-                                        style: TextStyle(
-                                            color: primaryTextColor,
-                                            fontSize: 14.5.sp),
+                                      ShimmerWidget(
+                                        isLoading: state.isLoading,
+                                        child: Text(
+                                          'MRP : ',
+                                          style: TextStyle(
+                                              color: primaryTextColor,
+                                              fontSize: 14.5.sp),
+                                        ),
                                       ),
                                       state.isLoading
                                           ? ShimmerWidget(
@@ -244,51 +247,59 @@ class ScreenProduct extends ConsumerWidget {
                                               ),
                                             ),
                                       dHeight05,
-                                      CustomDropDownWidget(
-                                        width: 15.w,
-                                        preText: 'Qty:  ',
-                                        value: '1',
-                                        items: const [
-                                          '1',
-                                          '2',
-                                          '3',
-                                          '4',
-                                          '5',
-                                          '6',
-                                        ],
-                                        onChanged: (value) {
-                                          log('qty = $value');
-                                        },
+                                      ShimmerWidget(
+                                        isLoading: state.isLoading,
+                                        child: CustomDropDownWidget(
+                                          width: 15.w,
+                                          preText: 'Qty:  ',
+                                          value: '1',
+                                          items: const [
+                                            '1',
+                                            '2',
+                                            '3',
+                                            '4',
+                                            '5',
+                                            '6',
+                                          ],
+                                          onChanged: (value) {
+                                            log('qty = $value');
+                                          },
+                                        ),
                                       )
                                     ],
                                   )
                                 ],
                               ),
                               dHeight1,
+                              //========== Cart Button ==========
                               CustomMaterialBtton(
                                 onPressed: () {},
                                 buttonText: 'Add to Cart',
                                 color: secondaryColor,
                                 borderColor: secondaryColor,
                                 borderRadius: BorderRadius.circular(12),
-                                // shimmer: state.isLoading,
+                                shimmer: state.isLoading,
                               ),
                               dHeight05,
+                              //========== Buy Button ==========
                               CustomMaterialBtton(
                                 onPressed: () {},
                                 buttonText: 'Buy Now',
                                 color: primaryColor,
                                 borderColor: primaryColor,
                                 borderRadius: BorderRadius.circular(12),
-                                // shimmer: state.isLoading,
+                                shimmer: state.isLoading,
                               ),
 
                               dHeight2,
-                              Text(
-                                'Quick Review',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: primaryTextColor,
+                              ShimmerWidget(
+                                isLoading: state.isLoading,
+                                child: Text(
+                                  'Quick Review',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: primaryTextColor,
+                                  ),
                                 ),
                               ),
                               kHeight2,

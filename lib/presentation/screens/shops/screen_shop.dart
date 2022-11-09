@@ -34,7 +34,7 @@ class ScreenShop extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state =
+    final ShopHomeState state =
         ref.watch(_shopHomeProvider(ShopHomeEvent.shopHome(shopId: shopId)));
     return Scaffold(
       backgroundColor: state.isError ? kWhite : kBackgroundColor,
