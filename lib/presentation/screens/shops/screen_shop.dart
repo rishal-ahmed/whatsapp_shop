@@ -208,7 +208,7 @@ class ScreenShop extends ConsumerWidget {
                         return ShopProductList(
                           title: 'Popular Products',
                           products: state.popularProducts,
-                          shimmer: true,
+                          shimmer: state.isLoading,
                         );
                       },
                     ),

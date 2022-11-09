@@ -120,35 +120,37 @@ class ScreenLogin extends ConsumerWidget {
                         builder: (context, ref, _) {
                           final LoginState state = ref.watch(_loginProvider);
 
-                          if (state.isError) {
-                            kSnackBar(
-                              context: context,
-                              content: state.errorMessage,
-                              error: true,
-                            );
-                          }
-                          if (state.user != null) {
-                            final UserModel user = state.user!;
+                          ref.listen(
+                            _loginProvider,
+                            (previous, next) async {
+                              if (next.isError) {
+                                return kSnackBar(
+                                  context: context,
+                                  content: next.errorMessage,
+                                  error: true,
+                                );
+                              }
+                              if (next.user != null) {
+                                final UserModel user = next.user!;
 
-                            final String userString =
-                                jsonEncode(state.user!.toJson());
+                                final String userString =
+                                    jsonEncode(next.user!.toJson());
 
-                            kSnackBar(
-                              context: context,
-                              content: 'Logged in successfully',
-                              success: true,
-                            );
+                                kSnackBar(
+                                  context: context,
+                                  content: 'Logged in successfully',
+                                  success: true,
+                                );
 
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((_) async {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  routeHome, ModalRoute.withName(routeRoot));
-                              final SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString('user', userString);
-                              UserUtils.instance.saveUser(user: user);
-                            });
-                          }
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    routeHome, ModalRoute.withName(routeRoot));
+                                final SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('user', userString);
+                                UserUtils.instance.saveUser(user: user);
+                              }
+                            },
+                          );
 
                           return CustomMaterialBtton(
                             onPressed: () {

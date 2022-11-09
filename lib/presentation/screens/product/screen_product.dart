@@ -4,11 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:whatsapp_shop/application/cart/cart_event.dart';
+import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
+import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/application/product/product_event.dart';
 import 'package:whatsapp_shop/application/product/product_notifier.dart';
 import 'package:whatsapp_shop/application/product/product_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/domain/models/user/user_model.dart';
+import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_list_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
@@ -19,6 +25,11 @@ import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 final _productProvider = StateNotifierProvider.autoDispose
     .family<ProductNotifier, ProductState, ProductEvent>((ref, event) {
   return ProductNotifier()..emit(event);
+});
+
+final _addToCartProvider =
+    StateNotifierProvider.autoDispose<CartNotifier, CartState>((ref) {
+  return CartNotifier();
 });
 
 class ScreenProduct extends ConsumerWidget {
@@ -272,13 +283,55 @@ class ScreenProduct extends ConsumerWidget {
                               ),
                               dHeight1,
                               //========== Cart Button ==========
-                              CustomMaterialBtton(
-                                onPressed: () {},
-                                buttonText: 'Add to Cart',
-                                color: secondaryColor,
-                                borderColor: secondaryColor,
-                                borderRadius: BorderRadius.circular(12),
-                                shimmer: state.isLoading,
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  final CartState cartState =
+                                      ref.watch(_addToCartProvider);
+
+                                  ref.listen(_addToCartProvider,
+                                      (previous, next) {
+                                    if (next.status) {
+                                      kSnackBar(
+                                        context: context,
+                                        content: 'Added to cart',
+                                        success: true,
+                                      );
+                                    }
+
+                                    if (next.isError) {
+                                      kSnackBar(
+                                        context: context,
+                                        content:
+                                            'Oops, Something went wrong. please try again later.',
+                                        error: true,
+                                      );
+                                    }
+                                  });
+
+                                  return CustomMaterialBtton(
+                                    buttonText: 'Add to Cart',
+                                    color: secondaryColor,
+                                    borderColor: secondaryColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                    shimmer: state.isLoading,
+                                    isLoading: cartState.isLoading,
+                                    onPressed: () {
+                                      final UserModel user =
+                                          UserUtils.instance.userModel!;
+                                      log('userid = ${user.id}');
+                                      ref
+                                          .read(_addToCartProvider.notifier)
+                                          .emit(
+                                            CartEvent.addCart(
+                                              userId: user.id,
+                                              productId: productId,
+                                              unitId: state.units.first.id,
+                                              quantity: 1,
+                                            ),
+                                          );
+                                    },
+                                  );
+                                },
                               ),
                               dHeight05,
                               //========== Buy Button ==========

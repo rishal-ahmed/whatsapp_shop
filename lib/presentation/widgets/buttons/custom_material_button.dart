@@ -52,7 +52,7 @@ class CustomMaterialBtton extends StatelessWidget {
             child: MaterialButton(
               height: height,
               minWidth: minWidth,
-              onPressed: onPressed,
+              onPressed: !isLoading ? onPressed : () {},
               color: color ?? primaryColor,
               splashColor: borderColor ?? primaryColor,
               elevation: elevation,
@@ -67,7 +67,10 @@ class CustomMaterialBtton extends StatelessWidget {
                 child: isLoading
                     ? Transform.scale(
                         scale: .6,
-                        child: const CircularProgressIndicator(strokeWidth: 2),
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: kWhite,
+                        ),
                       )
                     : child ??
                         Row(
@@ -95,7 +98,7 @@ class CustomMaterialBtton extends StatelessWidget {
               child: MaterialButton(
                 height: height,
                 minWidth: minWidth,
-                onPressed: onPressed,
+                onPressed: null,
                 color: color ?? primaryColor,
                 splashColor: borderColor ?? primaryColor,
                 elevation: elevation,

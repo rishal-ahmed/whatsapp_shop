@@ -209,35 +209,37 @@ class ScreenRegister extends ConsumerWidget {
                           final RegisterState state =
                               ref.watch(_registerProvider);
 
-                          if (state.isError) {
-                            kSnackBar(
-                              context: context,
-                              content: state.errorMessage,
-                              error: true,
-                            );
-                          }
-                          if (state.user != null) {
-                            final UserModel user = state.user!;
+                          ref.listen(
+                            _registerProvider,
+                            (previous, next) async {
+                              if (state.isError) {
+                                return kSnackBar(
+                                  context: context,
+                                  content: state.errorMessage,
+                                  error: true,
+                                );
+                              }
+                              if (state.user != null) {
+                                final UserModel user = state.user!;
 
-                            final String userString =
-                                jsonEncode(state.user!.toJson());
+                                final String userString =
+                                    jsonEncode(state.user!.toJson());
 
-                            kSnackBar(
-                              context: context,
-                              content: 'Registered successfully',
-                              success: true,
-                            );
+                                kSnackBar(
+                                  context: context,
+                                  content: 'Registered successfully',
+                                  success: true,
+                                );
 
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((timeStamp) async {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  routeHome, ModalRoute.withName(routeRoot));
-                              final SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString('user', userString);
-                              UserUtils.instance.saveUser(user: user);
-                            });
-                          }
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    routeHome, ModalRoute.withName(routeRoot));
+                                final SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('user', userString);
+                                UserUtils.instance.saveUser(user: user);
+                              }
+                            },
+                          );
 
                           return CustomMaterialBtton(
                             onPressed: () {
