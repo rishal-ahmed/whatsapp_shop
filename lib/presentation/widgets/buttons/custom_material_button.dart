@@ -98,7 +98,7 @@ class CustomMaterialBtton extends StatelessWidget {
               child: MaterialButton(
                 height: height,
                 minWidth: minWidth,
-                onPressed: null,
+                onPressed: () {},
                 color: color ?? primaryColor,
                 splashColor: borderColor ?? primaryColor,
                 elevation: elevation,

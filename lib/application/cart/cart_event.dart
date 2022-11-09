@@ -17,4 +17,7 @@ class CartEvent with _$CartEvent {
 
   //=-=-=-=-=- Cart Count Event -=-=-=-=-=
   factory CartEvent.cartCount({required int userId}) = _CartEventCount;
+
+  //=-=-=-=-=- Cart Sum Event -=-=-=-=-=
+  factory CartEvent.cartSum({required int userId}) = _CartEventSum;
 }

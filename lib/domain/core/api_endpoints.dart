@@ -22,4 +22,5 @@ class ApiEndpoints {
   static const String addCart = '${baseUrl}addtocart';
   static const String carts = '${baseUrl}getcart';
   static const String cartCount = '${baseUrl}cartcount';
+  static const String cartSumTotal = '${baseUrl}getcartsumtotal';
 }

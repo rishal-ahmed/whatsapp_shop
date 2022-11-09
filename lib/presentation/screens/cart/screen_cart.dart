@@ -14,11 +14,18 @@ import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_title_child
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 final _cartsProvider =
     AutoDisposeStateNotifierProviderFamily<CartNotifier, CartState, CartEvent>(
         (ref, event) {
   return CartNotifier()..emit(event);
+});
+
+final _cartSumProvider =
+    AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
+  return CartNotifier()
+    ..emit(CartEvent.cartSum(userId: UserUtils.instance.userModel!.id));
 });
 
 class ScreenCart extends ConsumerWidget {
@@ -44,7 +51,7 @@ class ScreenCart extends ConsumerWidget {
                         EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.isLoading ? 4 : state.carts.length,
+                      itemCount: state.isLoading ? 3 : state.carts.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         CartModel? product;
@@ -65,85 +72,102 @@ class ScreenCart extends ConsumerWidget {
                   kHeight05,
 
                   //==================== Bill Details Field ====================
-                  CartTitleChildWidget(
-                    title: 'Bill Details',
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ListTile(
-                          dense: true,
-                          leading: Text(
-                            'Item Total',
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                          trailing: Text(
-                            '₹320',
-                            style: TextStyle(
-                              fontSize: 14.5.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final CartState sumState = ref.watch(_cartSumProvider);
+                      return CartTitleChildWidget(
+                        title: 'Bill Details',
+                        shimmer: state.isLoading,
+                        child: ShimmerWidget(
+                          isLoading: state.isLoading,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                dense: true,
+                                leading: Text(
+                                  'Item Total',
+                                  style: TextStyle(fontSize: 14.sp),
+                                ),
+                                trailing: Text(
+                                  sumState.sum != null
+                                      ? '₹${sumState.sum}'
+                                      : '₹0.00',
+                                  style: TextStyle(
+                                    fontSize: 14.5.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              ListTile(
+                                dense: true,
+                                leading: Text(
+                                  'Delivery charges',
+                                  style: TextStyle(fontSize: 14.sp),
+                                ),
+                                trailing: Text(
+                                  '₹50',
+                                  style: TextStyle(
+                                    fontSize: 14.5.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              ListTile(
+                                dense: true,
+                                leading: Text(
+                                  'Total Amount',
+                                  style: TextStyle(fontSize: 14.sp),
+                                ),
+                                trailing: Text(
+                                  sumState.sum != null
+                                      ? '₹${sumState.sum! + 50}'
+                                      : '₹0.00',
+                                  style: TextStyle(
+                                    fontSize: 14.5.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        ListTile(
-                          dense: true,
-                          leading: Text(
-                            'Delivery charges',
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                          trailing: Text(
-                            '₹30',
-                            style: TextStyle(
-                              fontSize: 14.5.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          dense: true,
-                          leading: Text(
-                            'Total Amount',
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                          trailing: Text(
-                            '₹350',
-                            style: TextStyle(
-                              fontSize: 14.5.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   kHeight05,
                   //==================== Payment Options Field ====================
                   CartTitleChildWidget(
                     title: 'Payment Options',
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          value: true,
-                          groupValue: true,
-                          dense: true,
-                          onChanged: (value) {},
-                          title: Text(
-                            'Would you like to pay online',
-                            style: TextStyle(fontSize: 14.sp),
+                    shimmer: state.isLoading,
+                    child: ShimmerWidget(
+                      isLoading: state.isLoading,
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            value: true,
+                            groupValue: true,
+                            dense: true,
+                            onChanged: (value) {},
+                            title: Text(
+                              'Would you like to pay online',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ),
-                        ),
-                        RadioListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          value: true,
-                          groupValue: false,
-                          dense: true,
-                          onChanged: (value) {},
-                          title: Text(
-                            'Would you like to pay cash on delivery',
-                            style: TextStyle(fontSize: 14.sp),
+                          RadioListTile(
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            value: true,
+                            groupValue: false,
+                            dense: true,
+                            onChanged: (value) {},
+                            title: Text(
+                              'Would you like to pay cash on delivery',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   kHeight05,
@@ -151,129 +175,133 @@ class ScreenCart extends ConsumerWidget {
                   //==================== Delivery Address Field ====================
                   CartTitleChildWidget(
                     title: 'Delivery Address',
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          value: false,
-                          groupValue: false,
-                          dense: true,
-                          onChanged: (value) {},
-                          title: Row(
-                            children: [
-                              Text(
-                                'Rishal Ahmed',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              dWidth1,
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  color: const Color(0XFF039300),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 3,
-                                ),
-                                child: FittedBox(
-                                  child: Text(
-                                    'Home',
-                                    style: TextStyle(
-                                        fontSize: 11.sp, color: kWhite),
+                    shimmer: state.isLoading,
+                    child: ShimmerWidget(
+                      isLoading: state.isLoading,
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            value: false,
+                            groupValue: false,
+                            dense: true,
+                            onChanged: (value) {},
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Rishal Ahmed',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              )
-                            ],
+                                dWidth1,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(3),
+                                    color: const Color(0XFF039300),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 3,
+                                  ),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'Home',
+                                      style: TextStyle(
+                                          fontSize: 11.sp, color: kWhite),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '6282712271',
+                                  style: TextStyle(fontSize: 13.sp),
+                                ),
+                                Text(
+                                  'ERE business solutions, cyberpark, kozhikode, kerala,673636',
+                                  style: TextStyle(fontSize: 13.sp),
+                                )
+                              ],
+                            ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '6282712271',
-                                style: TextStyle(fontSize: 13.sp),
-                              ),
-                              Text(
-                                'ERE business solutions, cyberpark, kozhikode, kerala,673636',
-                                style: TextStyle(fontSize: 13.sp),
-                              )
-                            ],
-                          ),
-                        ),
-                        dHeight05,
-                        RadioListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          value: true,
-                          groupValue: false,
-                          dense: true,
-                          onChanged: (value) {},
-                          title: Row(
-                            children: [
-                              Text(
-                                'Rishal Ahmed',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              dWidth1,
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  // color: kGreen,
-                                  color: const Color(0XFF039300),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 3,
-                                ),
-                                child: FittedBox(
-                                  child: Text(
-                                    'Office',
-                                    style: TextStyle(
-                                        fontSize: 11.sp, color: kWhite),
+                          dHeight05,
+                          RadioListTile(
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            value: true,
+                            groupValue: false,
+                            dense: true,
+                            onChanged: (value) {},
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Rishal Ahmed',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              )
-                            ],
+                                dWidth1,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(3),
+                                    // color: kGreen,
+                                    color: const Color(0XFF039300),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 3,
+                                  ),
+                                  child: FittedBox(
+                                    child: Text(
+                                      'Office',
+                                      style: TextStyle(
+                                          fontSize: 11.sp, color: kWhite),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '6282712271',
+                                  style: TextStyle(fontSize: 13.sp),
+                                ),
+                                Text(
+                                  'ERE business solutions, cyberpark, kozhikode, kerala,673636',
+                                  style: TextStyle(fontSize: 13.sp),
+                                )
+                              ],
+                            ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '6282712271',
-                                style: TextStyle(fontSize: 13.sp),
+                          dHeight1,
+                          ListTile(
+                            dense: true,
+                            leading: Text(
+                              'Add new Address',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: GoogleFonts.poppins().fontFamily,
                               ),
-                              Text(
-                                'ERE business solutions, cyberpark, kozhikode, kerala,673636',
-                                style: TextStyle(fontSize: 13.sp),
-                              )
-                            ],
-                          ),
-                        ),
-                        dHeight1,
-                        ListTile(
-                          dense: true,
-                          leading: Text(
-                            'Add new Address',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.add_circle_outline,
+                                color: kBlack,
+                                size: 20.sp,
+                              ),
+                              onPressed: () {},
                             ),
                           ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.add_circle_outline,
-                              color: kBlack,
-                              size: 20.sp,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
 
@@ -286,11 +314,12 @@ class ScreenCart extends ConsumerWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
                       child: CustomMaterialBtton(
-                        onPressed: () {},
+                        shimmer: state.isLoading,
                         buttonText: 'Buy Now',
                         color: primaryColor,
                         borderColor: primaryColor,
                         borderRadius: BorderRadius.circular(12),
+                        onPressed: () {},
                       ),
                     ),
                   ),

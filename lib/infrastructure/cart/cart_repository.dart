@@ -98,10 +98,6 @@ class CartRepository {
       final Response response = await dio.post(
         ApiEndpoints.cartCount,
         data: form,
-        options: Options(
-            // will not throw errors
-            // validateStatus: (status) => true,
-            ),
       );
 
       log('response == ${response.data.toString()}', name: 'Cart Count');
@@ -112,6 +108,37 @@ class CartRepository {
         if (result['sts'] == '01') {
           final int cartCount = result['count'];
           return Right(cartCount);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e');
+      log('StackTrace  : $s');
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
+  //==================== Cart Count ====================
+  Future<Either<MainFailures, num>> cartSum({required int userId}) async {
+    try {
+      final FormData form = FormData.fromMap({"userid": userId});
+
+      final Response response = await dio.post(
+        ApiEndpoints.cartSumTotal,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Cart Sum');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          final num cartSumTotal = result['sumtotal'];
+          return Right(cartSumTotal);
         } else {
           return const Left(MainFailures.clientFailure());
         }

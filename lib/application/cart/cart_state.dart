@@ -8,9 +8,10 @@ class CartState with _$CartState {
   const factory CartState({
     required bool isLoading,
     required bool isError,
-    @Default(null) int? count,
-    @Default([]) List<CartModel> carts,
     required bool status,
+    @Default([]) List<CartModel> carts,
+    @Default(null) int? count,
+    @Default(null) num? sum,
   }) = _CartState;
 
   factory CartState.initial() =>

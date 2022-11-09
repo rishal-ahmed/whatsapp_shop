@@ -72,6 +72,26 @@ class CartNotifier extends StateNotifier<CartState> {
         // Notify UI
         state = cartState;
       },
+
+      //=-=-=-=-=-=-=-=-=-=- Cart Sum Event -=-=-=-=-=-=-=-=-=-=
+      cartSum: (cartSumEvent) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Cart Sum Api
+        final result =
+            await CartRepository().cartSum(userId: cartSumEvent.userId);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(sum: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
     );
   }
 }
