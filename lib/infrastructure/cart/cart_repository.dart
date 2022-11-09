@@ -5,8 +5,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
-import 'package:whatsapp_shop/domain/models/product/product_model.dart';
-import 'package:whatsapp_shop/domain/models/unit/unit_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
 
 class CartRepository {
@@ -92,44 +90,28 @@ class CartRepository {
     }
   }
 
-  //==================== Product ====================
-  Future<Either<MainFailures, Map<String, dynamic>>> product({
-    required int productId,
-  }) async {
+  //==================== Cart Count ====================
+  Future<Either<MainFailures, int>> cartCount({required int userId}) async {
     try {
+      final FormData form = FormData.fromMap({"userid": userId});
+
       final Response response = await dio.post(
-        ApiEndpoints.product + productId.toString(),
+        ApiEndpoints.cartCount,
+        data: form,
+        options: Options(
+            // will not throw errors
+            // validateStatus: (status) => true,
+            ),
       );
 
-      log('response == ${response.data.toString()}', name: 'Product');
+      log('response == ${response.data.toString()}', name: 'Cart Count');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = json.decode(response.data) as Map;
 
         if (result['sts'] == '01') {
-          final ProductModel product = ProductModel.fromJson(result['product']);
-
-          final List<UnitModel> units = (result['units'] as List)
-              .map((units) => UnitModel.fromJson(units))
-              .toList();
-
-          final String category = result['category'];
-          final String seller = result['seller'];
-
-          final List<ProductModel> similarProducts =
-              (result['sproducts'] as List)
-                  .map((e) => ProductModel.fromJson(e))
-                  .toList();
-
-          final Map<String, dynamic> res = {
-            'product': product,
-            'units': units,
-            'category': category,
-            'seller': seller,
-            'similar_products': similarProducts,
-          };
-
-          return Right(res);
+          final int cartCount = result['count'];
+          return Right(cartCount);
         } else {
           return const Left(MainFailures.clientFailure());
         }
@@ -138,8 +120,7 @@ class CartRepository {
       }
     } catch (e, s) {
       log('Exception : $e');
-      log('StackTrace : $s');
-
+      log('StackTrace  : $s');
       return const Left(MainFailures.clientFailure());
     }
   }

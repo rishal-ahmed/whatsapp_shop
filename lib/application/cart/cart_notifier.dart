@@ -54,7 +54,24 @@ class CartNotifier extends StateNotifier<CartState> {
       },
 
       //=-=-=-=-=-=-=-=-=-=- Cart Count Event -=-=-=-=-=-=-=-=-=-=
-      cartCount: (cartCountEvent) {},
+      cartCount: (cartCountEvent) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Cart Count Api
+        final result =
+            await CartRepository().cartCount(userId: cartCountEvent.userId);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(count: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
     );
   }
 }

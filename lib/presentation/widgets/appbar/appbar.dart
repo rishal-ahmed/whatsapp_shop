@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:whatsapp_shop/application/cart/cart_event.dart';
+import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
+import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
+
+final _cartCountProvider =
+    StateNotifierProvider<CartNotifier, CartState>((ref) {
+  return CartNotifier()
+    ..emit(CartEvent.cartCount(userId: UserUtils.instance.userModel!.id));
+});
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   const AppBarWidget({
@@ -72,18 +83,27 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                         alignment: Alignment.center,
                         child: SvgPicture.asset(kIconCart),
                       ),
-                      const Align(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 6,
-                          backgroundColor: Color(0XFF01A783),
-                          child: FittedBox(
-                            child: Text(
-                              '2',
-                              style: TextStyle(color: Color(0XFF1F2C34)),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final CartState state = ref.watch(_cartCountProvider);
+                          if (state.isError ||
+                              state.isLoading ||
+                              state.count == null) return kNone;
+                          return Align(
+                            alignment: Alignment.topRight,
+                            child: CircleAvatar(
+                              radius: 6,
+                              backgroundColor: const Color(0XFF01A783),
+                              child: FittedBox(
+                                child: Text(
+                                  state.count.toString(),
+                                  style:
+                                      const TextStyle(color: Color(0XFF1F2C34)),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       )
                     ],
                   ),
