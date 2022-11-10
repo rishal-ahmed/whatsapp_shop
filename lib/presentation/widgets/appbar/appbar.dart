@@ -11,8 +11,7 @@ import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 
-final _cartCountProvider =
-    StateNotifierProvider<CartNotifier, CartState>((ref) {
+final cartCountProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
   return CartNotifier()
     ..emit(CartEvent.cartCount(userId: UserUtils.instance.userModel!.id));
 });
@@ -85,10 +84,11 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       ),
                       Consumer(
                         builder: (context, ref, _) {
-                          final CartState state = ref.watch(_cartCountProvider);
+                          final CartState state = ref.watch(cartCountProvider);
                           if (state.isError ||
                               state.isLoading ||
-                              state.count == null) return kNone;
+                              state.count == null ||
+                              state.count == 0) return kNone;
                           return Align(
                             alignment: Alignment.topRight,
                             child: CircleAvatar(

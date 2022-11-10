@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
@@ -8,20 +9,24 @@ import 'package:whatsapp_shop/domain/utils/converter/converter.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_item_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-class ShopProductList extends StatelessWidget {
+class ShopProductList extends ConsumerWidget {
   const ShopProductList({
     Key? key,
     required this.title,
     required this.products,
     this.shimmer = false,
+    this.refresh = false,
+    this.productId,
   }) : super(key: key);
 
   final String title;
   final List<ProductModel> products;
   final bool shimmer;
+  final bool refresh;
+  final int? productId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return !shimmer
         ? Container(
             color: kWhite,
@@ -65,9 +70,13 @@ class ShopProductList extends StatelessWidget {
                         discount: discount,
                         product: product,
                         onTap: () {
-                          // Navigate to Product Page
-                          Navigator.pushNamed(context, routeProduct,
-                              arguments: product.id);
+                          if (refresh) {
+                          } else {
+                            // Navigate to Product Page
+
+                            Navigator.pushNamed(context, routeProduct,
+                                arguments: product.id);
+                          }
                         },
                       );
                     },

@@ -1,22 +1,37 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:whatsapp_shop/application/cart/cart_event.dart';
+import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
+import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
+import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-class CartItemWidget extends StatelessWidget {
+final _removeCartProvider =
+    AutoDisposeStateNotifierProvider<CartNotifier, CartState>(
+  (ref) {
+    return CartNotifier();
+  },
+);
+
+class CartItemWidget extends ConsumerWidget {
   const CartItemWidget({
     Key? key,
-    required this.product,
+    required this.cartItem,
     required this.shimmer,
   }) : super(key: key);
 
-  final CartModel? product;
+  final CartModel? cartItem;
   final bool shimmer;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ShimmerWidget(
       isLoading: shimmer,
       child: Container(
@@ -70,7 +85,7 @@ class CartItemWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     !shimmer
-                                        ? product!.productName
+                                        ? cartItem!.productName
                                         : 'Product Name',
                                     maxLines: 2,
                                     style: TextStyle(
@@ -84,7 +99,7 @@ class CartItemWidget extends StatelessWidget {
                               Text.rich(
                                 TextSpan(
                                   text: !shimmer
-                                      ? '₹${product!.unitPrice}  '
+                                      ? '₹${cartItem!.unitPrice}  '
                                       : '₹0.00  ',
                                   style: TextStyle(
                                     fontSize: 13.5.sp,
@@ -94,7 +109,7 @@ class CartItemWidget extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text: !shimmer
-                                          ? '${product!.unitOfferPrice}'
+                                          ? '${cartItem!.unitOfferPrice}'
                                           : '₹0.00',
                                       style: TextStyle(
                                         fontSize: 12.5.sp,
@@ -114,6 +129,7 @@ class CartItemWidget extends StatelessWidget {
                                   Flexible(
                                     flex: 5,
                                     child: Container(
+                                      height: 3.5.h,
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           borderRadius:
@@ -135,7 +151,7 @@ class CartItemWidget extends StatelessWidget {
                                           Flexible(
                                             child: Text(
                                               !shimmer
-                                                  ? '${product!.quantity}'
+                                                  ? '${cartItem!.quantity}'
                                                   : '1',
                                               maxLines: 1,
                                               style: TextStyle(
@@ -158,34 +174,60 @@ class CartItemWidget extends StatelessWidget {
                                     ),
                                   ),
                                   const Flexible(child: kNone),
+
+                                  //========== Remove Cart Item Button ==========
                                   Flexible(
                                     flex: 5,
-                                    child: Material(
-                                      child: InkWell(
-                                        onTap: () {},
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 5,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            border: Border.all(
-                                                color: kColorBorder2),
-                                            color: kWhite,
-                                          ),
-                                          child: FittedBox(
-                                            child: Text(
-                                              'Delete',
-                                              style: TextStyle(
-                                                color: const Color(0XFF989898),
-                                                fontSize: 14.sp,
+                                    child: Consumer(
+                                      builder: (context, ref, _) {
+                                        ref.listen(
+                                          _removeCartProvider,
+                                          (previous, next) {
+                                            log('previous = ${previous?.status}');
+                                            log('next = ${next.status}');
+                                            if (!next.isLoading &&
+                                                next.status) {
+                                              ref.invalidate(cartCountProvider);
+
+                                              return kSnackBar(
+                                                context: context,
+                                                content:
+                                                    'Cart removed successfully',
+                                                success: true,
+                                              );
+                                            }
+                                          },
+                                        );
+
+                                        return SizedBox(
+                                          height: 3.5.h,
+                                          child: OutlinedButton(
+                                            onPressed: !shimmer
+                                                ? () {
+                                                    ref
+                                                        .read(
+                                                            _removeCartProvider
+                                                                .notifier)
+                                                        .emit(CartEvent
+                                                            .cartRemove(
+                                                                cartId:
+                                                                    cartItem!
+                                                                        .id));
+                                                  }
+                                                : null,
+                                            child: FittedBox(
+                                              child: Text(
+                                                'Delete',
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0XFF989898),
+                                                  fontSize: 14.sp,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],

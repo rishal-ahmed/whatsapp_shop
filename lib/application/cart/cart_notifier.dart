@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
@@ -11,16 +13,17 @@ class CartNotifier extends StateNotifier<CartState> {
   void emit(CartEvent event) {
     event.map(
       //=-=-=-=-=-=-=-=-=-=- Add Cart Event -=-=-=-=-=-=-=-=-=-=
-      addCart: (addCartEvent) async {
+      addCart: (eventAdd) async {
         // Loading
+        log('========== Loading ==========');
         state = initialState.copyWith(isLoading: true);
 
         // Add to Cart Api
         final result = await CartRepository().addCart(
-          userId: addCartEvent.userId,
-          productId: addCartEvent.productId,
-          unitId: addCartEvent.unitId,
-          quantity: addCartEvent.quantity,
+          userId: eventAdd.userId,
+          productId: eventAdd.productId,
+          unitId: eventAdd.unitId,
+          quantity: eventAdd.quantity,
         );
 
         final CartState cartState = result.fold(
@@ -35,12 +38,12 @@ class CartNotifier extends StateNotifier<CartState> {
       },
 
       //=-=-=-=-=-=-=-=-=-=- Carts Event -=-=-=-=-=-=-=-=-=-=
-      carts: (cartsEvent) async {
+      carts: (eventCarts) async {
         // Loading
         state = initialState.copyWith(isLoading: true);
 
         // Carts Api
-        final result = await CartRepository().carts(userId: cartsEvent.userId);
+        final result = await CartRepository().carts(userId: eventCarts.userId);
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
@@ -54,13 +57,13 @@ class CartNotifier extends StateNotifier<CartState> {
       },
 
       //=-=-=-=-=-=-=-=-=-=- Cart Count Event -=-=-=-=-=-=-=-=-=-=
-      cartCount: (cartCountEvent) async {
+      cartCount: (eventCount) async {
         // Loading
         state = initialState.copyWith(isLoading: true);
 
         // Cart Count Api
         final result =
-            await CartRepository().cartCount(userId: cartCountEvent.userId);
+            await CartRepository().cartCount(userId: eventCount.userId);
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
@@ -74,19 +77,58 @@ class CartNotifier extends StateNotifier<CartState> {
       },
 
       //=-=-=-=-=-=-=-=-=-=- Cart Sum Event -=-=-=-=-=-=-=-=-=-=
-      cartSum: (cartSumEvent) async {
+      cartSum: (eventSum) async {
         // Loading
         state = initialState.copyWith(isLoading: true);
 
         // Cart Sum Api
-        final result =
-            await CartRepository().cartSum(userId: cartSumEvent.userId);
+        final result = await CartRepository().cartSum(userId: eventSum.userId);
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
           (failure) => initialState.copyWith(isError: true),
           //=-=-=-=- Success -=-=-=-=-=
           (success) => initialState.copyWith(sum: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
+
+      //=-=-=-=-=-=-=-=-=-=- Cart Remove Event -=-=-=-=-=-=-=-=-=-=
+      cartRemove: (eventRemove) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Cart Remove Api
+        final result =
+            await CartRepository().cartRemove(cartId: eventRemove.cartId);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(status: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
+
+      //=-=-=-=-=-=-=-=-=-=- Cart Change Quantity Event -=-=-=-=-=-=-=-=-=-=
+      cartChangeQuanity: (eventQuantity) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Cart Change Quantity Api
+        final result = await CartRepository().cartChangeQuantity(
+            cartId: eventQuantity.cartId, quantity: eventQuantity.quantity);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(status: success),
         );
 
         // Notify UI

@@ -54,12 +54,13 @@ class ScreenCart extends ConsumerWidget {
                       itemCount: state.isLoading ? 3 : state.carts.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-                        CartModel? product;
+                        CartModel? cartItem;
                         if (!state.isLoading) {
-                          product = state.carts[index];
+                          cartItem = state.carts[index];
                         }
+                        //========== Cart Item Widget ==========
                         return CartItemWidget(
-                          product: product,
+                          cartItem: cartItem,
                           shimmer: state.isLoading,
                         );
                       },

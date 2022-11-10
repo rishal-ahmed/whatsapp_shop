@@ -22,8 +22,8 @@ import 'package:whatsapp_shop/presentation/widgets/dropdown/custom_dropdown_widg
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final _productProvider = StateNotifierProvider.autoDispose
-    .family<ProductNotifier, ProductState, ProductEvent>((ref, event) {
+final _productProvider = StateNotifierProvider.family
+    .autoDispose<ProductNotifier, ProductState, ProductEvent>((ref, event) {
   return ProductNotifier()..emit(event);
 });
 
@@ -38,6 +38,7 @@ class ScreenProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    log('Screen Product => Build()');
     final ProductState state =
         ref.watch(_productProvider(ProductEvent.product(productId: productId)));
     return Scaffold(
@@ -290,11 +291,22 @@ class ScreenProduct extends ConsumerWidget {
 
                                   ref.listen(_addToCartProvider,
                                       (previous, next) {
-                                    if (next.status) {
-                                      kSnackBar(
+                                    log('previous status = ${previous?.status}');
+                                    log('next status = ${next.status}');
+
+                                    log('previous loading = ${previous?.isLoading}');
+                                    log('next loading = ${next.isLoading}');
+
+                                    log('========================================');
+
+                                    if (!next.isLoading && next.status) {
+                                      ref.invalidate(cartCountProvider);
+
+                                      return kSnackBar(
                                         context: context,
                                         content: 'Added to cart',
                                         success: true,
+                                        duration: 2,
                                       );
                                     }
 
@@ -394,6 +406,8 @@ class ScreenProduct extends ConsumerWidget {
                           title: 'Similar Products',
                           products: state.similarProducts,
                           shimmer: state.isLoading,
+                          // // refresh: true,
+                          // productId: productId,
                         );
                       },
                     ),

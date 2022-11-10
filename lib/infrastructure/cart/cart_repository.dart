@@ -84,8 +84,7 @@ class CartRepository {
         return const Left(MainFailures.serverFailure());
       }
     } catch (e, s) {
-      log('Exception : $e');
-      log('StackTrace  : $s');
+      log('Exception : $e', stackTrace: s);
       return const Left(MainFailures.clientFailure());
     }
   }
@@ -115,8 +114,7 @@ class CartRepository {
         return const Left(MainFailures.serverFailure());
       }
     } catch (e, s) {
-      log('Exception : $e');
-      log('StackTrace  : $s');
+      log('Exception : $e', stackTrace: s);
       return const Left(MainFailures.clientFailure());
     }
   }
@@ -146,8 +144,70 @@ class CartRepository {
         return const Left(MainFailures.serverFailure());
       }
     } catch (e, s) {
-      log('Exception : $e');
-      log('StackTrace  : $s');
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
+  //==================== Cart Remove ====================
+  Future<Either<MainFailures, bool>> cartRemove({required int cartId}) async {
+    try {
+      final FormData form = FormData.fromMap({"cartid": cartId});
+
+      final Response response = await dio.post(
+        ApiEndpoints.cartRemove,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Cart Remove');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
+  //==================== Cart Change Quantity ====================
+  Future<Either<MainFailures, bool>> cartChangeQuantity({
+    required int cartId,
+    required int quantity,
+  }) async {
+    try {
+      final FormData form =
+          FormData.fromMap({"cartid": cartId, "quantity": quantity});
+
+      final Response response = await dio.post(
+        ApiEndpoints.cartChangeQuantity,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}',
+          name: 'Cart Change Quantity');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
       return const Left(MainFailures.clientFailure());
     }
   }
