@@ -22,13 +22,13 @@ import 'package:whatsapp_shop/presentation/widgets/dropdown/custom_dropdown_widg
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final _productProvider = StateNotifierProvider.family
-    .autoDispose<ProductNotifier, ProductState, ProductEvent>((ref, event) {
+final productProvider =
+    StateNotifierProvider.family<ProductNotifier, ProductState, ProductEvent>(
+        (ref, event) {
   return ProductNotifier()..emit(event);
 });
 
-final _addToCartProvider =
-    StateNotifierProvider.autoDispose<CartNotifier, CartState>((ref) {
+final addToCartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
   return CartNotifier();
 });
 
@@ -40,7 +40,7 @@ class ScreenProduct extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     log('Screen Product => Build()');
     final ProductState state =
-        ref.watch(_productProvider(ProductEvent.product(productId: productId)));
+        ref.watch(productProvider(ProductEvent.product(productId: productId)));
     return Scaffold(
       appBar: const AppBarWidget(defualt: true),
       backgroundColor: state.isError ? kWhite : kBackgroundColor,
@@ -208,7 +208,8 @@ class ScreenProduct extends ConsumerWidget {
                                             )
                                           : Text.rich(
                                               TextSpan(
-                                                text: '₹5300\n',
+                                                text:
+                                                    '₹${state.units.first.price}\n',
                                                 style: TextStyle(
                                                   fontSize: 14.5.sp,
                                                   decoration: TextDecoration
@@ -218,7 +219,8 @@ class ScreenProduct extends ConsumerWidget {
                                                 ),
                                                 children: [
                                                   TextSpan(
-                                                    text: '₹3600',
+                                                    text:
+                                                        '₹${state.units.first.offerPrice}',
                                                     style: TextStyle(
                                                       fontSize: 14.5.sp,
                                                       decoration:
@@ -287,38 +289,31 @@ class ScreenProduct extends ConsumerWidget {
                               Consumer(
                                 builder: (context, ref, _) {
                                   final CartState cartState =
-                                      ref.watch(_addToCartProvider);
+                                      ref.watch(addToCartProvider);
 
-                                  ref.listen(_addToCartProvider,
-                                      (previous, next) {
-                                    log('previous status = ${previous?.status}');
-                                    log('next status = ${next.status}');
+                                  ref.listen(
+                                    addToCartProvider,
+                                    (previous, next) {
+                                      if (!next.isLoading && next.status) {
+                                        ref.invalidate(cartCountProvider);
+                                        return kSnackBar(
+                                          context: context,
+                                          content: 'Added to cart',
+                                          success: true,
+                                          duration: 2,
+                                        );
+                                      }
 
-                                    log('previous loading = ${previous?.isLoading}');
-                                    log('next loading = ${next.isLoading}');
-
-                                    log('========================================');
-
-                                    if (!next.isLoading && next.status) {
-                                      ref.invalidate(cartCountProvider);
-
-                                      return kSnackBar(
-                                        context: context,
-                                        content: 'Added to cart',
-                                        success: true,
-                                        duration: 2,
-                                      );
-                                    }
-
-                                    if (next.isError) {
-                                      kSnackBar(
-                                        context: context,
-                                        content:
-                                            'Oops, Something went wrong. please try again later.',
-                                        error: true,
-                                      );
-                                    }
-                                  });
+                                      if (!next.isLoading && next.isError) {
+                                        return kSnackBar(
+                                          context: context,
+                                          content:
+                                              'Oops, Something went wrong. please try again later.',
+                                          error: true,
+                                        );
+                                      }
+                                    },
+                                  );
 
                                   return CustomMaterialBtton(
                                     buttonText: 'Add to Cart',
@@ -330,10 +325,8 @@ class ScreenProduct extends ConsumerWidget {
                                     onPressed: () {
                                       final UserModel user =
                                           UserUtils.instance.userModel!;
-                                      log('userid = ${user.id}');
-                                      ref
-                                          .read(_addToCartProvider.notifier)
-                                          .emit(
+
+                                      ref.read(addToCartProvider.notifier).emit(
                                             CartEvent.addCart(
                                               userId: user.id,
                                               productId: productId,
@@ -406,8 +399,7 @@ class ScreenProduct extends ConsumerWidget {
                           title: 'Similar Products',
                           products: state.similarProducts,
                           shimmer: state.isLoading,
-                          // // refresh: true,
-                          // productId: productId,
+                          refresh: true,
                         );
                       },
                     ),

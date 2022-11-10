@@ -26,6 +26,7 @@ class CartNotifier extends StateNotifier<CartState> {
           quantity: eventAdd.quantity,
         );
 
+        log('========== Folding ==========');
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
           (l) => initialState.copyWith(isError: true),
@@ -34,6 +35,7 @@ class CartNotifier extends StateNotifier<CartState> {
         );
 
         // Notify UI
+        log('========== State ==========');
         state = cartState;
       },
 

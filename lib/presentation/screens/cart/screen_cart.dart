@@ -16,13 +16,13 @@ import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_butto
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final _cartsProvider =
+final cartsProvider =
     AutoDisposeStateNotifierProviderFamily<CartNotifier, CartState, CartEvent>(
         (ref, event) {
   return CartNotifier()..emit(event);
 });
 
-final _cartSumProvider =
+final cartSumProvider =
     AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
   return CartNotifier()
     ..emit(CartEvent.cartSum(userId: UserUtils.instance.userModel!.id));
@@ -33,7 +33,7 @@ class ScreenCart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final CartState state = ref.watch(_cartsProvider(
+    final CartState state = ref.watch(cartsProvider(
         CartEvent.carts(userId: UserUtils.instance.userModel!.id)));
     return Scaffold(
       appBar: const AppBarWidget(
@@ -75,7 +75,7 @@ class ScreenCart extends ConsumerWidget {
                   //==================== Bill Details Field ====================
                   Consumer(
                     builder: (context, ref, _) {
-                      final CartState sumState = ref.watch(_cartSumProvider);
+                      final CartState sumState = ref.watch(cartSumProvider);
                       return CartTitleChildWidget(
                         title: 'Bill Details',
                         shimmer: state.isLoading,

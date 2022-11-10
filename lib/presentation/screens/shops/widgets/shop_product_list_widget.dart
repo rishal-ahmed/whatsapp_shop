@@ -71,6 +71,9 @@ class ShopProductList extends ConsumerWidget {
                         product: product,
                         onTap: () {
                           if (refresh) {
+                            Navigator.pushReplacementNamed(
+                                context, routeProduct,
+                                arguments: product.id);
                           } else {
                             // Navigate to Product Page
 

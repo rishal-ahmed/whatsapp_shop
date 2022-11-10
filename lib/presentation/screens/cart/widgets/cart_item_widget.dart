@@ -10,6 +10,7 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/presentation/screens/cart/screen_cart.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
@@ -180,25 +181,6 @@ class CartItemWidget extends ConsumerWidget {
                                     flex: 5,
                                     child: Consumer(
                                       builder: (context, ref, _) {
-                                        ref.listen(
-                                          _removeCartProvider,
-                                          (previous, next) {
-                                            log('previous = ${previous?.status}');
-                                            log('next = ${next.status}');
-                                            if (!next.isLoading &&
-                                                next.status) {
-                                              ref.invalidate(cartCountProvider);
-
-                                              return kSnackBar(
-                                                context: context,
-                                                content:
-                                                    'Cart removed successfully',
-                                                success: true,
-                                              );
-                                            }
-                                          },
-                                        );
-
                                         return SizedBox(
                                           height: 3.5.h,
                                           child: OutlinedButton(
@@ -208,11 +190,35 @@ class CartItemWidget extends ConsumerWidget {
                                                         .read(
                                                             _removeCartProvider
                                                                 .notifier)
-                                                        .emit(CartEvent
-                                                            .cartRemove(
-                                                                cartId:
-                                                                    cartItem!
-                                                                        .id));
+                                                        .emit(
+                                                          CartEvent.cartRemove(
+                                                              cartId:
+                                                                  cartItem!.id),
+                                                        );
+
+                                                    ref.listenManual(
+                                                      _removeCartProvider,
+                                                      (previous, next) {
+                                                        log('previous = ${previous?.status}');
+                                                        log('next = ${next.status}');
+                                                        if (!next.isLoading &&
+                                                            next.status) {
+                                                          ref.invalidate(
+                                                              cartsProvider);
+                                                          ref.invalidate(
+                                                              cartSumProvider);
+                                                          ref.invalidate(
+                                                              cartCountProvider);
+
+                                                          return kSnackBar(
+                                                            context: context,
+                                                            content:
+                                                                'Cart removed successfully',
+                                                            success: true,
+                                                          );
+                                                        }
+                                                      },
+                                                    );
                                                   }
                                                 : null,
                                             child: FittedBox(
