@@ -19,6 +19,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
         // Add Address Api
         final result = await AddressRepository()
             .addAddress(addressModel: eventAdd.addressModel);
+
         final AddressState addressState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
           (l) => initialState.copyWith(isError: true),

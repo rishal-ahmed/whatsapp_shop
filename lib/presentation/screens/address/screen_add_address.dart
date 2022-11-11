@@ -31,6 +31,29 @@ class ScreenAddAddress extends ConsumerWidget {
     final TextEditingController cityController = TextEditingController();
     final TextEditingController districtController = TextEditingController();
     final TextEditingController stateController = TextEditingController();
+
+    ref.listen(
+      AddressProvider.addAddressProvider,
+      (previous, next) {
+        if (!next.isLoading && next.status) {
+          kSnackBar(
+            context: context,
+            content: 'Address added successfully',
+            success: true,
+          );
+
+          // Navigator.pop(context);
+        }
+
+        if (!next.isLoading && next.isError) {
+          kSnackBar(
+            context: context,
+            content: 'Something went wrong',
+            error: true,
+          );
+        }
+      },
+    );
     return Scaffold(
       appBar: const AppBarWidget(
         title: 'Add New Address',
@@ -197,30 +220,30 @@ class ScreenAddAddress extends ConsumerWidget {
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ),
-                            Expanded(
-                              child: RadioListTile(
-                                value: 'Office',
-                                groupValue: selectedType,
-                                onChanged: (value) {
-                                  final selcted = ref.read(AddressProvider
-                                      .selectedTypeProvider.notifier);
-                                  if (selcted.state != value) {
-                                    selcted.state = value!;
-                                  }
-                                },
-                                activeColor: secondaryColor,
-                                dense: true,
-                                title: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    'Office',
-                                    style: TextStyle(
-                                        color: primaryColor, fontSize: 14.sp),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: RadioListTile(
+                            //     value: 'Office',
+                            //     groupValue: selectedType,
+                            //     onChanged: (value) {
+                            //       final selcted = ref.read(AddressProvider
+                            //           .selectedTypeProvider.notifier);
+                            //       if (selcted.state != value) {
+                            //         selcted.state = value!;
+                            //       }
+                            //     },
+                            //     activeColor: secondaryColor,
+                            //     dense: true,
+                            //     title: FittedBox(
+                            //       fit: BoxFit.scaleDown,
+                            //       child: Text(
+                            //         'Office',
+                            //         style: TextStyle(
+                            //             color: primaryColor, fontSize: 14.sp),
+                            //       ),
+                            //     ),
+                            //     contentPadding: EdgeInsets.zero,
+                            //   ),
+                            // ),
                             Expanded(
                               child: RadioListTile(
                                 value: 'Work',
@@ -245,6 +268,7 @@ class ScreenAddAddress extends ConsumerWidget {
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ),
+                            const Spacer(),
                           ],
                         ),
                       );
@@ -294,29 +318,6 @@ class ScreenAddAddress extends ConsumerWidget {
                               .read(AddressProvider.addAddressProvider.notifier)
                               .emit(AddressEvent.addAddress(
                                   addressModel: addressModel));
-
-                          ref.listenManual(
-                            AddressProvider.addAddressProvider,
-                            (previous, next) {
-                              if (!next.isLoading && next.status) {
-                                kSnackBar(
-                                  context: context,
-                                  content: 'Address added successfully',
-                                  success: true,
-                                );
-
-                                // Navigator.pop(context);
-                              }
-
-                              if (!next.isLoading && next.isError) {
-                                kSnackBar(
-                                  context: context,
-                                  content: 'Something went wrong',
-                                  error: true,
-                                );
-                              }
-                            },
-                          );
                         }
                       },
                     );

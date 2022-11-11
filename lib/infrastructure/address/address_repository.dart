@@ -5,7 +5,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
 import 'package:whatsapp_shop/domain/models/address/address_model.dart';
-import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
 
 class AddressRepository {
@@ -13,7 +12,7 @@ class AddressRepository {
       Dio(BaseOptions(headers: {"Content-Type": "application/json"}));
 
   //==================== Get Addresses ====================
-  Future<Either<MainFailures, List<CartModel>>> getAddresses({
+  Future<Either<MainFailures, List<AddressModel>>> getAddresses({
     required int userId,
   }) async {
     try {
@@ -24,17 +23,17 @@ class AddressRepository {
         data: form,
       );
 
-      log('response == ${response.data.toString()}', name: 'Addresses');
+      log('response == ${response.data.toString()}', name: 'Get Addresses');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = json.decode(response.data) as Map;
 
         if (result['sts'] == '01') {
-          final List<CartModel> carts = (result['cart'] as List)
-              .map((cart) => CartModel.fromJson(cart))
+          final List<AddressModel> addresses = (result['address'] as List)
+              .map((address) => AddressModel.fromJson(address))
               .toList();
 
-          return Right(carts);
+          return Right(addresses);
         } else {
           return const Left(MainFailures.clientFailure());
         }
@@ -57,7 +56,7 @@ class AddressRepository {
           "user_id": addressModel.customerId,
           "name": addressModel.name,
           "email": addressModel.email,
-          "mobile": addressModel.phone,
+          "mobile": addressModel.mobile,
           "phone": "",
           "address": addressModel.address,
           "landmark": addressModel.landmark,
@@ -70,7 +69,7 @@ class AddressRepository {
       );
 
       final Response response = await dio.post(
-        ApiEndpoints.cartAdd,
+        ApiEndpoints.addressAdd,
         data: form,
         options: Options(
             // will not throw errors
@@ -78,7 +77,7 @@ class AddressRepository {
             ),
       );
 
-      log('response == ${response.data.toString()}', name: 'Add Cart');
+      log('response == ${response.data.toString()}', name: 'Add Address');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = json.decode(response.data) as Map;
