@@ -19,11 +19,15 @@ class ApiEndpoints {
   static const String product = '${baseUrl}product/';
 
   //==================== Cart ====================
-  static const String addCart = '${baseUrl}addtocart';
+  static const String cartAdd = '${baseUrl}addtocart';
   static const String carts = '${baseUrl}getcart';
   static const String cartCount = '${baseUrl}cartcount';
   static const String cartSumTotal = '${baseUrl}getcartsumtotal';
   static const String cartRemove = '${baseUrl}removecart';
   static const String cartChangeQuantity = '${baseUrl}changequantity';
   static const String cartClear = '${baseUrl}clearcart';
+
+  //==================== Address ====================
+  static const String addressAdd = '${baseUrl}address/create';
+  static const String addresses = '${baseUrl}address/address';
 }

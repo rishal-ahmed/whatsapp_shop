@@ -62,7 +62,7 @@ class CartRepository {
       });
 
       final Response response = await dio.post(
-        ApiEndpoints.addCart,
+        ApiEndpoints.cartAdd,
         data: form,
         options: Options(
             // will not throw errors

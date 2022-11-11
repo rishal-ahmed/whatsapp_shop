@@ -32,3 +32,6 @@ const String routeProduct = '/product';
 
 //=-=-=-=-=- Cart -=-=-=-=-=
 const String routeCart = '/cart';
+
+//=-=-=-=-=- Address -=-=-=-=-=
+const String routeAddAddress = '/add_address';
