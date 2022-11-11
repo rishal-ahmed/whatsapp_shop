@@ -4,22 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
-import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
-import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
+import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
-import 'package:whatsapp_shop/presentation/screens/cart/screen_cart.dart';
-import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final _removeCartProvider =
-    AutoDisposeStateNotifierProvider<CartNotifier, CartState>(
-  (ref) {
-    return CartNotifier();
-  },
-);
+// final _changeQuanityCartProvider =
+//     AutoDisposeStateNotifierProvider<CartNotifier, CartState>(
+//   (ref) {
+//     return CartNotifier();
+//   },
+// );
 
 class CartItemWidget extends ConsumerWidget {
   const CartItemWidget({
@@ -164,10 +161,13 @@ class CartItemWidget extends ConsumerWidget {
                                           ),
                                           kWidth2,
                                           FittedBox(
-                                            child: Icon(
-                                              Icons.add,
-                                              color: primaryTextColor,
-                                              size: 16.sp,
+                                            child: InkWell(
+                                              onTap: () {},
+                                              child: Icon(
+                                                Icons.add,
+                                                color: primaryTextColor,
+                                                size: 16.sp,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -187,9 +187,9 @@ class CartItemWidget extends ConsumerWidget {
                                             onPressed: !shimmer
                                                 ? () {
                                                     ref
-                                                        .read(
-                                                            _removeCartProvider
-                                                                .notifier)
+                                                        .read(CartProvider
+                                                            .removeCartProvider
+                                                            .notifier)
                                                         .emit(
                                                           CartEvent.cartRemove(
                                                               cartId:
@@ -197,18 +197,22 @@ class CartItemWidget extends ConsumerWidget {
                                                         );
 
                                                     ref.listenManual(
-                                                      _removeCartProvider,
+                                                      CartProvider
+                                                          .removeCartProvider,
                                                       (previous, next) {
                                                         log('previous = ${previous?.status}');
                                                         log('next = ${next.status}');
                                                         if (!next.isLoading &&
                                                             next.status) {
                                                           ref.invalidate(
-                                                              cartsProvider);
+                                                              CartProvider
+                                                                  .cartsProvider);
                                                           ref.invalidate(
-                                                              cartSumProvider);
+                                                              CartProvider
+                                                                  .cartSumProvider);
                                                           ref.invalidate(
-                                                              cartCountProvider);
+                                                              CartProvider
+                                                                  .cartCountProvider);
 
                                                           return kSnackBar(
                                                             context: context,

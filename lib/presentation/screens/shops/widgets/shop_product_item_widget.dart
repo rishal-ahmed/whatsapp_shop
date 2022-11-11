@@ -103,90 +103,42 @@ class ShopProductItemWidget extends StatelessWidget {
               ),
             ),
           )
-        : SizedBox(
-            width: 32.w,
-            child: Column(
-              children: [
-                Flexible(
-                  child: Stack(
-                    children: [
-                      ShimmerWidget(
-                        child: Container(
-                          width: 32.w,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffE5E5E5)),
-                            borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(10)),
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                  'https://images.unsplash.com/photo-1542219550-37153d387c27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+        : ShimmerWidget(
+            child: SizedBox(
+              width: 32.w,
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Container(
+                      width: 32.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: const Color(0xffE5E5E5)),
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(10)),
+                        color: kWhite,
                       ),
-                      Positioned(
-                        right: 5,
-                        top: 5,
-                        child: ShimmerWidget(
-                          child: CircleAvatar(
-                            backgroundColor: primaryTextColor,
-                            radius: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.all(3),
-                              child: FittedBox(
-                                child: Text(
-                                  '$discount%\nOff',
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                dHeight05,
-                ShimmerWidget(
-                  child: Text(
-                    'Product\n',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: const Color(0xff333333),
-                      fontSize: 13.sp,
-                    ),
-                    maxLines: 2,
-                  ),
-                ),
-                dHeight03,
-                ShimmerWidget(
-                  child: Text.rich(
-                    TextSpan(
-                      text: '₹00.00  ',
-                      style: TextStyle(
-                        color: secondaryTextColor,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: '₹00.00',
-                          style: TextStyle(
-                            color: primaryTextColor,
-                            fontSize: 12.sp,
-                            decoration: TextDecoration.lineThrough,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ],
                     ),
                   ),
-                )
-              ],
+                  dHeight05,
+                  FractionallySizedBox(
+                    widthFactor: .3,
+                    child: Container(
+                      color: kWhite,
+                      height: 10.sp,
+                    ),
+                  ),
+                  SizedBox(height: 14.sp),
+                  FractionallySizedBox(
+                    widthFactor: .5,
+                    child: Container(
+                      color: kWhite,
+                      height: 10.sp,
+                    ),
+                  ),
+                  dHeight03,
+                  SizedBox(height: 15.sp),
+                ],
+              ),
             ),
           );
   }

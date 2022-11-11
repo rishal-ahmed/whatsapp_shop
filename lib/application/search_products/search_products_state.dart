@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:whatsapp_shop/domain/models/product/product_model.dart';
 
 part 'search_products_state.freezed.dart';
 
@@ -8,7 +7,7 @@ class SearchProductsState with _$SearchProductsState {
   const factory SearchProductsState({
     required bool isLoading,
     required bool isError,
-    @Default([]) List<ProductModel> products,
+    @Default([]) List products,
   }) = _SearchProductsState;
   const SearchProductsState._();
 

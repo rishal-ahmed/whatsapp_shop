@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
@@ -15,7 +13,6 @@ class CartNotifier extends StateNotifier<CartState> {
       //=-=-=-=-=-=-=-=-=-=- Add Cart Event -=-=-=-=-=-=-=-=-=-=
       addCart: (eventAdd) async {
         // Loading
-        log('========== Loading ==========');
         state = initialState.copyWith(isLoading: true);
 
         // Add to Cart Api
@@ -26,7 +23,6 @@ class CartNotifier extends StateNotifier<CartState> {
           quantity: eventAdd.quantity,
         );
 
-        log('========== Folding ==========');
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
           (l) => initialState.copyWith(isError: true),
@@ -35,7 +31,6 @@ class CartNotifier extends StateNotifier<CartState> {
         );
 
         // Notify UI
-        log('========== State ==========');
         state = cartState;
       },
 
@@ -105,6 +100,26 @@ class CartNotifier extends StateNotifier<CartState> {
         // Cart Remove Api
         final result =
             await CartRepository().cartRemove(cartId: eventRemove.cartId);
+
+        final CartState cartState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(status: success),
+        );
+
+        // Notify UI
+        state = cartState;
+      },
+
+      //=-=-=-=-=-=-=-=-=-=- Cart Remove Event -=-=-=-=-=-=-=-=-=-=
+      cartClear: (eventClear) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Cart Clear Api
+        final result =
+            await CartRepository().cartClear(userId: eventClear.userId);
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=

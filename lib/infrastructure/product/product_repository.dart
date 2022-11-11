@@ -52,7 +52,7 @@ class ProductRepository {
   }
 
   //==================== Search Products ====================
-  Future<Either<MainFailures, List<ProductModel>>> searchProducts({
+  Future<Either<MainFailures, List>> searchProducts({
     required int shopId,
     int categoryId = 0,
     required String keyword,
@@ -73,22 +73,17 @@ class ProductRepository {
         final Map result = json.decode(response.data) as Map;
 
         if (result['sts'] == '01') {
-          List<ProductModel> shops = [];
-          if (result['shops'] is List) {
-            shops = (result['shops'] as List)
-                .map((shop) => ProductModel.fromJson(shop))
-                .toList();
-          }
+          final List products = result['products'] as List;
 
-          return Right(shops);
+          return Right(products);
         } else {
           return const Left(MainFailures.clientFailure());
         }
       } else {
         return const Left(MainFailures.serverFailure());
       }
-    } catch (e) {
-      log('Exception : $e');
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
       return const Left(MainFailures.clientFailure());
     }
   }

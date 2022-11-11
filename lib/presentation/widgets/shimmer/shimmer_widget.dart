@@ -11,6 +11,8 @@ class ShimmerWidget extends StatelessWidget {
     this.width,
     this.height,
     this.color = kWhite,
+    this.baseColor,
+    this.highlightColor,
   });
 
   final Widget child;
@@ -18,14 +20,14 @@ class ShimmerWidget extends StatelessWidget {
   final bool isLoading;
   final double? width;
   final double? height;
-  final Color? color;
+  final Color? color, baseColor, highlightColor;
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? Shimmer.fromColors(
-            baseColor: kColorShimmerBase,
-            highlightColor: kColorShimmerHighlight,
+            baseColor: baseColor ?? kColorShimmerBase,
+            highlightColor: highlightColor ?? kColorShimmerHighlight,
             child: height != null
                 ? Container(
                     color: color,

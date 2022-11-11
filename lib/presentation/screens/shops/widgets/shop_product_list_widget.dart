@@ -75,8 +75,6 @@ class ShopProductList extends ConsumerWidget {
                                 context, routeProduct,
                                 arguments: product.id);
                           } else {
-                            // Navigate to Product Page
-
                             Navigator.pushNamed(context, routeProduct,
                                 arguments: product.id);
                           }

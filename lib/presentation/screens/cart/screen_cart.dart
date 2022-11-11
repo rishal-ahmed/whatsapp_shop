@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
-import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
+import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_item_widget.dart';
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_title_child_widget.dart';
@@ -16,25 +16,14 @@ import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_butto
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final cartsProvider =
-    AutoDisposeStateNotifierProviderFamily<CartNotifier, CartState, CartEvent>(
-        (ref, event) {
-  return CartNotifier()..emit(event);
-});
-
-final cartSumProvider =
-    AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier()
-    ..emit(CartEvent.cartSum(userId: UserUtils.instance.userModel!.id));
-});
-
 class ScreenCart extends ConsumerWidget {
   const ScreenCart({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final CartState state = ref.watch(cartsProvider(
+    final CartState state = ref.watch(CartProvider.cartsProvider(
         CartEvent.carts(userId: UserUtils.instance.userModel!.id)));
+
     return Scaffold(
       appBar: const AppBarWidget(
           defualt: true, centerTitle: false, title: 'Cart', cartTap: false),
@@ -75,7 +64,8 @@ class ScreenCart extends ConsumerWidget {
                   //==================== Bill Details Field ====================
                   Consumer(
                     builder: (context, ref, _) {
-                      final CartState sumState = ref.watch(cartSumProvider);
+                      final CartState sumState =
+                          ref.watch(CartProvider.cartSumProvider);
                       return CartTitleChildWidget(
                         title: 'Bill Details',
                         shimmer: state.isLoading,

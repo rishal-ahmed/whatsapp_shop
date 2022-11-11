@@ -24,6 +24,9 @@ class CartEvent with _$CartEvent {
   //=-=-=-=-=- Cart Remove Event -=-=-=-=-=
   factory CartEvent.cartRemove({required int cartId}) = _CartEventRemove;
 
+  //=-=-=-=-=- Cart Clear Event -=-=-=-=-=
+  factory CartEvent.cartClear({required int userId}) = _CartEventClear;
+
   //=-=-=-=-=- Cart Change Quantity Event -=-=-=-=-=
   factory CartEvent.cartChangeQuanity(
       {required int cartId, required int quantity}) = _CartEventChangeQuantity;

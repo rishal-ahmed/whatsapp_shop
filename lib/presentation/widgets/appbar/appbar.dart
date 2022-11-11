@@ -3,18 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
-import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
+import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
-
-final cartCountProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier()
-    ..emit(CartEvent.cartCount(userId: UserUtils.instance.userModel!.id));
-});
+import 'package:whatsapp_shop/presentation/widgets/dialogs/alert_dialog_custom.dart';
 
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   const AppBarWidget({
@@ -40,6 +37,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final bool defualt;
   final bool isDrawer;
   final bool cartTap;
+
   @override
   Widget build(BuildContext context) {
     return defualt
@@ -74,6 +72,71 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
             centerTitle: centerTitle,
             bottom: bottom,
             actions: [
+              if (!cartTap)
+                Consumer(
+                  builder: (context, ref, _) {
+                    ref.listen(
+                      CartProvider.cartClearProvider,
+                      (previous, next) {
+                        if (!next.isLoading && next.status) {
+                          kSnackBar(
+                            context: context,
+                            content: 'Cart cleared successfully',
+                            success: true,
+                          );
+                          ref.invalidate(CartProvider.cartsProvider);
+                          ref.invalidate(CartProvider.cartSumProvider);
+                          ref.invalidate(CartProvider.cartCountProvider);
+                        }
+
+                        if (!next.isLoading && next.isError) {
+                          return kSnackBar(
+                            context: context,
+                            content: 'Something went wrong',
+                            error: true,
+                          );
+                        }
+                      },
+                    );
+                    return IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => KAlertDialog(
+                            title: Text(
+                              'Clear Cart',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: primaryTextColor,
+                              ),
+                            ),
+                            content: Text(
+                              'Are you sure you want to clear all carts?',
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: primaryTextColor,
+                              ),
+                            ),
+                            submitText: 'Clear',
+                            submitAction: () async {
+                              Navigator.pop(ctx);
+                              ref
+                                  .read(CartProvider.cartClearProvider.notifier)
+                                  .emit(CartEvent.cartClear(
+                                      userId:
+                                          UserUtils.instance.userModel!.id));
+                            },
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.clear_all,
+                        color: Color(0XFF8D9BA3),
+                      ),
+                    );
+                  },
+                ),
               Center(
                 child: IconButton(
                   icon: Stack(
@@ -84,7 +147,8 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       ),
                       Consumer(
                         builder: (context, ref, _) {
-                          final CartState state = ref.watch(cartCountProvider);
+                          final CartState state =
+                              ref.watch(CartProvider.cartCountProvider);
                           if (state.isError ||
                               state.isLoading ||
                               state.count == null ||

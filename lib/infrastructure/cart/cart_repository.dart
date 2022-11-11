@@ -178,6 +178,35 @@ class CartRepository {
     }
   }
 
+  //==================== Cart Clear ====================
+  Future<Either<MainFailures, bool>> cartClear({required int userId}) async {
+    try {
+      final FormData form = FormData.fromMap({"userid": userId});
+
+      final Response response = await dio.post(
+        ApiEndpoints.cartClear,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Cart Clear');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
   //==================== Cart Change Quantity ====================
   Future<Either<MainFailures, bool>> cartChangeQuantity({
     required int cartId,
@@ -196,13 +225,13 @@ class CartRepository {
           name: 'Cart Change Quantity');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map result = json.decode(response.data) as Map;
+        // final Map result = json.decode(response.data) as Map;
 
-        if (result['sts'] == '01') {
-          return const Right(true);
-        } else {
-          return const Left(MainFailures.clientFailure());
-        }
+        // if (result['sts'] == '01') {
+        return const Right(true);
+        // } else {
+        //   return const Left(MainFailures.clientFailure());
+        // }
       } else {
         return const Left(MainFailures.serverFailure());
       }

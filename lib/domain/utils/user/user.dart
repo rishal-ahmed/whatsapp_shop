@@ -17,6 +17,9 @@ class UserUtils {
     return instance;
   }
 
+  //========== Variables ==========
+  int userId = 0;
+
   //========== Model Classes ==========
   UserModel? userModel;
 
@@ -24,11 +27,13 @@ class UserUtils {
   void saveUserFromString({required String userString}) {
     final UserModel user = UserModel.fromJson(jsonDecode(userString));
     userModel = user;
+    userId = user.id;
   }
 
   //========== Save User on Login ==========
   void saveUser({required UserModel user}) async {
     userModel = user;
+    userId = user.id;
   }
 
   //========== Logout User ==========

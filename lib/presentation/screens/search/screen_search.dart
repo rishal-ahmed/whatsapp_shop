@@ -8,6 +8,7 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/utils/debouncer/debouncer.dart';
 import 'package:whatsapp_shop/presentation/screens/search/widgets/search_product_item_widget.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
 
 final _searchProductProvider = StateNotifierProvider.autoDispose<
@@ -56,8 +57,8 @@ class ScreenSearch extends ConsumerWidget {
               hintText: 'Search Products, Category and More',
               fontSize: 12,
               onChanged: (query) {
-                if (query != null && query.isEmpty) {
-                  Debouncer.timer?.cancel();
+                if (query != null && query.isEmpty || query!.startsWith(' ')) {
+                  return Debouncer.timer?.cancel();
                 }
 
                 final Debouncer debouncer = Debouncer();
@@ -65,7 +66,7 @@ class ScreenSearch extends ConsumerWidget {
                 debouncer.run(() {
                   ref.read(_searchProductProvider.notifier).emit(
                         SearchProductsEvent.search(
-                            shopId: shopId, keyword: query!),
+                            shopId: shopId, keyword: query),
                       );
 
                   ref.read(_searchQueryProvider.notifier).state = query;
@@ -98,15 +99,12 @@ class ScreenSearch extends ConsumerWidget {
                   final state = ref.watch(_searchProductProvider);
                   final String? query = ref.read(_searchQueryProvider);
 
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
                   if (state.isError) {
-                    return const Center(child: Text('Something went wrong'));
+                    return const SomethingWentWrongWidget();
                   }
 
-                  if (state.products.isEmpty &&
+                  if (!state.isLoading &&
+                      state.products.isEmpty &&
                       (query != null && query.isNotEmpty)) {
                     return const Center(
                         child: Text(
@@ -116,16 +114,22 @@ class ScreenSearch extends ConsumerWidget {
                   }
 
                   return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      childAspectRatio: 1 / 1.1,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
+                      childAspectRatio: 1 / 1,
+                      crossAxisSpacing: 2.w,
+                      mainAxisSpacing: 2.w,
                     ),
-                    itemCount: state.products.length,
+                    itemCount: state.isLoading ? 18 : state.products.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return const SearchProductItemWidget();
+                      Map product = {};
+                      if (!state.isLoading) {
+                        product = state.products[index];
+                      }
+                      return SearchProductItemWidget(
+                        product: product,
+                        shimmer: state.isLoading,
+                      );
                     },
                   );
                 },

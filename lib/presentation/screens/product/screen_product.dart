@@ -5,14 +5,14 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
-import 'package:whatsapp_shop/application/cart/cart_notifier.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
 import 'package:whatsapp_shop/application/product/product_event.dart';
-import 'package:whatsapp_shop/application/product/product_notifier.dart';
 import 'package:whatsapp_shop/application/product/product_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
+import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/provider/product_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_list_widget.dart';
@@ -22,16 +22,6 @@ import 'package:whatsapp_shop/presentation/widgets/dropdown/custom_dropdown_widg
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
-final productProvider =
-    StateNotifierProvider.family<ProductNotifier, ProductState, ProductEvent>(
-        (ref, event) {
-  return ProductNotifier()..emit(event);
-});
-
-final addToCartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier();
-});
-
 class ScreenProduct extends ConsumerWidget {
   const ScreenProduct({required this.productId, super.key});
   final int productId;
@@ -39,8 +29,31 @@ class ScreenProduct extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     log('Screen Product => Build()');
-    final ProductState state =
-        ref.watch(productProvider(ProductEvent.product(productId: productId)));
+    final ProductState state = ref.watch(ProductProvider.productProvider(
+        ProductEvent.product(productId: productId)));
+
+    ref.listen(
+      CartProvider.addToCartProvider,
+      (previous, next) {
+        if (!next.isLoading && next.status) {
+          ref.invalidate(CartProvider.cartCountProvider);
+          return kSnackBar(
+            context: context,
+            content: 'Added to cart',
+            success: true,
+            duration: 2,
+          );
+        }
+
+        if (!next.isLoading && next.isError) {
+          return kSnackBar(
+            context: context,
+            content: 'Oops, Something went wrong. please try again later.',
+            error: true,
+          );
+        }
+      },
+    );
     return Scaffold(
       appBar: const AppBarWidget(defualt: true),
       backgroundColor: state.isError ? kWhite : kBackgroundColor,
@@ -288,32 +301,9 @@ class ScreenProduct extends ConsumerWidget {
                               //========== Cart Button ==========
                               Consumer(
                                 builder: (context, ref, _) {
+                                  log('Add to cart .....');
                                   final CartState cartState =
-                                      ref.watch(addToCartProvider);
-
-                                  ref.listen(
-                                    addToCartProvider,
-                                    (previous, next) {
-                                      if (!next.isLoading && next.status) {
-                                        ref.invalidate(cartCountProvider);
-                                        return kSnackBar(
-                                          context: context,
-                                          content: 'Added to cart',
-                                          success: true,
-                                          duration: 2,
-                                        );
-                                      }
-
-                                      if (!next.isLoading && next.isError) {
-                                        return kSnackBar(
-                                          context: context,
-                                          content:
-                                              'Oops, Something went wrong. please try again later.',
-                                          error: true,
-                                        );
-                                      }
-                                    },
-                                  );
+                                      ref.watch(CartProvider.addToCartProvider);
 
                                   return CustomMaterialBtton(
                                     buttonText: 'Add to Cart',
@@ -326,7 +316,10 @@ class ScreenProduct extends ConsumerWidget {
                                       final UserModel user =
                                           UserUtils.instance.userModel!;
 
-                                      ref.read(addToCartProvider.notifier).emit(
+                                      ref
+                                          .read(CartProvider
+                                              .addToCartProvider.notifier)
+                                          .emit(
                                             CartEvent.addCart(
                                               userId: user.id,
                                               productId: productId,

@@ -19,8 +19,8 @@ class SearchProductNotifier extends StateNotifier<SearchProductsState> {
       );
 
       final SearchProductsState searchProductsState = result.fold(
-        (l) => SearchProductsState.initial().copyWith(isError: true),
-        (r) => SearchProductsState.initial().copyWith(products: r),
+        (failure) => SearchProductsState.initial().copyWith(isError: true),
+        (success) => SearchProductsState.initial().copyWith(products: success),
       );
 
       // Notify UI
