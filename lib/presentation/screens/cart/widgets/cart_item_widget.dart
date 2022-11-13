@@ -107,7 +107,7 @@ class CartItemWidget extends ConsumerWidget {
                                   children: [
                                     TextSpan(
                                       text: !shimmer
-                                          ? '${cartItem!.unitOfferPrice}'
+                                          ? '₹${cartItem!.unitOfferPrice}'
                                           : '₹0.00',
                                       style: TextStyle(
                                         fontSize: 12.5.sp,

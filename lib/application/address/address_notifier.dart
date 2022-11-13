@@ -31,7 +31,24 @@ class AddressNotifier extends StateNotifier<AddressState> {
         state = addressState;
       },
       //=-=-=-=-=-=-=-=-=-=- Get Addresses Event -=-=-=-=-=-=-=-=-=-=
-      getAddresses: (eventAdresses) {},
+      getAddresses: (eventAdresses) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Get Addresses Api
+        final result = await AddressRepository()
+            .getAddresses(userId: eventAdresses.userId);
+
+        final AddressState addressState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(addresses: success),
+        );
+
+        // Notify UI
+        state = addressState;
+      },
     );
   }
 }

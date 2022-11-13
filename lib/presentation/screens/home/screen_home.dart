@@ -227,7 +227,7 @@ class ScreenHome extends ConsumerWidget {
                         },
                       ),
                       kHeight1,
-                      // //==================== Hotels & Restaurant ====================
+                      //==================== Hotels & Restaurant ====================
                       Consumer(
                         builder: (context, ref, _) {
                           return ShopsByCategoryListWidget(

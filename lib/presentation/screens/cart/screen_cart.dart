@@ -22,7 +22,7 @@ class ScreenCart extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final CartState state = ref.watch(CartProvider.cartsProvider(
-        CartEvent.carts(userId: UserUtils.instance.userModel!.id)));
+        CartEvent.carts(userId: UserUtils.instance.userId)));
 
     return Scaffold(
       appBar: const AppBarWidget(
@@ -40,7 +40,7 @@ class ScreenCart extends ConsumerWidget {
                         EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.isLoading ? 3 : state.carts.length,
+                      itemCount: state.isLoading ? 2 : state.carts.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         CartModel? cartItem;
@@ -68,9 +68,9 @@ class ScreenCart extends ConsumerWidget {
                           ref.watch(CartProvider.cartSumProvider);
                       return CartTitleChildWidget(
                         title: 'Bill Details',
-                        shimmer: state.isLoading,
+                        shimmer: sumState.isLoading,
                         child: ShimmerWidget(
-                          isLoading: state.isLoading,
+                          isLoading: sumState.isLoading,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -164,7 +164,7 @@ class ScreenCart extends ConsumerWidget {
                   kHeight05,
 
                   //==================== Delivery Address Field ====================
-                  CartDeliveryAddressField(state: state),
+                  const CartDeliveryAddressField(),
 
                   kHeight05,
 

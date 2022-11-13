@@ -16,7 +16,7 @@ class AddressRepository {
     required int userId,
   }) async {
     try {
-      final FormData form = FormData.fromMap({"userid": userId});
+      final FormData form = FormData.fromMap({"user_id": userId});
 
       final Response response = await dio.post(
         ApiEndpoints.addresses,

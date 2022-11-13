@@ -42,7 +42,7 @@ class ScreenAddAddress extends ConsumerWidget {
             success: true,
           );
 
-          // Navigator.pop(context);
+          Navigator.pop(context, true);
         }
 
         if (!next.isLoading && next.isError) {
