@@ -225,13 +225,13 @@ class CartRepository {
           name: 'Cart Change Quantity');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // final Map result = json.decode(response.data) as Map;
+        final Map result = json.decode(response.data) as Map;
 
-        // if (result['sts'] == '01') {
-        return const Right(true);
-        // } else {
-        //   return const Left(MainFailures.clientFailure());
-        // }
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
       } else {
         return const Left(MainFailures.serverFailure());
       }

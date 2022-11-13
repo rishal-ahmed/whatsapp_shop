@@ -44,4 +44,17 @@ class CartProvider {
       return CartNotifier();
     },
   );
+
+  //==--==--==--==--==-- Cart Change Quantity --==--==--==--==--==
+  static final changeQuantity =
+      AutoDisposeStateNotifierProvider<CartNotifier, CartState>(
+    (ref) {
+      return CartNotifier();
+    },
+  );
+
+  //==--==--==--==--==-- Payment Options --==--==--==--==--==
+  static final selectedPaymentProvider = StateProvider<int?>((ref) {
+    return null;
+  });
 }

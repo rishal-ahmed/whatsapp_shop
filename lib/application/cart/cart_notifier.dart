@@ -139,7 +139,9 @@ class CartNotifier extends StateNotifier<CartState> {
 
         // Cart Change Quantity Api
         final result = await CartRepository().cartChangeQuantity(
-            cartId: eventQuantity.cartId, quantity: eventQuantity.quantity);
+          cartId: eventQuantity.cartId,
+          quantity: eventQuantity.quantity,
+        );
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=

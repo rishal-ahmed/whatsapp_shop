@@ -133,31 +133,49 @@ class ScreenCart extends ConsumerWidget {
                     shimmer: state.isLoading,
                     child: ShimmerWidget(
                       isLoading: state.isLoading,
-                      child: Column(
-                        children: [
-                          RadioListTile(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            value: true,
-                            groupValue: true,
-                            dense: true,
-                            onChanged: (value) {},
-                            title: Text(
-                              'Would you like to pay online',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                          ),
-                          RadioListTile(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            value: true,
-                            groupValue: false,
-                            dense: true,
-                            onChanged: (value) {},
-                            title: Text(
-                              'Would you like to pay cash on delivery',
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
-                          ),
-                        ],
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          final int? selectedPayment =
+                              ref.watch(CartProvider.selectedPaymentProvider);
+                          return Column(
+                            children: [
+                              RadioListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.trailing,
+                                value: 1,
+                                groupValue: selectedPayment,
+                                dense: true,
+                                onChanged: (value) {
+                                  ref
+                                      .read(CartProvider
+                                          .selectedPaymentProvider.notifier)
+                                      .state = 1;
+                                },
+                                title: Text(
+                                  'Would you like to pay online',
+                                  style: TextStyle(fontSize: 14.sp),
+                                ),
+                              ),
+                              RadioListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.trailing,
+                                value: 2,
+                                groupValue: selectedPayment,
+                                dense: true,
+                                onChanged: (value) {
+                                  ref
+                                      .read(CartProvider
+                                          .selectedPaymentProvider.notifier)
+                                      .state = 2;
+                                },
+                                title: Text(
+                                  'Would you like to pay cash on delivery',
+                                  style: TextStyle(fontSize: 14.sp),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ),

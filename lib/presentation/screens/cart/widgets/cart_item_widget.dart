@@ -8,15 +8,9 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
 import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/utils/debouncer/debouncer.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
-
-// final _changeQuanityCartProvider =
-//     AutoDisposeStateNotifierProvider<CartNotifier, CartState>(
-//   (ref) {
-//     return CartNotifier();
-//   },
-// );
 
 class CartItemWidget extends ConsumerWidget {
   const CartItemWidget({
@@ -30,6 +24,9 @@ class CartItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final quantityProvider = StateProvider<int?>((ref) {
+      return cartItem?.quantity;
+    });
     return ShimmerWidget(
       isLoading: shimmer,
       child: Container(
@@ -139,35 +136,103 @@ class CartItemWidget extends ConsumerWidget {
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           FittedBox(
-                                            child: Icon(
-                                              Icons.remove,
-                                              color: primaryTextColor,
-                                              size: 16.sp,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Debouncer.timer?.cancel();
+                                                final int? qty =
+                                                    ref.read(quantityProvider);
+
+                                                if (qty != null && qty > 1) {
+                                                  ref
+                                                      .read(quantityProvider
+                                                          .notifier)
+                                                      .update(
+                                                    (state) {
+                                                      return state! - 1;
+                                                    },
+                                                  );
+
+                                                  final Debouncer debouncer =
+                                                      Debouncer();
+                                                  debouncer.run(() {
+                                                    ref
+                                                        .read(CartProvider
+                                                            .changeQuantity
+                                                            .notifier)
+                                                        .emit(CartEvent
+                                                            .cartChangeQuanity(
+                                                                cartId:
+                                                                    cartItem!
+                                                                        .id,
+                                                                quantity:
+                                                                    qty - 1));
+                                                  });
+                                                }
+                                              },
+                                              child: Icon(
+                                                Icons.remove,
+                                                color: primaryTextColor,
+                                                size: 16.sp,
+                                              ),
                                             ),
                                           ),
                                           kWidth2,
                                           Flexible(
-                                            child: Text(
-                                              !shimmer
-                                                  ? '${cartItem!.quantity}'
-                                                  : '1',
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                color: primaryTextColor,
-                                                fontSize: 14.sp,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                            child: Consumer(
+                                              builder: (context, ref, _) {
+                                                final int? quantity =
+                                                    ref.watch(quantityProvider);
+                                                ref.watch(CartProvider
+                                                    .changeQuantity);
+                                                return Text(
+                                                  !shimmer && quantity != null
+                                                      ? '$quantity'
+                                                      : '0',
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    color: primaryTextColor,
+                                                    fontSize: 14.sp,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                           kWidth2,
-                                          FittedBox(
-                                            child: InkWell(
-                                              onTap: () {},
-                                              child: Icon(
-                                                Icons.add,
-                                                color: primaryTextColor,
-                                                size: 16.sp,
-                                              ),
+                                          InkWell(
+                                            onTap: () {
+                                              Debouncer.timer?.cancel();
+                                              final int? qty =
+                                                  ref.read(quantityProvider);
+
+                                              if (qty != null) {
+                                                ref
+                                                    .read(quantityProvider
+                                                        .notifier)
+                                                    .update(
+                                                        (state) => state! + 1);
+
+                                                final Debouncer debouncer =
+                                                    Debouncer();
+                                                debouncer.run(() {
+                                                  ref
+                                                      .read(CartProvider
+                                                          .changeQuantity
+                                                          .notifier)
+                                                      .emit(CartEvent
+                                                          .cartChangeQuanity(
+                                                              cartId:
+                                                                  cartItem!.id,
+                                                              quantity:
+                                                                  qty + 1));
+                                                });
+                                              }
+                                            },
+                                            child: Icon(
+                                              Icons.add,
+                                              color: primaryTextColor,
+                                              size: 16.sp,
                                             ),
                                           ),
                                         ],

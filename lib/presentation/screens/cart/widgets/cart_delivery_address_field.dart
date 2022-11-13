@@ -30,6 +30,14 @@ class CartDeliveryAddressField extends ConsumerWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     final AddressModel address = state.addresses[index];
+                    if (address.defaultAddress == "1") {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref
+                            .read(AddressProvider
+                                .selectedAddressProvider.notifier)
+                            .state = address.id;
+                      });
+                    }
                     return Consumer(
                       builder: (context, ref, _) {
                         final int? selctedAddress =

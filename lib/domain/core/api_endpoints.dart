@@ -31,4 +31,5 @@ class ApiEndpoints {
   static const String addressAdd = '${baseUrl}address/create';
   static const String addresses = '${baseUrl}address';
   static const String addressRemove = '${baseUrl}address/remove/';
+  static const String addressDefault = '${baseUrl}address/default';
 }
