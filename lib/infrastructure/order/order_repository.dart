@@ -64,7 +64,7 @@ class OrderRepository {
       final FormData form = FormData.fromMap({"user_id": userId});
 
       final Response response = await dio.post(
-        ApiEndpoints.order,
+        ApiEndpoints.orders,
         data: form,
       );
 

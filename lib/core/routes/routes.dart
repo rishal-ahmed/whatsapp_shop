@@ -40,3 +40,6 @@ const String routeCart = '/cart';
 //=-=-=-=-=- Address -=-=-=-=-=
 const String routeAddress = '/address';
 const String routeAddAddress = '/add_address';
+
+//=-=-=-=-=- Order -=-=-=-=-=
+const String routeOrder = '/order';

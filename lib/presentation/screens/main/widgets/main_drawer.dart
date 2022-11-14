@@ -111,6 +111,9 @@ class MainDrawer extends StatelessWidget {
   void onTap(BuildContext context, int index) async {
     if (index != 4) Navigator.pop(context);
     switch (index) {
+      case 1:
+        Navigator.pushNamed(context, routeOrder);
+        break;
       case 2:
         Navigator.pushNamed(context, routeAddress);
         break;

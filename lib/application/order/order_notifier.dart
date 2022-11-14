@@ -30,7 +30,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
           //=-=-=-=- Failure -=-=-=-=-=
           (l) => initialState.copyWith(isError: true),
           //=-=-=-=- Success -=-=-=-=-=
-          (r) => initialState.copyWith(status: true),
+          (r) => initialState.copyWith(status: r),
         );
 
         // Notify UI
@@ -41,15 +41,15 @@ class OrderNotifier extends StateNotifier<OrderState> {
         // Loading
         state = initialState.copyWith(isLoading: true);
 
-        // Order Api
+        // Orders Api
         final result =
             await OrderRepository().orders(userId: eventOrders.userId);
 
         final OrderState orderState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
-          (l) => initialState.copyWith(isError: true),
+          (failure) => initialState.copyWith(isError: true),
           //=-=-=-=- Success -=-=-=-=-=
-          (r) => initialState.copyWith(status: true),
+          (orders) => initialState.copyWith(orders: orders),
         );
 
         // Notify UI

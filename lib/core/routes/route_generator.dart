@@ -9,6 +9,7 @@ import 'package:whatsapp_shop/presentation/screens/cart/screen_cart.dart';
 import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/screen_main.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
+import 'package:whatsapp_shop/presentation/screens/order/screen_orders.dart';
 import 'package:whatsapp_shop/presentation/screens/product/screen_categories.dart';
 import 'package:whatsapp_shop/presentation/screens/product/screen_product.dart';
 import 'package:whatsapp_shop/presentation/screens/product/screen_products.dart';
@@ -105,6 +106,10 @@ class RouteGenerator {
               builder: (_) => ScreenAddAddress(addressModel: args));
         }
         return MaterialPageRoute(builder: (_) => const ScreenAddAddress());
+
+      //==================== Order ====================
+      case routeOrder:
+        return MaterialPageRoute(builder: (_) => const ScreenOrders());
 
       default:
         return _errorRoute();
