@@ -36,11 +36,6 @@ class AddressProvider {
     return AddressNotifier();
   });
 
-  //==--==--==--==--==-- Selected Address Cart --==--==--==--==--==
-  static final selectedAddressProvider = StateProvider.autoDispose<int?>((ref) {
-    return null;
-  });
-
   //==--==--==--==--==-- Selected Type --==--==--==--==--==
   static final selectedTypeProvider =
       StateProvider.autoDispose<String>((ref) => 'Home');

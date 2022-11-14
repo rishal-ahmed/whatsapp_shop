@@ -3,10 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/cart/cart_event.dart';
 import 'package:whatsapp_shop/application/cart/cart_state.dart';
+import 'package:whatsapp_shop/application/order/order_event.dart';
+import 'package:whatsapp_shop/application/order/order_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
-import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/provider/cart/cart_provider.dart';
+import 'package:whatsapp_shop/domain/provider/order/order_provider.dart';
+import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_delivery_address_field.dart';
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_item_widget.dart';
@@ -135,21 +139,21 @@ class ScreenCart extends ConsumerWidget {
                       isLoading: state.isLoading,
                       child: Consumer(
                         builder: (context, ref, _) {
-                          final int? selectedPayment =
+                          final String? selectedPayment =
                               ref.watch(CartProvider.selectedPaymentProvider);
                           return Column(
                             children: [
                               RadioListTile(
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
-                                value: 1,
+                                value: 'Online',
                                 groupValue: selectedPayment,
                                 dense: true,
                                 onChanged: (value) {
                                   ref
                                       .read(CartProvider
                                           .selectedPaymentProvider.notifier)
-                                      .state = 1;
+                                      .state = 'Online';
                                 },
                                 title: Text(
                                   'Would you like to pay online',
@@ -159,14 +163,14 @@ class ScreenCart extends ConsumerWidget {
                               RadioListTile(
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
-                                value: 2,
+                                value: 'CoD',
                                 groupValue: selectedPayment,
                                 dense: true,
                                 onChanged: (value) {
                                   ref
                                       .read(CartProvider
                                           .selectedPaymentProvider.notifier)
-                                      .state = 2;
+                                      .state = 'CoD';
                                 },
                                 title: Text(
                                   'Would you like to pay cash on delivery',
@@ -192,13 +196,92 @@ class ScreenCart extends ConsumerWidget {
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                      child: CustomMaterialBtton(
-                        shimmer: state.isLoading,
-                        buttonText: 'Buy Now',
-                        color: primaryColor,
-                        borderColor: primaryColor,
-                        borderRadius: BorderRadius.circular(12),
-                        onPressed: () {},
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          final OrderState orderState =
+                              ref.watch(OrderProvider.orderProvider);
+
+                          return CustomMaterialBtton(
+                            shimmer: state.isLoading,
+                            isLoading: orderState.isLoading,
+                            buttonText: 'Buy Now',
+                            color: primaryColor,
+                            borderColor: primaryColor,
+                            borderRadius: BorderRadius.circular(12),
+                            onPressed: () {
+                              // Cart is Empty
+                              if (state.carts.isEmpty) {
+                                return kSnackBar(
+                                  context: context,
+                                  content: 'Your cart is empty',
+                                  error: true,
+                                );
+                              }
+                              final int shopId = state.carts.first.shopId;
+
+                              // Payment Option is Null
+                              final String? paymentType = ref
+                                  .read(CartProvider.selectedPaymentProvider);
+                              if (paymentType == null) {
+                                return kSnackBar(
+                                  context: context,
+                                  content: 'Please choose a payment option',
+                                  error: true,
+                                );
+                              }
+
+                              // Deliver Address is Null
+                              final int? addressId = ref
+                                  .read(CartProvider.selectedAddressProvider);
+                              if (addressId == null) {
+                                return kSnackBar(
+                                  context: context,
+                                  content: 'Choose a address for delivery',
+                                  error: true,
+                                );
+                              }
+
+                              ref
+                                  .read(OrderProvider.orderProvider.notifier)
+                                  .emit(
+                                    OrderEvent.order(
+                                      userId: UserUtils.instance.userId,
+                                      shopId: shopId,
+                                      paymentType: paymentType,
+                                      addressId: addressId,
+                                    ),
+                                  );
+
+                              ref.listenManual(
+                                OrderProvider.orderProvider,
+                                (previous, next) {
+                                  if (!next.isLoading && next.status) {
+                                    kSnackBar(
+                                      context: context,
+                                      content: 'Order placed successfully',
+                                      success: true,
+                                    );
+
+                                    // Refresh cart count
+                                    ref.invalidate(
+                                        CartProvider.cartCountProvider);
+
+                                    Navigator.pop(context);
+                                  }
+
+                                  if (!next.isLoading && next.isError) {
+                                    return kSnackBar(
+                                      context: context,
+                                      content:
+                                          'Oops, Something went wrong. please try again.',
+                                      error: true,
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),

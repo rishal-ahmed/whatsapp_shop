@@ -60,7 +60,13 @@ class CartProvider {
   );
 
   //==--==--==--==--==-- Payment Options --==--==--==--==--==
-  static final selectedPaymentProvider = StateProvider<int?>((ref) {
+  static final selectedPaymentProvider =
+      StateProvider.autoDispose<String?>((ref) {
+    return null;
+  });
+
+  //==--==--==--==--==-- Selected Address Cart --==--==--==--==--==
+  static final selectedAddressProvider = StateProvider.autoDispose<int?>((ref) {
     return null;
   });
 }

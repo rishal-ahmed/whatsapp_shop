@@ -8,7 +8,7 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
-import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/provider/cart/cart_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/widgets/dialogs/alert_dialog_custom.dart';

@@ -6,7 +6,7 @@ import 'package:whatsapp_shop/core/routes/route_generator.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

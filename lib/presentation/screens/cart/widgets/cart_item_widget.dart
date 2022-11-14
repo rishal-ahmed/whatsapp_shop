@@ -7,7 +7,7 @@ import 'package:whatsapp_shop/application/cart/cart_event.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/cart/cart_model.dart';
-import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
+import 'package:whatsapp_shop/domain/provider/cart/cart_provider.dart';
 import 'package:whatsapp_shop/domain/utils/debouncer/debouncer.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';

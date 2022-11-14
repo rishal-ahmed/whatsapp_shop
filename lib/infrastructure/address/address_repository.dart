@@ -46,6 +46,36 @@ class AddressRepository {
     }
   }
 
+  //==================== Get Address ====================
+  Future<Either<MainFailures, AddressModel>> getAddress({
+    required int addressId,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        ApiEndpoints.address + addressId.toString(),
+      );
+
+      log('response == ${response.data.toString()}', name: 'Get Address');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          final AddressModel address = result['address'];
+
+          return Right(address);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
   //==================== Add Address ====================
   Future<Either<MainFailures, bool>> addAddress({
     required AddressModel addressModel,

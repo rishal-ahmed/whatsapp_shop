@@ -7,7 +7,8 @@ import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/address/address_model.dart';
-import 'package:whatsapp_shop/domain/provider/address_provider.dart';
+import 'package:whatsapp_shop/domain/provider/address/address_provider.dart';
+import 'package:whatsapp_shop/domain/provider/cart/cart_provider.dart';
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_title_child_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
@@ -33,15 +34,14 @@ class CartDeliveryAddressField extends ConsumerWidget {
                     if (address.defaultAddress == "1") {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         ref
-                            .read(AddressProvider
-                                .selectedAddressProvider.notifier)
+                            .read(CartProvider.selectedAddressProvider.notifier)
                             .state = address.id;
                       });
                     }
                     return Consumer(
                       builder: (context, ref, _) {
                         final int? selctedAddress =
-                            ref.watch(AddressProvider.selectedAddressProvider);
+                            ref.watch(CartProvider.selectedAddressProvider);
                         return RadioListTile(
                           controlAffinity: ListTileControlAffinity.trailing,
                           value: address.id,
@@ -49,7 +49,7 @@ class CartDeliveryAddressField extends ConsumerWidget {
                           dense: true,
                           onChanged: (value) {
                             ref
-                                .read(AddressProvider
+                                .read(CartProvider
                                     .selectedAddressProvider.notifier)
                                 .state = address.id;
                           },
@@ -143,58 +143,64 @@ class CartDeliveryAddressField extends ConsumerWidget {
           : ShimmerWidget(
               child: Column(
                 children: [
-                  RadioListTile(
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    value: false,
-                    groupValue: false,
-                    dense: true,
-                    onChanged: (value) {},
-                    title: Row(
-                      children: [
-                        Flexible(
-                          child: FractionallySizedBox(
-                            widthFactor: .6,
-                            child: Container(
-                              color: kWhite,
-                              height: 10.sp,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return RadioListTile(
+                        controlAffinity: ListTileControlAffinity.trailing,
+                        value: false,
+                        groupValue: false,
+                        dense: true,
+                        onChanged: (value) {},
+                        title: Row(
+                          children: [
+                            Flexible(
+                              child: FractionallySizedBox(
+                                widthFactor: .6,
+                                child: Container(
+                                  color: kWhite,
+                                  height: 10.sp,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        dWidth1,
-                        Flexible(
-                          child: FractionallySizedBox(
-                            widthFactor: .20,
-                            child: Container(
-                              color: kWhite,
-                              height: 10.sp,
+                            dWidth1,
+                            Flexible(
+                              child: FractionallySizedBox(
+                                widthFactor: .20,
+                                child: Container(
+                                  color: kWhite,
+                                  height: 10.sp,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        dHeight05,
-                        Container(
-                          color: kWhite,
-                          height: 9.sp,
-                          width: 20.w,
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            dHeight05,
+                            Container(
+                              color: kWhite,
+                              height: 9.sp,
+                              width: 20.w,
+                            ),
+                            dHeight03,
+                            Container(
+                              color: kWhite,
+                              height: 9.sp,
+                              width: 50.w,
+                            ),
+                            dHeight02,
+                            Container(
+                              color: kWhite,
+                              height: 9.sp,
+                              width: 17.w,
+                            ),
+                          ],
                         ),
-                        dHeight03,
-                        Container(
-                          color: kWhite,
-                          height: 9.sp,
-                          width: 50.w,
-                        ),
-                        dHeight02,
-                        Container(
-                          color: kWhite,
-                          height: 9.sp,
-                          width: 17.w,
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   dHeight05,
 
