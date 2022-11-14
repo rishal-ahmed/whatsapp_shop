@@ -183,7 +183,18 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
         : AppBar(
             backgroundColor: backgroundColor,
             elevation: elevation,
-            leading: leading,
+            leading: leading ??
+                IconButton(
+                  alignment: Alignment.center,
+                  onPressed: () => Navigator.pop(context),
+                  splashColor: kTransparentColor,
+                  highlightColor: kTransparentColor,
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 18,
+                    color: Color(0XFF8D9BA3),
+                  ),
+                ),
             title: title != null
                 ? Text(title!, style: TextStyle(fontSize: 16.sp))
                 : null,

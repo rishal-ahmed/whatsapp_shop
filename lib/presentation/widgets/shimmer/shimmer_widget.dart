@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
+import 'package:whatsapp_shop/core/constants/sizes.dart';
 
 class ShimmerWidget extends StatelessWidget {
   const ShimmerWidget({
     super.key,
-    required this.child,
+    this.child,
     this.isLoading = true,
     this.shimmerChild,
     this.width,
@@ -15,7 +16,7 @@ class ShimmerWidget extends StatelessWidget {
     this.highlightColor,
   });
 
-  final Widget child;
+  final Widget? child;
   final Widget? shimmerChild;
   final bool isLoading;
   final double? width;
@@ -34,8 +35,8 @@ class ShimmerWidget extends StatelessWidget {
                     width: width ?? double.infinity,
                     height: height ?? double.infinity,
                   )
-                : shimmerChild ?? child,
+                : shimmerChild ?? child ?? kNone,
           )
-        : child;
+        : child ?? kNone;
   }
 }
