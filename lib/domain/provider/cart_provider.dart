@@ -11,6 +11,12 @@ class CartProvider {
     return CartNotifier();
   });
 
+  //==--==--==--==--==-- Cart Add and Open --==--==--==--==--==
+  static final addAndOpenCartProvider =
+      AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
+    return CartNotifier();
+  });
+
   //==--==--==--==--==-- Carts --==--==--==--==--==
   static final cartsProvider = AutoDisposeStateNotifierProviderFamily<
       CartNotifier, CartState, CartEvent>((ref, event) {

@@ -10,6 +10,7 @@ import 'package:whatsapp_shop/application/product/product_event.dart';
 import 'package:whatsapp_shop/application/product/product_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
 import 'package:whatsapp_shop/domain/provider/cart_provider.dart';
 import 'package:whatsapp_shop/domain/provider/product_provider.dart';
@@ -48,7 +49,31 @@ class ScreenProduct extends ConsumerWidget {
         if (!next.isLoading && next.isError) {
           return kSnackBar(
             context: context,
-            content: 'Oops, Something went wrong. please try again later.',
+            content: next.errorMessage,
+            error: true,
+          );
+        }
+      },
+    );
+
+    ref.listen(
+      CartProvider.addAndOpenCartProvider,
+      (previous, next) {
+        if (!next.isLoading && next.status) {
+          ref.invalidate(CartProvider.cartCountProvider);
+          kSnackBar(
+            context: context,
+            content: 'Added to cart',
+            success: true,
+            duration: 2,
+          );
+          Navigator.pushNamed(context, routeCart);
+        }
+
+        if (!next.isLoading && next.isError) {
+          return kSnackBar(
+            context: context,
+            content: next.errorMessage,
             error: true,
           );
         }
@@ -298,10 +323,9 @@ class ScreenProduct extends ConsumerWidget {
                                 ],
                               ),
                               dHeight1,
-                              //========== Cart Button ==========
+                              //==================== Cart Button ====================
                               Consumer(
                                 builder: (context, ref, _) {
-                                  log('Add to cart .....');
                                   final CartState cartState =
                                       ref.watch(CartProvider.addToCartProvider);
 
@@ -332,14 +356,36 @@ class ScreenProduct extends ConsumerWidget {
                                 },
                               ),
                               dHeight05,
-                              //========== Buy Button ==========
-                              CustomMaterialBtton(
-                                onPressed: () {},
-                                buttonText: 'Buy Now',
-                                color: primaryColor,
-                                borderColor: primaryColor,
-                                borderRadius: BorderRadius.circular(12),
-                                shimmer: state.isLoading,
+                              //==================== Buy Button ====================
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  final CartState cartState = ref.watch(
+                                      CartProvider.addAndOpenCartProvider);
+                                  return CustomMaterialBtton(
+                                    buttonText: 'Buy Now',
+                                    color: primaryColor,
+                                    borderColor: primaryColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                    shimmer: state.isLoading,
+                                    isLoading: cartState.isLoading,
+                                    onPressed: () {
+                                      final UserModel user =
+                                          UserUtils.instance.userModel!;
+
+                                      ref
+                                          .read(CartProvider
+                                              .addAndOpenCartProvider.notifier)
+                                          .emit(
+                                            CartEvent.addCart(
+                                              userId: user.id,
+                                              productId: productId,
+                                              unitId: state.units.first.id,
+                                              quantity: 1,
+                                            ),
+                                          );
+                                    },
+                                  );
+                                },
                               ),
 
                               dHeight2,

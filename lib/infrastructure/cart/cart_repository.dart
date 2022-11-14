@@ -78,6 +78,9 @@ class CartRepository {
         if (result['sts'] == '01') {
           return const Right(true);
         } else {
+          if (result['msg'] == 'Your Cart has Items from other Shops') {
+            return Left(MainFailures.clientFailure(error: result['msg']));
+          }
           return const Left(MainFailures.clientFailure());
         }
       } else {

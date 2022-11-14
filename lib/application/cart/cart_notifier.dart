@@ -25,7 +25,10 @@ class CartNotifier extends StateNotifier<CartState> {
 
         final CartState cartState = result.fold(
           //=-=-=-=- Failure -=-=-=-=-=
-          (l) => initialState.copyWith(isError: true),
+          (l) => initialState.copyWith(
+            isError: true,
+            errorMessage: l.error,
+          ),
           //=-=-=-=- Success -=-=-=-=-=
           (r) => initialState.copyWith(status: true),
         );

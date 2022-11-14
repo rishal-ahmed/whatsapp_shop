@@ -9,6 +9,7 @@ class CartState with _$CartState {
     required bool isLoading,
     required bool isError,
     required bool status,
+    @Default('') String errorMessage,
     @Default([]) List<CartModel> carts,
     @Default(null) int? count,
     @Default(null) num? sum,
