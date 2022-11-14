@@ -43,9 +43,9 @@ class ScreenCart extends ConsumerWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: ListView.separated(
+                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.isLoading ? 2 : state.carts.length,
-                      shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         CartModel? cartItem;
                         if (!state.isLoading) {

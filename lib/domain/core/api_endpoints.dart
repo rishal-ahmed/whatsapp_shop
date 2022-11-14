@@ -37,4 +37,5 @@ class ApiEndpoints {
 
   //==================== Order ====================
   static const String order = '${baseUrl}placeorder';
+  static const String orders = '${baseUrl}orders';
 }

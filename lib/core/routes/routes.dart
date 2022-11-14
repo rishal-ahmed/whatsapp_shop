@@ -28,7 +28,11 @@ const String routeEditProfile = '/edit_profile';
 
 //=-=-=-=-=- Shop -=-=-=-=-=
 const String routeShop = '/shop';
+
+//=-=-=-=-=- Product -=-=-=-=-=
 const String routeProduct = '/product';
+const String routeProducts = '/products';
+const String routeCategories = '/categories';
 
 //=-=-=-=-=- Cart -=-=-=-=-=
 const String routeCart = '/cart';

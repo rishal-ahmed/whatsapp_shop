@@ -8,4 +8,10 @@ class OrderProvider {
       StateNotifierProvider.autoDispose<OrderNotifier, OrderState>((ref) {
     return OrderNotifier();
   });
+
+  //==--==--==--==--==-- Orders --==--==--==--==--==
+  static final ordersProvider =
+      StateNotifierProvider.autoDispose<OrderNotifier, OrderState>((ref) {
+    return OrderNotifier();
+  });
 }

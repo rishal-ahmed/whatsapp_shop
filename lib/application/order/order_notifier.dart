@@ -37,7 +37,24 @@ class OrderNotifier extends StateNotifier<OrderState> {
         state = orderState;
       },
       //=-=-=-=-=-=-=-=-=-=- Orders Event -=-=-=-=-=-=-=-=-=-=
-      orders: (eventOrders) {},
+      orders: (eventOrders) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Order Api
+        final result =
+            await OrderRepository().orders(userId: eventOrders.userId);
+
+        final OrderState orderState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (l) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (r) => initialState.copyWith(status: true),
+        );
+
+        // Notify UI
+        state = orderState;
+      },
     );
   }
 }

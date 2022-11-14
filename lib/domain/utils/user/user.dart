@@ -59,7 +59,6 @@ class UserUtils {
           ),
           submitText: 'Logout',
           submitAction: () async {
-            Navigator.pop(context);
             Navigator.pushNamedAndRemoveUntil(
                 context, routeLogin, ModalRoute.withName(routeRoot));
             final SharedPreferences prefs =

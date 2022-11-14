@@ -9,7 +9,9 @@ import 'package:whatsapp_shop/presentation/screens/cart/screen_cart.dart';
 import 'package:whatsapp_shop/presentation/screens/home/screen_home.dart';
 import 'package:whatsapp_shop/presentation/screens/main/screen_main.dart';
 import 'package:whatsapp_shop/presentation/screens/notification/screen_notification.dart';
+import 'package:whatsapp_shop/presentation/screens/product/screen_categories.dart';
 import 'package:whatsapp_shop/presentation/screens/product/screen_product.dart';
+import 'package:whatsapp_shop/presentation/screens/product/screen_products.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_edit_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/profile/pages/screen_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
@@ -70,6 +72,22 @@ class RouteGenerator {
         if (args is int) {
           return MaterialPageRoute(
               builder: (_) => ScreenProduct(productId: args));
+        }
+        return _errorRoute();
+
+      case routeProducts:
+        if (args is Map) {
+          return MaterialPageRoute(
+              builder: (_) => ScreenProducts(
+                  title: args['title'], products: args['products']));
+        }
+        return _errorRoute();
+
+      case routeCategories:
+        if (args is Map) {
+          return MaterialPageRoute(
+              builder: (_) => ScreenCategories(
+                  title: args['title'], categories: args['categories']));
         }
         return _errorRoute();
 

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:whatsapp_shop/domain/core/api_endpoints.dart';
+import 'package:whatsapp_shop/domain/models/order/order_model.dart';
 import 'package:whatsapp_shop/domain/utils/failures/main_failures.dart';
 
 class OrderRepository {
@@ -43,6 +44,41 @@ class OrderRepository {
 
         if (result['sts'] == '01') {
           return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
+  //==================== Orders ====================
+  Future<Either<MainFailures, List<OrderModel>>> orders({
+    required int userId,
+  }) async {
+    try {
+      final FormData form = FormData.fromMap({"user_id": userId});
+
+      final Response response = await dio.post(
+        ApiEndpoints.order,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Orders');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          final List<OrderModel> orders = (result['orders'] as List)
+              .map((cart) => OrderModel.fromJson(cart))
+              .toList();
+
+          return Right(orders);
         } else {
           return const Left(MainFailures.clientFailure());
         }

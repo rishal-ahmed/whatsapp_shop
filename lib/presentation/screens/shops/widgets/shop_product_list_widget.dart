@@ -45,10 +45,16 @@ class ShopProductList extends ConsumerWidget {
                       style:
                           TextStyle(color: primaryTextColor, fontSize: 14.sp),
                     ),
-                    Text(
-                      'View all',
-                      style:
-                          TextStyle(color: secondaryTextColor, fontSize: 13.sp),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, routeProducts,
+                            arguments: {'title': title, 'products': products});
+                      },
+                      child: Text(
+                        'View all',
+                        style: TextStyle(
+                            color: secondaryTextColor, fontSize: 13.sp),
+                      ),
                     ),
                   ],
                 ),

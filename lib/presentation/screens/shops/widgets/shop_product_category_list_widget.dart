@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:whatsapp_shop/core/constants/base_url.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
-import 'package:whatsapp_shop/core/constants/images.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/product_category/product_category_model.dart';
+import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_category_item_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 class ShopProductCategoryList extends StatelessWidget {
@@ -39,10 +39,19 @@ class ShopProductCategoryList extends StatelessWidget {
                       style:
                           TextStyle(color: primaryTextColor, fontSize: 14.sp),
                     ),
-                    Text(
-                      'View all',
-                      style:
-                          TextStyle(color: secondaryTextColor, fontSize: 13.sp),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, routeCategories,
+                            arguments: {
+                              'title': title,
+                              'categories': productCategories
+                            });
+                      },
+                      child: Text(
+                        'View all',
+                        style: TextStyle(
+                            color: secondaryTextColor, fontSize: 13.sp),
+                      ),
                     ),
                   ],
                 ),
@@ -54,38 +63,8 @@ class ShopProductCategoryList extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       final ProductCategoryModel category =
                           productCategories[index];
-                      return SizedBox(
-                        width: 15.w,
-                        child: Center(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(
-                                      kImageAppendUrl + category.image),
-                                  onBackgroundImageError: (e, s) =>
-                                      const AssetImage(kImageEre),
-                                ),
-                                dHeight05,
-                                Text(
-                                  '${category.name}\n',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: primaryTextColor,
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                      //========== Product Category Item Widget ==========
+                      return ProductCategoryItemWidget(category: category);
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return dWidth5;

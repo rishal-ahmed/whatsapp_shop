@@ -118,6 +118,9 @@ class ScreenProfile extends StatelessWidget {
 
   void onTap(BuildContext context, int index) async {
     switch (index) {
+      case 1:
+        Navigator.pushNamed(context, routeAddress);
+        break;
       case 2:
         Navigator.pushNamed(context, routeEditProfile);
         break;

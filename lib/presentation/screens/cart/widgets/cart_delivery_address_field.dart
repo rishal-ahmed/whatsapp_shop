@@ -29,6 +29,7 @@ class CartDeliveryAddressField extends ConsumerWidget {
               children: [
                 ListView.separated(
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final AddressModel address = state.addresses[index];
                     if (address.defaultAddress == "1") {
@@ -145,6 +146,7 @@ class CartDeliveryAddressField extends ConsumerWidget {
                 children: [
                   ListView.builder(
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: 2,
                     itemBuilder: (context, index) {
                       return RadioListTile(
