@@ -49,6 +49,46 @@ class AddressNotifier extends StateNotifier<AddressState> {
         // Notify UI
         state = addressState;
       },
+
+      //=-=-=-=-=-=-=-=-=-=- Remove Address Event -=-=-=-=-=-=-=-=-=-=
+      removeAddress: (eventRemove) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Remove Address Api
+        final result = await AddressRepository()
+            .removeAddress(addressId: eventRemove.addressId);
+
+        final AddressState addressState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(status: true),
+        );
+
+        // Notify UI
+        state = addressState;
+      },
+
+      //=-=-=-=-=-=-=-=-=-=- Default Address Event -=-=-=-=-=-=-=-=-=-=
+      defaultAddress: (eventdefault) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Default Address Api
+        final result = await AddressRepository().defaultAddress(
+            userId: eventdefault.userId, addressId: eventdefault.addressId);
+
+        final AddressState addressState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (failure) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (success) => initialState.copyWith(status: true),
+        );
+
+        // Notify UI
+        state = addressState;
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 // import 'package:mobile_pos/core/constant/text.dart';
 
@@ -13,7 +14,7 @@ class KAlertDialog extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Widget? title, content;
+  final dynamic title, content;
   final String? submitText;
   final List<Widget>? actions;
   final Function()? submitAction;
@@ -22,8 +23,25 @@ class KAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: title,
-      content: content,
+      title: title is Widget
+          ? title
+          : Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: primaryTextColor,
+              ),
+            ),
+      content: content is Widget
+          ? content
+          : Text(
+              content,
+              style: TextStyle(
+                fontSize: 15.sp,
+                color: primaryTextColor,
+              ),
+            ),
       actions: actions ??
           [
             TextButton(

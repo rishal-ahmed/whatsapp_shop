@@ -40,7 +40,7 @@ class UserUtils {
   Future<void> logoutUser(BuildContext context) async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return KAlertDialog(
           title: Text(
             'Logout',
@@ -59,6 +59,7 @@ class UserUtils {
           ),
           submitText: 'Logout',
           submitAction: () async {
+            Navigator.pop(context);
             Navigator.pushNamedAndRemoveUntil(
                 context, routeLogin, ModalRoute.withName(routeRoot));
             final SharedPreferences prefs =

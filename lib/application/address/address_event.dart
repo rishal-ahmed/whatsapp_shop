@@ -12,4 +12,12 @@ class AddressEvent with _$AddressEvent {
 
   //=-=-=-=-=- Address Count Event -=-=-=-=-=
   factory AddressEvent.getAddresses({required int userId}) = _AddressEventGet;
+
+  //=-=-=-=-=- Address Remove Event -=-=-=-=-=
+  factory AddressEvent.removeAddress({required int addressId}) =
+      _AddressEventRemove;
+
+  //=-=-=-=-=- Address Defualt Event -=-=-=-=-=
+  factory AddressEvent.defaultAddress(
+      {required int userId, required int addressId}) = _AddressEventDefault;
 }

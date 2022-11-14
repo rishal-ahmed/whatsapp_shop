@@ -95,4 +95,65 @@ class AddressRepository {
       return const Left(MainFailures.clientFailure());
     }
   }
+
+  //==================== Remove Address ====================
+  Future<Either<MainFailures, bool>> removeAddress({
+    required int addressId,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        ApiEndpoints.addressRemove + addressId.toString(),
+      );
+
+      log('response == ${response.data.toString()}', name: 'Remove Address');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
+  //==================== Default Address ====================
+  Future<Either<MainFailures, bool>> defaultAddress({
+    required int userId,
+    required int addressId,
+  }) async {
+    try {
+      final FormData form =
+          FormData.fromMap({"userid": userId, "addressid": addressId});
+
+      final Response response = await dio.post(
+        ApiEndpoints.addressDefault,
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Default Address');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
 }
