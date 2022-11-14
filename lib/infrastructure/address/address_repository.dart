@@ -96,6 +96,52 @@ class AddressRepository {
     }
   }
 
+  //==================== Update Address ====================
+  Future<Either<MainFailures, bool>> updateAddress({
+    required AddressModel addressModel,
+  }) async {
+    try {
+      final FormData form = FormData.fromMap(
+        {
+          "user_id": addressModel.customerId,
+          "name": addressModel.name,
+          "email": addressModel.email,
+          "mobile": addressModel.mobile,
+          "phone": "",
+          "address": addressModel.address,
+          "landmark": addressModel.landmark,
+          "pincode": addressModel.pincode,
+          "city": addressModel.city,
+          "district": addressModel.district,
+          "state": addressModel.state,
+          "type": addressModel.type,
+        },
+      );
+
+      final Response response = await dio.post(
+        ApiEndpoints.addressUpdate + addressModel.id.toString(),
+        data: form,
+      );
+
+      log('response == ${response.data.toString()}', name: 'Update Address');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = json.decode(response.data) as Map;
+
+        if (result['sts'] == '01') {
+          return const Right(true);
+        } else {
+          return const Left(MainFailures.clientFailure());
+        }
+      } else {
+        return const Left(MainFailures.serverFailure());
+      }
+    } catch (e, s) {
+      log('Exception : $e', stackTrace: s);
+      return const Left(MainFailures.clientFailure());
+    }
+  }
+
   //==================== Remove Address ====================
   Future<Either<MainFailures, bool>> removeAddress({
     required int addressId,

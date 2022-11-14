@@ -6,12 +6,15 @@ part 'address_event.freezed.dart';
 @freezed
 class AddressEvent with _$AddressEvent {
   //=-=-=-=-=- Add Address Event -=-=-=-=-=
-  factory AddressEvent.addAddress({
-    required AddressModel addressModel,
-  }) = _AddressEventAdd;
+  factory AddressEvent.addAddress({required AddressModel addressModel}) =
+      _AddressEventAdd;
 
-  //=-=-=-=-=- Address Count Event -=-=-=-=-=
+  //=-=-=-=-=- Address Get Event -=-=-=-=-=
   factory AddressEvent.getAddresses({required int userId}) = _AddressEventGet;
+
+  //=-=-=-=-=- Update Address Event -=-=-=-=-=
+  factory AddressEvent.updateAddress({required AddressModel addressModel}) =
+      _AddressEventUpdate;
 
   //=-=-=-=-=- Address Remove Event -=-=-=-=-=
   factory AddressEvent.removeAddress({required int addressId}) =

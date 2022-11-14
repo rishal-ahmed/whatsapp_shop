@@ -50,6 +50,26 @@ class AddressNotifier extends StateNotifier<AddressState> {
         state = addressState;
       },
 
+      //=-=-=-=-=-=-=-=-=-=- Update Address Event -=-=-=-=-=-=-=-=-=-=
+      updateAddress: (eventUpdate) async {
+        // Loading
+        state = initialState.copyWith(isLoading: true);
+
+        // Update Address Api
+        final result = await AddressRepository()
+            .updateAddress(addressModel: eventUpdate.addressModel);
+
+        final AddressState addressState = result.fold(
+          //=-=-=-=- Failure -=-=-=-=-=
+          (l) => initialState.copyWith(isError: true),
+          //=-=-=-=- Success -=-=-=-=-=
+          (r) => initialState.copyWith(status: true),
+        );
+
+        // Notify UI
+        state = addressState;
+      },
+
       //=-=-=-=-=-=-=-=-=-=- Remove Address Event -=-=-=-=-=-=-=-=-=-=
       removeAddress: (eventRemove) async {
         // Loading

@@ -18,6 +18,12 @@ class AddressProvider {
       ..emit(AddressEvent.getAddresses(userId: UserUtils.instance.userId));
   });
 
+  //==--==--==--==--==-- Update Address --==--==--==--==--==
+  static final updateAddressProvider =
+      StateNotifierProvider.autoDispose<AddressNotifier, AddressState>((ref) {
+    return AddressNotifier();
+  });
+
   //==--==--==--==--==-- Remove Address --==--==--==--==--==
   static final removeAddressProvider =
       StateNotifierProvider.autoDispose<AddressNotifier, AddressState>((ref) {

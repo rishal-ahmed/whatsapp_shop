@@ -17,20 +17,38 @@ import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_butto
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
 
 class ScreenAddAddress extends ConsumerWidget {
-  const ScreenAddAddress({super.key});
+  const ScreenAddAddress({this.addressModel, super.key});
+
+  final AddressModel? addressModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
-    final TextEditingController mailController = TextEditingController();
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController landmarkController = TextEditingController();
-    final TextEditingController pincodeController = TextEditingController();
-    final TextEditingController cityController = TextEditingController();
-    final TextEditingController districtController = TextEditingController();
-    final TextEditingController stateController = TextEditingController();
+    final TextEditingController nameController =
+        TextEditingController(text: addressModel?.name);
+    final TextEditingController phoneController =
+        TextEditingController(text: addressModel?.mobile);
+    final TextEditingController mailController =
+        TextEditingController(text: addressModel?.email);
+    final TextEditingController addressController =
+        TextEditingController(text: addressModel?.address);
+    final TextEditingController landmarkController =
+        TextEditingController(text: addressModel?.landmark);
+    final TextEditingController pincodeController =
+        TextEditingController(text: addressModel?.pincode);
+    final TextEditingController cityController =
+        TextEditingController(text: addressModel?.city);
+    final TextEditingController districtController =
+        TextEditingController(text: addressModel?.district);
+    final TextEditingController stateController =
+        TextEditingController(text: addressModel?.state);
+
+    if (addressModel != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(AddressProvider.selectedTypeProvider.notifier).state =
+            addressModel!.type;
+      });
+    }
 
     ref.listen(
       AddressProvider.addAddressProvider,
@@ -54,9 +72,32 @@ class ScreenAddAddress extends ConsumerWidget {
         }
       },
     );
+
+    ref.listen(
+      AddressProvider.updateAddressProvider,
+      (previous, next) {
+        if (!next.isLoading && next.status) {
+          kSnackBar(
+            context: context,
+            content: 'Address updated successfully',
+            success: true,
+          );
+
+          Navigator.pop(context, true);
+        }
+
+        if (!next.isLoading && next.isError) {
+          kSnackBar(
+            context: context,
+            content: 'Something went wrong',
+            error: true,
+          );
+        }
+      },
+    );
     return Scaffold(
-      appBar: const AppBarWidget(
-        title: 'Add New Address',
+      appBar: AppBarWidget(
+        title: addressModel == null ? 'Add New Address' : 'Edit Address',
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -220,30 +261,6 @@ class ScreenAddAddress extends ConsumerWidget {
                                 contentPadding: EdgeInsets.zero,
                               ),
                             ),
-                            // Expanded(
-                            //   child: RadioListTile(
-                            //     value: 'Office',
-                            //     groupValue: selectedType,
-                            //     onChanged: (value) {
-                            //       final selcted = ref.read(AddressProvider
-                            //           .selectedTypeProvider.notifier);
-                            //       if (selcted.state != value) {
-                            //         selcted.state = value!;
-                            //       }
-                            //     },
-                            //     activeColor: secondaryColor,
-                            //     dense: true,
-                            //     title: FittedBox(
-                            //       fit: BoxFit.scaleDown,
-                            //       child: Text(
-                            //         'Office',
-                            //         style: TextStyle(
-                            //             color: primaryColor, fontSize: 14.sp),
-                            //       ),
-                            //     ),
-                            //     contentPadding: EdgeInsets.zero,
-                            //   ),
-                            // ),
                             Expanded(
                               child: RadioListTile(
                                 value: 'Work',
@@ -281,8 +298,9 @@ class ScreenAddAddress extends ConsumerWidget {
                 //==================== Save Button ====================
                 Consumer(
                   builder: (context, ref, _) {
-                    final AddressState addressState =
-                        ref.watch(AddressProvider.addAddressProvider);
+                    final AddressState addressState = addressModel == null
+                        ? ref.watch(AddressProvider.addAddressProvider)
+                        : ref.watch(AddressProvider.updateAddressProvider);
 
                     return CustomMaterialBtton(
                       buttonText: 'Save',
@@ -296,8 +314,8 @@ class ScreenAddAddress extends ConsumerWidget {
                         if (form.validate()) {
                           final String type =
                               ref.read(AddressProvider.selectedTypeProvider);
-                          final AddressModel addressModel = AddressModel(
-                            id: 0,
+                          final AddressModel address = AddressModel(
+                            id: addressModel != null ? addressModel!.id : 0,
                             customerId: UserUtils.instance.userId,
                             name: nameController.text,
                             email: mailController.text,
@@ -312,12 +330,21 @@ class ScreenAddAddress extends ConsumerWidget {
                             defaultAddress: "0",
                           );
 
-                          log('addressModel == $addressModel');
+                          log('addressModel == $address');
 
-                          ref
-                              .read(AddressProvider.addAddressProvider.notifier)
-                              .emit(AddressEvent.addAddress(
-                                  addressModel: addressModel));
+                          if (addressModel == null) {
+                            ref
+                                .read(
+                                    AddressProvider.addAddressProvider.notifier)
+                                .emit(AddressEvent.addAddress(
+                                    addressModel: address));
+                          } else {
+                            ref
+                                .read(AddressProvider
+                                    .updateAddressProvider.notifier)
+                                .emit(AddressEvent.updateAddress(
+                                    addressModel: address));
+                          }
                         }
                       },
                     );
