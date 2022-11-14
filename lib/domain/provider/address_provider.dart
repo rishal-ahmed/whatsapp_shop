@@ -30,6 +30,12 @@ class AddressProvider {
     return AddressNotifier();
   });
 
+  //==--==--==--==--==-- Default Address --==--==--==--==--==
+  static final defualtAddressProvider =
+      StateNotifierProvider.autoDispose<AddressNotifier, AddressState>((ref) {
+    return AddressNotifier();
+  });
+
   //==--==--==--==--==-- Selected Address Cart --==--==--==--==--==
   static final selectedAddressProvider = StateProvider.autoDispose<int?>((ref) {
     return null;

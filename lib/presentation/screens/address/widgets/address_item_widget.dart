@@ -8,6 +8,7 @@ import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/address/address_model.dart';
 import 'package:whatsapp_shop/domain/provider/address_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
+import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/presentation/widgets/dialogs/alert_dialog_custom.dart';
 
 class AddressItemWidget extends ConsumerWidget {
@@ -24,29 +25,63 @@ class AddressItemWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       child: ListTile(
+        onTap: () {
+          ref.read(AddressProvider.defualtAddressProvider.notifier).emit(
+              AddressEvent.defaultAddress(
+                  userId: UserUtils.instance.userId, addressId: address.id));
+
+          ref.listenManual(
+            AddressProvider.defualtAddressProvider,
+            (previous, next) {
+              if (!next.isLoading && next.status) {
+                ref.invalidate(AddressProvider.getAddressesProvider);
+              }
+            },
+          );
+        },
         horizontalTitleGap: 0,
         dense: true,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              address.type,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            dWidth05,
-            address.type == "Home"
-                ? Icon(
-                    Icons.home_outlined,
-                    size: 16.sp,
-                    color: kBlack,
-                  )
-                : Icon(
-                    Icons.work_outline,
-                    size: 16.sp,
-                    color: kBlack,
+            Row(
+              children: [
+                Text(
+                  address.type,
+                  style: TextStyle(
+                    fontSize: 15.5.sp,
+                    fontWeight: FontWeight.w500,
                   ),
+                ),
+                dWidth05,
+                address.type == "Home"
+                    ? Icon(
+                        Icons.home_outlined,
+                        size: 15.5.sp,
+                        color: kBlack,
+                      )
+                    : Icon(
+                        Icons.work_outline,
+                        size: 15.5.sp,
+                        color: kBlack,
+                      ),
+              ],
+            ),
+            if (address.defaultAddress == '1')
+              Row(
+                children: [
+                  Text(
+                    'Default',
+                    style: TextStyle(fontSize: 14.sp, color: primaryTextColor),
+                  ),
+                  dWidth05,
+                  Icon(
+                    Icons.verified_outlined,
+                    color: secondaryColor,
+                    size: 15.sp,
+                  ),
+                ],
+              )
           ],
         ),
         subtitle: Column(
@@ -83,7 +118,7 @@ class AddressItemWidget extends ConsumerWidget {
                     }
                   },
                   icon: Icon(
-                    Icons.edit,
+                    Icons.edit_outlined,
                     color: primaryTextColor,
                     size: 19.sp,
                   ),
@@ -135,7 +170,7 @@ class AddressItemWidget extends ConsumerWidget {
                     );
                   },
                   icon: Icon(
-                    Icons.delete,
+                    Icons.delete_forever_outlined,
                     color: kRed300,
                     size: 19.sp,
                   ),
