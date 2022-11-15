@@ -11,3 +11,4 @@ const String kIconCart = '${klImageAppendGlobalUri}cart.svg';
 const String kImageEre = '${klImageAppendGlobalUri}ere.png';
 const String kImageSplash = '${klImageAppendGlobalUri}splash.png';
 const String kImageError = '${klImageAppendGlobalUri}error.svg';
+const String kImageSupport = '${klImageAppendGlobalUri}support.svg';

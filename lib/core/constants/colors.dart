@@ -17,7 +17,9 @@ const Color kColorShimmerBase = Color(0xFFE0E0E0);
 //==================== Authentication Color ====================
 const Color kColorFieldBg = Color(0xFFEBEBEB);
 
-//
+//==================== Custom Color ====================
+const Color kColorTile = Color(0XFF636363);
+
 const Color textColor = Color(0xFF1F2C34);
 const Color authTextColor = Color(0xFF969797);
 const Color forgetTextColor = Color(0xFFEE132D);

@@ -128,6 +128,9 @@ class ScreenProfile extends StatelessWidget {
       case 2:
         Navigator.pushNamed(context, routeEditProfile);
         break;
+      case 5:
+        Navigator.pushNamed(context, routeSupport);
+        break;
       case 9:
         await UserUtils.instance.logoutUser(context);
         break;

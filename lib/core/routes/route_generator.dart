@@ -18,57 +18,58 @@ import 'package:whatsapp_shop/presentation/screens/profile/screen_profile.dart';
 import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/screen_shop.dart';
 import 'package:whatsapp_shop/presentation/screens/splash/screen_splash.dart';
+import 'package:whatsapp_shop/presentation/screens/support/screen_support.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     final Object? args = routeSettings.arguments;
 
     switch (routeSettings.name) {
-      //==================== Root ====================
+      //=-=-=-=-=-=-=-=-=-=- Root -=-=-=-=-=-=-=-=-=-=
       case routeRoot:
         return MaterialPageRoute(builder: (_) => const ScreenSplash());
 
-      //==================== Authentication ====================
+      //=-=-=-=-=-=-=-=-=-=- Authentication -=-=-=-=-=-=-=-=-=-=
       case routeLogin:
         return MaterialPageRoute(builder: (_) => ScreenLogin());
       case routeRegister:
         return MaterialPageRoute(builder: (_) => ScreenRegister());
 
-      //==================== Main ====================
+      //=-=-=-=-=-=-=-=-=-=- Main -=-=-=-=-=-=-=-=-=-=
       case routeMain:
         if (args is int) {
           return MaterialPageRoute(builder: (_) => ScreenMain(shopId: args));
         }
         return _errorRoute();
-      //==================== Home ====================
+      //=-=-=-=-=-=-=-=-=-=- Home -=-=-=-=-=-=-=-=-=-=
       case routeHome:
         return MaterialPageRoute(builder: (_) => const ScreenHome());
 
-      //==================== Search ====================
+      //=-=-=-=-=-=-=-=-=-=- Search -=-=-=-=-=-=-=-=-=-=
       case routeSearch:
         if (args is int) {
           return MaterialPageRoute(builder: (_) => ScreenSearch(shopId: args));
         }
         return _errorRoute();
 
-      //==================== Notifications ====================
+      //=-=-=-=-=-=-=-=-=-=- Notifications -=-=-=-=-=-=-=-=-=-=
       case routeNotifications:
         return MaterialPageRoute(builder: (_) => const ScreenNotification());
 
-      //==================== Profile ====================
+      //=-=-=-=-=-=-=-=-=-=- Profile -=-=-=-=-=-=-=-=-=-=
       case routeProfile:
         return MaterialPageRoute(builder: (_) => const ScreenProfile());
       case routeEditProfile:
         return MaterialPageRoute(builder: (_) => const ScreenEditProfile());
 
-      //==================== Shop ====================
+      //=-=-=-=-=-=-=-=-=-=- Shop -=-=-=-=-=-=-=-=-=-=
       case routeShop:
         if (args is int) {
           return MaterialPageRoute(builder: (_) => ScreenShop(shopId: args));
         }
         return _errorRoute();
 
-      //==================== Product ====================
+      //=-=-=-=-=-=-=-=-=-=- Product -=-=-=-=-=-=-=-=-=-=
       case routeProduct:
         if (args is int) {
           return MaterialPageRoute(
@@ -92,11 +93,11 @@ class RouteGenerator {
         }
         return _errorRoute();
 
-      //==================== Cart ====================
+      //=-=-=-=-=-=-=-=-=-=- Cart -=-=-=-=-=-=-=-=-=-=
       case routeCart:
         return MaterialPageRoute(builder: (_) => const ScreenCart());
 
-      //==================== Address ====================
+      //=-=-=-=-=-=-=-=-=-=- Address -=-=-=-=-=-=-=-=-=-=
       case routeAddress:
         return MaterialPageRoute(builder: (_) => const ScreenAddress());
 
@@ -107,9 +108,13 @@ class RouteGenerator {
         }
         return MaterialPageRoute(builder: (_) => const ScreenAddAddress());
 
-      //==================== Order ====================
+      //=-=-=-=-=-=-=-=-=-=- Order -=-=-=-=-=-=-=-=-=-=
       case routeOrder:
         return MaterialPageRoute(builder: (_) => const ScreenOrders());
+
+      //=-=-=-=-=-=-=-=-=-=- Support -=-=-=-=-=-=-=-=-=-=
+      case routeSupport:
+        return MaterialPageRoute(builder: (_) => const ScreenSupport());
 
       default:
         return _errorRoute();
