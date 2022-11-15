@@ -94,7 +94,7 @@ class ScreenProfile extends StatelessWidget {
                         index > 4 ? _icons[index - 1] : _icons[index];
                     return ListTile(
                       dense: true,
-                      onTap: () => onTap(context, index),
+                      onTap: () async => await onTap(context, index),
                       horizontalTitleGap: 0,
                       leading: Icon(icon, color: const Color(0XFF656565)),
                       title: Text(
@@ -116,7 +116,8 @@ class ScreenProfile extends StatelessWidget {
     );
   }
 
-  void onTap(BuildContext context, int index) async {
+  //==================== OnTap Function ====================
+  Future<void> onTap(BuildContext context, int index) async {
     switch (index) {
       case 0:
         Navigator.pushNamed(context, routeOrder);

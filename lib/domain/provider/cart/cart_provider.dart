@@ -7,7 +7,8 @@ import 'package:whatsapp_shop/domain/utils/user/user.dart';
 class CartProvider {
   //==--==--==--==--==-- Cart Add --==--==--==--==--==
   static final addToCartProvider =
-      AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
+      AutoDisposeStateNotifierProvider.family<CartNotifier, CartState, int>(
+          (ref, id) {
     return CartNotifier();
   });
 

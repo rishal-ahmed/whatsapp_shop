@@ -15,14 +15,13 @@ class ShopProductList extends ConsumerWidget {
     required this.title,
     required this.products,
     this.shimmer = false,
-    this.refresh = false,
     this.productId,
   }) : super(key: key);
 
   final String title;
   final List<ProductModel> products;
   final bool shimmer;
-  final bool refresh;
+
   final int? productId;
 
   @override
@@ -75,16 +74,6 @@ class ShopProductList extends ConsumerWidget {
                       return ShopProductItemWidget(
                         discount: discount,
                         product: product,
-                        onTap: () {
-                          if (refresh) {
-                            Navigator.pushReplacementNamed(
-                                context, routeProduct,
-                                arguments: product.id);
-                          } else {
-                            Navigator.pushNamed(context, routeProduct,
-                                arguments: product.id);
-                          }
-                        },
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {

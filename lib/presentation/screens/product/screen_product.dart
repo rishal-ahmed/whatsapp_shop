@@ -30,11 +30,12 @@ class ScreenProduct extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     log('Screen Product => Build()');
+
     final ProductState state = ref.watch(ProductProvider.productProvider(
         ProductEvent.product(productId: productId)));
 
     ref.listen(
-      CartProvider.addToCartProvider,
+      CartProvider.addToCartProvider(productId),
       (previous, next) {
         if (!next.isLoading && next.status) {
           ref.invalidate(CartProvider.cartCountProvider);
@@ -326,8 +327,9 @@ class ScreenProduct extends ConsumerWidget {
                               //==================== Cart Button ====================
                               Consumer(
                                 builder: (context, ref, _) {
-                                  final CartState cartState =
-                                      ref.watch(CartProvider.addToCartProvider);
+                                  final CartState cartState = ref.watch(
+                                      CartProvider.addToCartProvider(
+                                          productId));
 
                                   return CustomMaterialBtton(
                                     buttonText: 'Add to Cart',
@@ -341,8 +343,9 @@ class ScreenProduct extends ConsumerWidget {
                                           UserUtils.instance.userModel!;
 
                                       ref
-                                          .read(CartProvider
-                                              .addToCartProvider.notifier)
+                                          .read(CartProvider.addToCartProvider(
+                                                  productId)
+                                              .notifier)
                                           .emit(
                                             CartEvent.addCart(
                                               userId: user.id,
@@ -438,7 +441,6 @@ class ScreenProduct extends ConsumerWidget {
                           title: 'Similar Products',
                           products: state.similarProducts,
                           shimmer: state.isLoading,
-                          refresh: true,
                         );
                       },
                     ),

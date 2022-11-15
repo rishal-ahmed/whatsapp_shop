@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
+import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/product/product_model.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
@@ -10,20 +11,25 @@ class ShopProductItemWidget extends StatelessWidget {
     Key? key,
     this.discount,
     this.product,
-    this.onTap,
     this.shimmer = false,
   }) : super(key: key);
 
   final String? discount;
   final ProductModel? product;
-  final Function()? onTap;
+
   final bool shimmer;
 
   @override
   Widget build(BuildContext context) {
     return !shimmer
         ? InkWell(
-            onTap: onTap,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                routeProduct,
+                arguments: product!.id,
+              );
+            },
             child: SizedBox(
               width: 32.w,
               child: Column(
