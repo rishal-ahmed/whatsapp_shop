@@ -120,6 +120,9 @@ class MainDrawer extends StatelessWidget {
       case 4:
         await UserUtils.instance.logoutUser(context);
         break;
+      case 7:
+        Navigator.pushNamed(context, routeAboutUs);
+        break;
       default:
     }
   }

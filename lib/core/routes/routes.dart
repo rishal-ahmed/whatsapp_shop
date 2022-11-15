@@ -44,5 +44,8 @@ const String routeAddAddress = '/add_address';
 //=-=-=-=-=- Order -=-=-=-=-=
 const String routeOrder = '/order';
 
-//=-=-=-=-=- Order -=-=-=-=-=
+//=-=-=-=-=- Support -=-=-=-=-=
 const String routeSupport = '/support';
+
+//=-=-=-=-=- About Us -=-=-=-=-=
+const String routeAboutUs = '/about_us';

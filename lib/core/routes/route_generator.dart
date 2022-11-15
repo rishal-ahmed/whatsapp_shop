@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/address/address_model.dart';
+import 'package:whatsapp_shop/presentation/screens/about_us/screen_about_us.dart';
 import 'package:whatsapp_shop/presentation/screens/address/screen_add_address.dart';
 import 'package:whatsapp_shop/presentation/screens/address/screen_address.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart';
@@ -115,6 +116,10 @@ class RouteGenerator {
       //=-=-=-=-=-=-=-=-=-=- Support -=-=-=-=-=-=-=-=-=-=
       case routeSupport:
         return MaterialPageRoute(builder: (_) => const ScreenSupport());
+
+      //=-=-=-=-=-=-=-=-=-=- About Us -=-=-=-=-=-=-=-=-=-=
+      case routeAboutUs:
+        return MaterialPageRoute(builder: (_) => const ScreenAboutUs());
 
       default:
         return _errorRoute();
