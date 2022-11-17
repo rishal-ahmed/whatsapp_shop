@@ -7,28 +7,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/application/register/register_event.dart';
-import 'package:whatsapp_shop/application/register/register_notifier.dart';
 import 'package:whatsapp_shop/application/register/register_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
+import 'package:whatsapp_shop/domain/provider/auth/register/register_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/login/screen_login.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
-
-final _registerProvider =
-    StateNotifierProvider.autoDispose<RegisterNotifier, RegisterState>((ref) {
-  return RegisterNotifier();
-});
-
-final _agreeProvider = StateProvider.autoDispose<bool>((ref) => false);
-final _obscureProvider = StateProvider.autoDispose<bool>((ref) => true);
-final _obscureProvider2 = StateProvider.autoDispose<bool>((ref) => true);
-final _validateProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class ScreenRegister extends ConsumerWidget {
   ScreenRegister({super.key});
@@ -135,11 +125,12 @@ class ScreenRegister extends ConsumerWidget {
                         fillColor: kColorFieldBg,
                         suffixIcon: IconButton(
                           onPressed: () {
-                            ref.read(_obscureProvider.notifier).state =
-                                !ref.read(_obscureProvider);
+                            ref
+                                .read(RegisterProvider.obscureProvider.notifier)
+                                .update((state) => !state);
                           },
                           icon: Icon(
-                            ref.read(_obscureProvider)
+                            ref.read(RegisterProvider.obscureProvider)
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                             size: 19.sp,
@@ -147,7 +138,8 @@ class ScreenRegister extends ConsumerWidget {
                         ),
                         validator: (value) =>
                             Validators.passwordValidator(value),
-                        obscureText: ref.watch(_obscureProvider),
+                        obscureText:
+                            ref.watch(RegisterProvider.obscureProvider),
                       ),
                       dHeight1n5,
                       TextFeildWidget(
@@ -159,32 +151,37 @@ class ScreenRegister extends ConsumerWidget {
                         fillColor: kColorFieldBg,
                         suffixIcon: IconButton(
                           onPressed: () {
-                            ref.read(_obscureProvider2.notifier).state =
-                                !ref.read(_obscureProvider2);
+                            ref
+                                .read(RegisterProvider
+                                    .obscureConfirmProvider.notifier)
+                                .update((state) => !state);
                           },
                           icon: Icon(
-                            ref.read(_obscureProvider2)
+                            ref.read(RegisterProvider.obscureConfirmProvider)
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                             size: 19.sp,
                           ),
                         ),
-                        obscureText: ref.watch(_obscureProvider2),
+                        obscureText:
+                            ref.watch(RegisterProvider.obscureConfirmProvider),
                         validator: (value) => Validators.confirmValidator(
                             value1: value, value2: passwordController.text),
                       ),
                       dHeight1,
                       Consumer(
                         builder: (context, ref, _) {
-                          final bool value = ref.watch(_agreeProvider);
-                          final bool isValid = ref.watch(_validateProvider);
+                          final bool value =
+                              ref.watch(RegisterProvider.agreeProvider);
+                          final bool isValid =
+                              ref.watch(RegisterProvider.validateProvider);
 
                           return ListTileTheme(
                             horizontalTitleGap: 0,
                             child: CheckboxListTile(
                               value: value,
                               onChanged: (value) => ref
-                                  .read(_agreeProvider.notifier)
+                                  .read(RegisterProvider.agreeProvider.notifier)
                                   .state = value!,
                               title: Text(
                                 'I Agree with Terms and Conditions',
@@ -207,10 +204,10 @@ class ScreenRegister extends ConsumerWidget {
                       Consumer(
                         builder: (context, ref, _) {
                           final RegisterState state =
-                              ref.watch(_registerProvider);
+                              ref.watch(RegisterProvider.registerProvider);
 
                           ref.listen(
-                            _registerProvider,
+                            RegisterProvider.registerProvider,
                             (previous, next) async {
                               if (state.isError) {
                                 return kSnackBar(
@@ -247,10 +244,12 @@ class ScreenRegister extends ConsumerWidget {
                                   _formKey.currentState;
 
                               final bool isValid = ref
-                                  .read(_validateProvider.notifier)
+                                  .read(RegisterProvider
+                                      .validateProvider.notifier)
                                   .state = formState!.validate();
 
-                              final bool isAgreed = ref.read(_agreeProvider);
+                              final bool isAgreed =
+                                  ref.read(RegisterProvider.agreeProvider);
 
                               log('isValid $isValid');
                               log('isAgreed $isAgreed');
@@ -261,7 +260,10 @@ class ScreenRegister extends ConsumerWidget {
                                 final String email = emailController.text;
                                 final String password = passwordController.text;
 
-                                ref.read(_registerProvider.notifier).emit(
+                                ref
+                                    .read(RegisterProvider
+                                        .registerProvider.notifier)
+                                    .emit(
                                       RegisterEvent.register(
                                         name: name,
                                         mobile: mobile,

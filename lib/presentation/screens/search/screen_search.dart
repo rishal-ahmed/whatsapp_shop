@@ -2,21 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:whatsapp_shop/application/search_products/search_products_event.dart';
-import 'package:whatsapp_shop/application/search_products/search_products_notifier.dart';
-import 'package:whatsapp_shop/application/search_products/search_products_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/utils/debouncer/debouncer.dart';
+import 'package:whatsapp_shop/infrastructure/search/search_provider.dart';
 import 'package:whatsapp_shop/presentation/screens/search/widgets/search_product_item_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
-
-final _searchProductProvider = StateNotifierProvider.autoDispose<
-    SearchProductNotifier, SearchProductsState>((ref) {
-  return SearchProductNotifier();
-});
-
-final _searchQueryProvider = StateProvider.autoDispose<String?>((ref) => null);
 
 class ScreenSearch extends ConsumerWidget {
   const ScreenSearch({required this.shopId, super.key});
@@ -64,19 +56,21 @@ class ScreenSearch extends ConsumerWidget {
                 final Debouncer debouncer = Debouncer();
 
                 debouncer.run(() {
-                  ref.read(_searchProductProvider.notifier).emit(
+                  ref.read(SearchProvider.searchProductProvider.notifier).emit(
                         SearchProductsEvent.search(
                             shopId: shopId, keyword: query),
                       );
 
-                  ref.read(_searchQueryProvider.notifier).state = query;
+                  ref.read(SearchProvider.searchQueryProvider.notifier).state =
+                      query;
                 });
               },
             ),
             dHeight1,
             Consumer(
               builder: (context, ref, _) {
-                final String? query = ref.watch(_searchQueryProvider);
+                final String? query =
+                    ref.watch(SearchProvider.searchQueryProvider);
 
                 if (query == null || query.isEmpty) return kNone;
 
@@ -96,8 +90,9 @@ class ScreenSearch extends ConsumerWidget {
             Expanded(
               child: Consumer(
                 builder: (context, ref, _) {
-                  final state = ref.watch(_searchProductProvider);
-                  final String? query = ref.read(_searchQueryProvider);
+                  final state = ref.watch(SearchProvider.searchProductProvider);
+                  final String? query =
+                      ref.read(SearchProvider.searchQueryProvider);
 
                   if (state.isError) {
                     return const SomethingWentWrongWidget();

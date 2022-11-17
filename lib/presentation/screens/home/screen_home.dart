@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:whatsapp_shop/application/home/home_event.dart';
-import 'package:whatsapp_shop/application/home/home_notifier.dart';
 import 'package:whatsapp_shop/application/home/home_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/models/shop_category/shop_category_model.dart';
+import 'package:whatsapp_shop/domain/provider/home/home_provider.dart';
 import 'package:whatsapp_shop/infrastructure/home/home_repository.dart';
 import 'package:whatsapp_shop/presentation/screens/home/widgets/shops_by_category_list_widget.dart';
 import 'package:whatsapp_shop/presentation/screens/main/widgets/main_drawer.dart';
@@ -19,18 +18,12 @@ import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/search_text_field_widget.dart.dart';
 
-final _homeProvider = StateNotifierProvider<HomeNotifier, HomeState>((ref) {
-  return HomeNotifier()..emit(const HomeEvent.home());
-});
-
-final _shopCategoryIdProvider = StateProvider<String>((ref) => '0');
-
 class ScreenHome extends ConsumerWidget {
   const ScreenHome({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final HomeState state = ref.watch(_homeProvider);
+    final HomeState state = ref.watch(HomeProvider.homeProvider);
     return Scaffold(
       appBar: const AppBarWidget(defualt: true, isDrawer: true),
       drawer: const MainDrawer(),
@@ -74,7 +67,8 @@ class ScreenHome extends ConsumerWidget {
                                       onChanged: (shopCategory) {
                                         log('shopCategoryId ==== ${shopCategory!.id}');
                                         ref
-                                            .read(_shopCategoryIdProvider
+                                            .read(HomeProvider
+                                                .shopCategoryIdProvider
                                                 .notifier)
                                             .state = shopCategory.id.toString();
                                       },
@@ -141,8 +135,8 @@ class ScreenHome extends ConsumerWidget {
                                     log('shop = ${shop.name}');
                                   },
                                   suggestionsCallback: (pattern) async {
-                                    final shopCategoryId =
-                                        ref.read(_shopCategoryIdProvider);
+                                    final shopCategoryId = ref.read(
+                                        HomeProvider.shopCategoryIdProvider);
                                     final state = await HomeRepository().search(
                                       shopCategoryId: shopCategoryId,
                                       keyword: pattern,

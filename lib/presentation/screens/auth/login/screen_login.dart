@@ -6,25 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_shop/application/login/login_event.dart';
-import 'package:whatsapp_shop/application/login/login_notifier.dart';
 import 'package:whatsapp_shop/application/login/login_state.dart';
 import 'package:whatsapp_shop/core/constants/colors.dart';
 import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/user/user_model.dart';
+import 'package:whatsapp_shop/domain/provider/auth/login/login_provider.dart';
 import 'package:whatsapp_shop/domain/utils/snackbars/snackbar.dart';
 import 'package:whatsapp_shop/domain/utils/user/user.dart';
 import 'package:whatsapp_shop/domain/utils/validators/validators.dart';
 import 'package:whatsapp_shop/presentation/screens/auth/register/screen_register.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
-
-final _loginProvider =
-    StateNotifierProvider.autoDispose<LoginNotifier, LoginState>((ref) {
-  return LoginNotifier();
-});
-
-final _obscureProvider = StateProvider.autoDispose<bool>((ref) => true);
 
 class ScreenLogin extends ConsumerWidget {
   ScreenLogin({super.key});
@@ -102,26 +95,28 @@ class ScreenLogin extends ConsumerWidget {
                         hintText: 'Enter Password',
                         suffixIcon: IconButton(
                           onPressed: () {
-                            ref.read(_obscureProvider.notifier).state =
-                                !ref.read(_obscureProvider);
+                            ref
+                                .read(LoginProvider.obscureProvider.notifier)
+                                .update((state) => !state);
                           },
                           icon: Icon(
-                            ref.read(_obscureProvider)
+                            ref.read(LoginProvider.obscureProvider)
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                             size: 19.sp,
                           ),
                         ),
-                        obscureText: ref.watch(_obscureProvider),
+                        obscureText: ref.watch(LoginProvider.obscureProvider),
                         validator: (value) => Validators.nullValidator(value),
                       ),
                       dHeight3,
                       Consumer(
                         builder: (context, ref, _) {
-                          final LoginState state = ref.watch(_loginProvider);
+                          final LoginState state =
+                              ref.watch(LoginProvider.loginProvider);
 
                           ref.listen(
-                            _loginProvider,
+                            LoginProvider.loginProvider,
                             (previous, next) async {
                               if (next.isError) {
                                 return kSnackBar(
@@ -160,8 +155,9 @@ class ScreenLogin extends ConsumerWidget {
                                 final String username = usernameController.text;
                                 final String password = passwordController.text;
 
-                                ref.read(_loginProvider.notifier).emit(
-                                    LoginEvent.login(
+                                ref
+                                    .read(LoginProvider.loginProvider.notifier)
+                                    .emit(LoginEvent.login(
                                         username: username,
                                         password: password));
                               }

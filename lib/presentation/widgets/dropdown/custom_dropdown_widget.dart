@@ -72,7 +72,7 @@ class CustomDropDownWidget extends StatelessWidget {
             alignment: Alignment.centerLeft,
             value: value,
             child: Text(
-              preText + value,
+              preText + value.toString(),
               style: TextStyle(
                 fontSize: 13.sp,
                 color: const Color(0XFF4F4E4E),

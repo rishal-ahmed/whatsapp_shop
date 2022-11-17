@@ -302,20 +302,30 @@ class ScreenProduct extends ConsumerWidget {
                                       dHeight05,
                                       ShimmerWidget(
                                         isLoading: state.isLoading,
-                                        child: CustomDropDownWidget(
-                                          width: 15.w,
-                                          preText: 'Qty:  ',
-                                          value: '1',
-                                          items: const [
-                                            '1',
-                                            '2',
-                                            '3',
-                                            '4',
-                                            '5',
-                                            '6',
-                                          ],
-                                          onChanged: (value) {
-                                            log('qty = $value');
+                                        child: Consumer(
+                                          builder: (context, ref, _) {
+                                            final int quanity = ref.watch(
+                                                ProductProvider
+                                                    .quantityProvider);
+                                            return CustomDropDownWidget(
+                                              width: 15.w,
+                                              preText: 'Qty:  ',
+                                              value: quanity,
+                                              items: const [
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5,
+                                              ],
+                                              onChanged: (value) {
+                                                ref
+                                                    .read(ProductProvider
+                                                        .quantityProvider
+                                                        .notifier)
+                                                    .state = value as int;
+                                              },
+                                            );
                                           },
                                         ),
                                       )
@@ -342,6 +352,11 @@ class ScreenProduct extends ConsumerWidget {
                                       final UserModel user =
                                           UserUtils.instance.userModel!;
 
+                                      final int quantity = ref.read(
+                                          ProductProvider.quantityProvider);
+
+                                      log('quantity = $quantity');
+
                                       ref
                                           .read(CartProvider.addToCartProvider(
                                                   productId)
@@ -351,7 +366,7 @@ class ScreenProduct extends ConsumerWidget {
                                               userId: user.id,
                                               productId: productId,
                                               unitId: state.units.first.id,
-                                              quantity: 1,
+                                              quantity: 10,
                                             ),
                                           );
                                     },
@@ -372,6 +387,8 @@ class ScreenProduct extends ConsumerWidget {
                                     shimmer: state.isLoading,
                                     isLoading: cartState.isLoading,
                                     onPressed: () {
+                                      final int quantity = ref.read(
+                                          ProductProvider.quantityProvider);
                                       final UserModel user =
                                           UserUtils.instance.userModel!;
 
@@ -383,7 +400,7 @@ class ScreenProduct extends ConsumerWidget {
                                               userId: user.id,
                                               productId: productId,
                                               unitId: state.units.first.id,
-                                              quantity: 1,
+                                              quantity: quantity,
                                             ),
                                           );
                                     },

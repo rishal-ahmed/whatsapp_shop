@@ -9,4 +9,9 @@ class ProductProvider {
       ProductNotifier, ProductState, ProductEvent>((ref, event) {
     return ProductNotifier()..emit(event);
   });
+
+  //==--==--==--==--==-- Quantity --==--==--==--==--==
+  static final quantityProvider = StateProvider.autoDispose<int>((ref) {
+    return 1;
+  });
 }
