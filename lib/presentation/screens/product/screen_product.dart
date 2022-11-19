@@ -20,7 +20,7 @@ import 'package:whatsapp_shop/presentation/screens/shops/widgets/shop_product_li
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
 import 'package:whatsapp_shop/presentation/widgets/dropdown/custom_dropdown_widget.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 class ScreenProduct extends ConsumerWidget {

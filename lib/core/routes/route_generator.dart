@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_shop/application/product_category/product_category_state.dart';
+import 'package:whatsapp_shop/application/shop_home/shop_home_state.dart';
+import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/core/routes/routes.dart';
 import 'package:whatsapp_shop/domain/models/address/address_model.dart';
 import 'package:whatsapp_shop/presentation/screens/about_us/screen_about_us.dart';
@@ -20,6 +23,7 @@ import 'package:whatsapp_shop/presentation/screens/search/screen_search.dart';
 import 'package:whatsapp_shop/presentation/screens/shops/screen_shop.dart';
 import 'package:whatsapp_shop/presentation/screens/splash/screen_splash.dart';
 import 'package:whatsapp_shop/presentation/screens/support/screen_support.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/connection.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -30,11 +34,18 @@ class RouteGenerator {
       case routeRoot:
         return MaterialPageRoute(builder: (_) => const ScreenSplash());
 
+      //=-=-=-=-=-=-=-=-=-=- Connection -=-=-=-=-=-=-=-=-=-=
+      case routeConnection:
+        return MaterialPageRoute(
+            builder: (_) => const ConnectionWidget(child: kNone));
+
       //=-=-=-=-=-=-=-=-=-=- Authentication -=-=-=-=-=-=-=-=-=-=
       case routeLogin:
-        return MaterialPageRoute(builder: (_) => ScreenLogin());
+        return MaterialPageRoute(
+            builder: (_) => ConnectionWidget(child: ScreenLogin()));
       case routeRegister:
-        return MaterialPageRoute(builder: (_) => ScreenRegister());
+        return MaterialPageRoute(
+            builder: (_) => ConnectionWidget(child: ScreenRegister()));
 
       //=-=-=-=-=-=-=-=-=-=- Main -=-=-=-=-=-=-=-=-=-=
       case routeMain:
@@ -44,7 +55,8 @@ class RouteGenerator {
         return _errorRoute();
       //=-=-=-=-=-=-=-=-=-=- Home -=-=-=-=-=-=-=-=-=-=
       case routeHome:
-        return MaterialPageRoute(builder: (_) => const ScreenHome());
+        return MaterialPageRoute(
+            builder: (_) => const ConnectionWidget(child: ScreenHome()));
 
       //=-=-=-=-=-=-=-=-=-=- Search -=-=-=-=-=-=-=-=-=-=
       case routeSearch:
@@ -66,7 +78,12 @@ class RouteGenerator {
       //=-=-=-=-=-=-=-=-=-=- Shop -=-=-=-=-=-=-=-=-=-=
       case routeShop:
         if (args is int) {
-          return MaterialPageRoute(builder: (_) => ScreenShop(shopId: args));
+          return MaterialPageRoute(
+              builder: (_) => ScreenShop(
+                    shopId: args,
+                    state: ShopHomeState.initial(),
+                    productCategoryState: ProductCategoryState.initial(),
+                  ));
         }
         return _errorRoute();
 

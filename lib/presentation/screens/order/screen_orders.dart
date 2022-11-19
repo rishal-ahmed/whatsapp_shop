@@ -8,7 +8,7 @@ import 'package:whatsapp_shop/domain/models/order/order_model.dart';
 import 'package:whatsapp_shop/domain/provider/order/order_provider.dart';
 import 'package:whatsapp_shop/domain/utils/converter/converter.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 class ScreenOrders extends ConsumerWidget {

@@ -8,7 +8,7 @@ import 'package:whatsapp_shop/domain/models/address/address_model.dart';
 import 'package:whatsapp_shop/domain/provider/address/address_provider.dart';
 import 'package:whatsapp_shop/presentation/screens/address/widgets/address_item_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 class ScreenAddress extends ConsumerWidget {

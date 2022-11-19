@@ -14,7 +14,7 @@ import 'package:whatsapp_shop/presentation/screens/home/widgets/shops_by_categor
 import 'package:whatsapp_shop/presentation/screens/main/widgets/main_drawer.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/dropdown/dropdown_widget.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/search_text_field_widget.dart.dart';
 

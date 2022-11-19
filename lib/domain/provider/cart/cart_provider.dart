@@ -33,7 +33,7 @@ class CartProvider {
 
   //==--==--==--==--==-- Cart Count --==--==--==--==--==
   static final cartCountProvider =
-      AutoDisposeStateNotifierProvider<CartNotifier, CartState>((ref) {
+      StateNotifierProvider<CartNotifier, CartState>((ref) {
     return CartNotifier()
       ..emit(CartEvent.cartCount(userId: UserUtils.instance.userModel!.id));
   });

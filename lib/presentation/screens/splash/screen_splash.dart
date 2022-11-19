@@ -36,8 +36,6 @@ class ScreenSplash extends StatelessWidget {
 
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    preferences.remove('login');
-
     final String? user = preferences.getString('user');
 
     if (user != null) {

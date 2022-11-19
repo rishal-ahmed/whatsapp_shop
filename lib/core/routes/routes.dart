@@ -3,6 +3,9 @@
 //=-=-=-=-=- Root -=-=-=-=-=
 const String routeRoot = '/';
 
+//=-=-=-=-=- Connection -=-=-=-=-=
+const String routeConnection = '/connection';
+
 //=-=-=-=-=- Splash -=-=-=-=-=
 const String routeSplash = '/splash';
 

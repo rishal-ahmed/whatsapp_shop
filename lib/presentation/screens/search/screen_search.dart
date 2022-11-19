@@ -7,7 +7,7 @@ import 'package:whatsapp_shop/core/constants/sizes.dart';
 import 'package:whatsapp_shop/domain/utils/debouncer/debouncer.dart';
 import 'package:whatsapp_shop/infrastructure/search/search_provider.dart';
 import 'package:whatsapp_shop/presentation/screens/search/widgets/search_product_item_widget.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/text_fields/text_field_widget.dart';
 
 class ScreenSearch extends ConsumerWidget {

@@ -17,7 +17,7 @@ import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_item_widget
 import 'package:whatsapp_shop/presentation/screens/cart/widgets/cart_title_child_widget.dart';
 import 'package:whatsapp_shop/presentation/widgets/appbar/appbar.dart';
 import 'package:whatsapp_shop/presentation/widgets/buttons/custom_material_button.dart';
-import 'package:whatsapp_shop/presentation/widgets/errors/errors.dart';
+import 'package:whatsapp_shop/presentation/widgets/errors/error.dart';
 import 'package:whatsapp_shop/presentation/widgets/shimmer/shimmer_widget.dart';
 
 class ScreenCart extends ConsumerWidget {
